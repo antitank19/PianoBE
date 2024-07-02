@@ -19,6 +19,8 @@ namespace DataLayer.DbObject
         public int SheetID { get; set; }
         public Sheet Sheet { get; set; }
         public float Duration { get; set; }
+        // Flat:0, Thường:1, Sharp: 2
+        public int Chromatic { get; set; }
         //Vị trí nốt nhạc
         //Measure: thứ tự khuôn nhạc
         //Position: thứ tự note trong khuôn nhạc

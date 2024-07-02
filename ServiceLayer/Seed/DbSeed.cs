@@ -1,4 +1,5 @@
 ﻿using DataLayer.DbObject;
+using DataLayer.EnumsAndConsts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,51 +28,51 @@ namespace ServiceLayer.Seed
            new Note
            {
                Id = 1,
-               Name = "C4",
-               Octave = 4,
-               Pitch = "C4",
+               Name = PitchConst.C,
+               Octave = (int)OctaveEnum.Mid,
+               Pitch = PitchConst.C,
            } ,
            new Note
            {
                Id = 2,
-               Name = "D4",
-               Octave = 4,
-               Pitch = "D4",
+               Name = PitchConst.D,
+               Octave = (int)OctaveEnum.Mid,
+               Pitch = PitchConst.D,
            },
            new Note
            {
                Id = 3,
-               Name = "E4",
-               Octave = 4,
-               Pitch = "E4",
+               Name = PitchConst.E,
+               Octave = (int)OctaveEnum.Mid,
+               Pitch = PitchConst.E,
            },
            new Note
            {
                Id = 4,
-               Name = "F4",
+               Name = PitchConst.F,
                Octave = 4,
-               Pitch = "F4",
+               Pitch = PitchConst.F,
            },
            new Note
            {
                Id = 5,
-               Name = "G4",
-               Octave = 4,
-               Pitch = "G4",
+               Name = PitchConst.G,
+               Octave = (int)OctaveEnum.Mid,
+               Pitch = PitchConst.G,
            },
            new Note
            {
                Id = 6,
-               Name = "A4",
-               Octave = 4,
-               Pitch = "A4",
+               Name = PitchConst.A,
+               Octave = (int)OctaveEnum.Mid,
+               Pitch = PitchConst.A,
            },
            new Note
            {
                Id = 7,
-               Name = "B4",
-               Octave = 4,
-               Pitch = "B4",
+               Name = PitchConst.B,
+               Octave = (int)OctaveEnum.Mid,
+               Pitch = PitchConst.B,
            }
         };
         public static Artist[] Artists = new Artist[]
@@ -138,6 +139,7 @@ namespace ServiceLayer.Seed
                 Duration = 4,
                 Measure = 1,
                 Position = 1,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
@@ -147,6 +149,7 @@ namespace ServiceLayer.Seed
                 Duration = 2,
                 Measure = 2,
                 Position = 1,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
@@ -156,6 +159,7 @@ namespace ServiceLayer.Seed
                 Duration = 2,
                 Measure = 2,
                 Position = 2,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
@@ -165,6 +169,7 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 Measure = 3,
                 Position = 1,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
@@ -174,6 +179,7 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 Measure = 3,
                 Position = 2,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
@@ -183,6 +189,7 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 Measure = 3,
                 Position = 3,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
@@ -192,6 +199,7 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 Measure = 3,
                 Position = 4,
+                Chromatic = (int)ChromaticEnum.Natural
             },
         };
     }
