@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(PianoContext))]
-    [Migration("20240702073653_NewDb")]
+    [Migration("20240702081754_NewDb")]
     partial class NewDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,7 +83,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("SheetId");
 
-                    b.ToTable("Measure");
+                    b.ToTable("Measures");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Note", b =>

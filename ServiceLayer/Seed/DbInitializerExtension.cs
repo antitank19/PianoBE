@@ -148,6 +148,19 @@ namespace ServiceLayer.Seed
                         }
                     }
                     #endregion
+                    #region seed Mesuare
+                    if (!context.Measures.Any())
+                    {
+                        using (var transaction = context.Database.BeginTransaction())
+                        {
+                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Measures ON");
+                            context.Measures.AddRange(DbSeed.Measures);
+                            context.SaveChanges();
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Sheets OFF");
+                            transaction.Commit();
+                        }
+                    }
+                    #endregion
                     #region seed SongNote
                     if (!context.SongNotes.Any())
                     {

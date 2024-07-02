@@ -81,7 +81,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("SheetId");
 
-                    b.ToTable("Measure");
+                    b.ToTable("Measures");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Note", b =>

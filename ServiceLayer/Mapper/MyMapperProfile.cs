@@ -15,9 +15,15 @@ namespace ServiceLayer.Mapper
         public MyMapperProfile()
         {
             MapSong();
-            MapSongNote();
             MapSheet();
+            MapMeasure();
+            MapSongNote();
             
+        }
+
+        private void MapMeasure()
+        {
+            CreateMap<Measure, MeasureGetDto>();
         }
 
         private void MapSongNote()

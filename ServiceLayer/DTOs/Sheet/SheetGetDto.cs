@@ -12,9 +12,9 @@ namespace ServiceLayer.DTOs
         public int Id { get; set; }
 
         public int SongId { get; set; }
-        public string SongName { get; set; }
+        public string SongTitle { get; set; }
         public int InstrumentId { get; set; }
         public string InstrumentName { get; set; }
-        public ICollection<SongNoteGetDto> SongNotes { get; set; }
+        public ICollection<MeasureGetDto> Measures { get; set; }
     }
 }

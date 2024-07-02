@@ -41,7 +41,7 @@ namespace DataLayer.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "Measure",
+                name: "Measures",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -51,9 +51,9 @@ namespace DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Measure", x => x.Id);
+                    table.PrimaryKey("PK_Measures", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Measure_Sheets_SheetId",
+                        name: "FK_Measures_Sheets_SheetId",
                         column: x => x.SheetId,
                         principalTable: "Sheets",
                         principalColumn: "Id",
@@ -61,15 +61,15 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Measure_SheetId",
-                table: "Measure",
+                name: "IX_Measures_SheetId",
+                table: "Measures",
                 column: "SheetId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_SongNotes_Measure_MeasureId",
+                name: "FK_SongNotes_Measures_MeasureId",
                 table: "SongNotes",
                 column: "MeasureId",
-                principalTable: "Measure",
+                principalTable: "Measures",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -77,11 +77,11 @@ namespace DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_SongNotes_Measure_MeasureId",
+                name: "FK_SongNotes_Measures_MeasureId",
                 table: "SongNotes");
 
             migrationBuilder.DropTable(
-                name: "Measure");
+                name: "Measures");
 
             migrationBuilder.DropColumn(
                 name: "Signature1",
