@@ -129,75 +129,89 @@ namespace ServiceLayer.Seed
                  SheetFile = "",
              }
         };
+        public static Measure[] Measures = new Measure[]
+        {
+            new Measure
+            {
+                Id = 1,
+                SheetId = 1,
+                Position = 1,
+            },
+            new Measure
+            {
+                Id = 2,
+                SheetId = 1,
+                Position = 2,
+            } ,
+            new Measure
+            {
+                Id = 3,
+                SheetId = 1,
+                Position = 3,
+            }
+        };
         public static SongNote[] SongNotes = new SongNote[]
         {
             new SongNote
             {
                 Id = 1,
-                SheetID = 1,
                 NoteID = 1,
                 Duration = 4,
-                Measure = 1,
+                MeasureId = 1,
                 Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
                 Id = 2,
-                SheetID = 1,
                 NoteID = 2,
                 Duration = 2,
-                Measure = 2,
+                MeasureId = 2,
                 Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
                 Id = 3,
-                SheetID = 1,
                 NoteID = 3,
                 Duration = 2,
-                Measure = 2,
+                MeasureId = 2,
                 Position = 2,
                 Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
                 Id = 4,
-                SheetID = 1,
                 NoteID = 4,
                 Duration = 1,
-                Measure = 3,
+                MeasureId = 3,
                 Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
                 Id = 5,
-                SheetID = 1,
                 NoteID = 4,
                 Duration = 1,
-                Measure = 3,
+                MeasureId = 3,
                 Position = 2,
                 Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
                 Id = 6,
-                SheetID = 1,
                 NoteID = 4,
                 Duration = 1,
-                Measure = 3,
+                MeasureId = 3,
                 Position = 3,
                 Chromatic = (int)ChromaticEnum.Natural
             },
             new SongNote
             {
                 Id = 7,
-                SheetID = 1,
                 NoteID = 4,
                 Duration = 1,
-                Measure = 3,
+                MeasureId = 3,
                 Position = 4,
                 Chromatic = (int)ChromaticEnum.Natural
             },
