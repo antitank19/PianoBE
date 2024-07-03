@@ -43,7 +43,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Instrument", b =>
@@ -60,7 +60,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Instruments");
+                    b.ToTable("Instruments", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Measure", b =>
@@ -81,7 +81,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("SheetId");
 
-                    b.ToTable("Measures");
+                    b.ToTable("Measures", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Note", b =>
@@ -105,7 +105,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Sheet", b =>
@@ -132,7 +132,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("SongId");
 
-                    b.ToTable("Sheets");
+                    b.ToTable("Sheets", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Song", b =>
@@ -168,7 +168,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Songs");
+                    b.ToTable("Songs", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.SongNote", b =>
@@ -200,7 +200,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("NoteID");
 
-                    b.ToTable("SongNotes");
+                    b.ToTable("SongNotes", (string)null);
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Measure", b =>

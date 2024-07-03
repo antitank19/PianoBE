@@ -15,6 +15,7 @@ namespace ServiceLayer.DTOs
         public string SongTitle { get; set; }
         public int InstrumentId { get; set; }
         public string InstrumentName { get; set; }
+        public string SheetFile { get; set; }
         public ICollection<MeasureGetDto> Measures { get; set; }
     }
 }

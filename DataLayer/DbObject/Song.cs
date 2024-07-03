@@ -29,6 +29,9 @@ namespace DataLayer.DbObject
         public string Genre { get; set; }
         public int ArtistId { get; set; }
         public Artist Artist { get; set; }
+        /// <summary>
+        /// Signature là cái kí hiệu cho như 2/4, 3/4 trên khuôn nhạc
+        /// </summary>
         public int Signature1 { get; set; }
         public int Signature2 { get; set; }
         public ICollection<Sheet> Sheets { get; set; } = new List<Sheet>();

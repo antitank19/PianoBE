@@ -18,6 +18,9 @@ namespace DataLayer.DbObject
         public Song Song { get; set; }
         public int InstrumentId { get; set; }
         public Instrument Instrument { get; set; }
+        /// <summary>
+        /// Link of .mid file
+        /// </summary>
         public string SheetFile { get; set; }
         public ICollection<Measure> Measures { get; set; }
     }
