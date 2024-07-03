@@ -8,5 +8,7 @@ namespace ServiceLayer.Services.Interface.Db
 {
     public interface IArtistService
     {
+        public IQueryable<T> GetArtistList<T>();
+        public Task<T> GetArtistById<T>();
     }
 }

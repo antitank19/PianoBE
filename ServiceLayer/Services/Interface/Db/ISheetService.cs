@@ -8,5 +8,7 @@ namespace ServiceLayer.Services.Interface.Db
 {
     public interface ISheetService
     {
+        public IQueryable<T> GetSheetList<T>();
+        public Task<T> GetSheetById<T>(int id);
     }
 }
