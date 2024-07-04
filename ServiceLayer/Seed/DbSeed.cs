@@ -25,55 +25,80 @@ namespace ServiceLayer.Seed
         };
         public static Note[] Notes = new Note[]
         {
-           new Note
-           {
-               Id = 1,
-               Name = PitchConst.C,
-               Octave = (int)OctaveEnum.Mid,
-               Pitch = PitchConst.C,
-           } ,
-           new Note
-           {
-               Id = 2,
-               Name = PitchConst.D,
-               Octave = (int)OctaveEnum.Mid,
-               Pitch = PitchConst.D,
-           },
-           new Note
-           {
-               Id = 3,
-               Name = PitchConst.E,
-               Octave = (int)OctaveEnum.Mid,
-               Pitch = PitchConst.E,
-           },
-           new Note
-           {
-               Id = 4,
-               Name = PitchConst.F,
-               Octave = 4,
-               Pitch = PitchConst.F,
-           },
-           new Note
-           {
-               Id = 5,
-               Name = PitchConst.G,
-               Octave = (int)OctaveEnum.Mid,
-               Pitch = PitchConst.G,
-           },
-           new Note
-           {
-               Id = 6,
-               Name = PitchConst.A,
-               Octave = (int)OctaveEnum.Mid,
-               Pitch = PitchConst.A,
-           },
-           new Note
-           {
-               Id = 7,
-               Name = PitchConst.B,
-               Octave = (int)OctaveEnum.Mid,
-               Pitch = PitchConst.B,
-           }
+            // Octave 1
+            new Note { Id = 1, Name = "C1", Octave = 1, Pitch = "C1" },
+            new Note { Id = 2, Name = "D1", Octave = 1, Pitch = "D1" },
+            new Note { Id = 3, Name = "E1", Octave = 1, Pitch = "E1" },
+            new Note { Id = 4, Name = "F1", Octave = 1, Pitch = "F1" },
+            new Note { Id = 5, Name = "G1", Octave = 1, Pitch = "G1" },
+            new Note { Id = 6, Name = "A1", Octave = 1, Pitch = "A1" },
+            new Note { Id = 7, Name = "B1", Octave = 1, Pitch = "B1" },
+
+            // Octave 2
+            new Note { Id = 8, Name = "C2", Octave = 2, Pitch = "C2" },
+            new Note { Id = 9, Name = "D2", Octave = 2, Pitch = "D2" },
+            new Note { Id = 10, Name = "E2", Octave = 2, Pitch = "E2" },
+            new Note { Id = 11, Name = "F2", Octave = 2, Pitch = "F2" },
+            new Note { Id = 12, Name = "G2", Octave = 2, Pitch = "G2" },
+            new Note { Id = 13, Name = "A2", Octave = 2, Pitch = "A2" },
+            new Note { Id = 14, Name = "B2", Octave = 2, Pitch = "B2" },
+
+            // Octave 3
+            new Note { Id = 15, Name = "C3", Octave = 3, Pitch = "C3" },
+            new Note { Id = 16, Name = "D3", Octave = 3, Pitch = "D3" },
+            new Note { Id = 17, Name = "E3", Octave = 3, Pitch = "E3" },
+            new Note { Id = 18, Name = "F3", Octave = 3, Pitch = "F3" },
+            new Note { Id = 19, Name = "G3", Octave = 3, Pitch = "G3" },
+            new Note { Id = 20, Name = "A3", Octave = 3, Pitch = "A3" },
+            new Note { Id = 21, Name = "B3", Octave = 3, Pitch = "B3" },
+
+            // Octave 4
+            new Note { Id = 22, Name = "C4", Octave = 4, Pitch = "C4" },
+            new Note { Id = 23, Name = "D4", Octave = 4, Pitch = "D4" },
+            new Note { Id = 24, Name = "E4", Octave = 4, Pitch = "E4" },
+            new Note { Id = 25, Name = "F4", Octave = 4, Pitch = "F4" },
+            new Note { Id = 26, Name = "G4", Octave = 4, Pitch = "G4" },
+            new Note { Id = 27, Name = "A4", Octave = 4, Pitch = "A4" },
+            new Note { Id = 28, Name = "B4", Octave = 4, Pitch = "B4" },
+
+            // Octave 5
+            new Note { Id = 29, Name = "C5", Octave = 5, Pitch = "C5" },
+            new Note { Id = 30, Name = "D5", Octave = 5, Pitch = "D5" },
+            new Note { Id = 31, Name = "E5", Octave = 5, Pitch = "E5" },
+            new Note { Id = 32, Name = "F5", Octave = 5, Pitch = "F5" },
+            new Note { Id = 33, Name = "G5", Octave = 5, Pitch = "G5" },
+            new Note { Id = 34, Name = "A5", Octave = 5, Pitch = "A5" },
+            new Note { Id = 35, Name = "B5", Octave = 5, Pitch = "B5" },
+
+            // Octave 6
+            new Note { Id = 36, Name = "C6", Octave = 6, Pitch = "C6" },
+            new Note { Id = 37, Name = "D6", Octave = 6, Pitch = "D6" },
+            new Note { Id = 38, Name = "E6", Octave = 6, Pitch = "E6" },
+            new Note { Id = 39, Name = "F6", Octave = 6, Pitch = "F6" },
+            new Note { Id = 40, Name = "G6", Octave = 6, Pitch = "G6" },
+            new Note { Id = 41, Name = "A6", Octave = 6, Pitch = "A6" },
+            new Note { Id = 42, Name = "B6", Octave = 6, Pitch = "B6" },
+
+            // Octave 7
+            new Note { Id = 43, Name = "C7", Octave = 7, Pitch = "C7" },
+            new Note { Id = 44, Name = "D7", Octave = 7, Pitch = "D7" },
+            new Note { Id = 45, Name = "E7", Octave = 7, Pitch = "E7" },
+            new Note { Id = 46, Name = "F7", Octave = 7, Pitch = "F7" },
+            new Note { Id = 47, Name = "G7", Octave = 7, Pitch = "G7" },
+            new Note { Id = 48, Name = "A7", Octave = 7, Pitch = "A7" },
+            new Note { Id = 49, Name = "B7", Octave = 7, Pitch = "B7" },
+
+            // Octave 8
+            new Note { Id = 50, Name = "C8", Octave = 8, Pitch = "C8" },
+            new Note { Id = 51, Name = "D8", Octave = 8, Pitch = "D8" },
+            new Note { Id = 52, Name = "E8", Octave = 8, Pitch = "E8" },
+            new Note { Id = 53, Name = "F8", Octave = 8, Pitch = "F8" },
+            new Note { Id = 54, Name = "G8", Octave = 8, Pitch = "G8" },
+            new Note { Id = 55, Name = "A8", Octave = 8, Pitch = "A8" },
+            new Note { Id = 56, Name = "B8", Octave = 8, Pitch = "B8" },
+
+            //Pause
+            new Note { Id = 57, Name = "Pause", Octave = 8, Pitch = "Pause" }
         };
         public static Artist[] Artists = new Artist[]
         {

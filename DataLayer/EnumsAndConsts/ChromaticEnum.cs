@@ -13,4 +13,10 @@ namespace DataLayer.EnumsAndConsts
         Natural,
         Sharp
     }
+    public static class ChromaticConst
+    {
+        public static string Flat = "b";
+        public static string Sharp = "#";
+        public static string Natural = "n";
+    }
 }
