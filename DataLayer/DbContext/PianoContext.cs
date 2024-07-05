@@ -16,6 +16,7 @@ namespace DataLayer.DbContext
         public DbSet<Song> Songs { get; set; }
         public DbSet<Sheet> Sheets { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Measure> Measures { get; set; }
         public DbSet<SongNote> SongNotes { get; set; }
         public DbSet<Instrument> Instruments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

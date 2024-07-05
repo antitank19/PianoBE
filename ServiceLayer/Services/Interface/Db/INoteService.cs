@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Services.Interface.Db
 {
-    public interface ISongService
+    public interface INoteService
     {
-        public IQueryable<T> GetSongList<T>();
-        public Task<T> GetSongById<T>(int id);
+        public IQueryable<T> GetNoteList<T>(); 
+        public Task<T> GetNoteById<T>(int id);
     }
 }

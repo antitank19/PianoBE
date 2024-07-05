@@ -18,7 +18,7 @@ namespace ServiceLayer.DTOs
         //Vị trí nốt nhạc
         //Measure: thứ tự khuôn nhạc
         //Position: thứ tự note trong khuôn nhạc
-        public int Measure { get; set; }
+        public int MeasureId { get; set; }
         public int Position { get; set; }
     }
 }
