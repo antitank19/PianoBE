@@ -13,7 +13,7 @@ namespace DataLayer.DbObject
     {
         public SongNote()
         {
-            
+
         }
         /// <summary>
         /// Create a music sheet using string
@@ -27,8 +27,19 @@ namespace DataLayer.DbObject
         /// </param>
         public SongNote(int measureId, int position, string noteString)
         {
-            MeasureId = measureId;
-            Position = position;
+            try
+            {
+                MeasureId = measureId;
+                Position = position;
+                FillPitch(noteString);
+                FillOctave(noteString);
+                FillChromatic(noteString);
+                FillDuration(noteString);
+            }
+            catch (Exception ex)
+            {
+                if (ex is WrongNoteStringFormatException) throw ex;
+            }
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -73,7 +84,8 @@ namespace DataLayer.DbObject
                 case ("B"):
                     NoteID = PitchConst.B4id;
                     break;
-            }   
+            }
+            #region old code
             //if (noteInfo.IndexOf('A') != -1)
             //{
             //    ThePitch = Pitch.A;
@@ -102,10 +114,12 @@ namespace DataLayer.DbObject
             //{
             //    ThePitch = Pitch.G;
             //}
+            #endregion
 
         }
         public void FillOctave(string noteInfo)
         {
+            #region old code
             //if (NoteInfo.IndexOf('l') != -1)
             //{
             //    TheOctave = Octave.low;
@@ -118,6 +132,7 @@ namespace DataLayer.DbObject
             //{
             //    TheOctave = Octave.high;
             //}
+            #endregion
             string octaveString = noteInfo.Substring(1, 1);
             int octaveInt = Int32.Parse(octaveString);
             //Khi lưu cao độ là lưu theo của khoảng 4 trc, giờ trừ
@@ -125,10 +140,11 @@ namespace DataLayer.DbObject
 
         }
 
-        public void FillTiming(string NoteInfo)
+        public void FillDuration(string NoteInfo)
         {
             string duartionString = NoteInfo.Split('_')[1];
             Duration = float.Parse(duartionString);
+            #region old code
             //if (NoteInfo.IndexOf('x') != -1)
             //{
             //    Duration = DurationConst.sixteenth;
@@ -153,6 +169,7 @@ namespace DataLayer.DbObject
             //{
             //    Duration = Timing.whole;
             //}
+            #endregion
         }
 
 
@@ -174,6 +191,7 @@ namespace DataLayer.DbObject
             {
                 Chromatic = (int)ChromaticEnum.Natural;
             }
+            #region old code
             //if (NoteInfo.IndexOf('f') != -1)
             //{
             //    this.TheChromatic = Chromatic.Flat;
@@ -186,17 +204,23 @@ namespace DataLayer.DbObject
             //{
             //    this.TheChromatic = Chromatic.Sharp;
             //}
-
+            #endregion
         }
     }
 
-    public class WrongNoteStringFormatException : Exception 
+    public class WrongNoteStringFormatException : Exception
     {
-        public string CustomMessage { get; set; }
-        public WrongNoteStringFormatException()
+
+        public WrongNoteStringFormatException(int measurePos = 1, int notePos = 1)
         {
-            this.CustomMessage = string.Empty;
+            MeasurePos = measurePos;
+            NotePos = notePos;
+            CustomMessage = $"Sai cú pháp ở khuôn nhạc thứ {measurePos}, nốt thứ {notePos}";
         }
+        public string CustomMessage { get; set; }
+        public int MeasurePos { get; set; }
+
+        public int NotePos { get; set; }
 
     }
 }

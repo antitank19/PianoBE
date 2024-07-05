@@ -3,6 +3,8 @@ using AutoMapper.QueryableExtensions;
 using DataLayer.DbContext;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
+using DataLayer.DbObject;
+using ServiceLayer.DTOs.Sheet;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,9 +36,11 @@ namespace API.Controllers
         }
 
         // POST api/<SheetsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("symbol")]
+        public async Task<IActionResult> Post(SheetSymbolCreateDto dto)
         {
+            Sheet sheet = new Sheet(dto.SongId, dto.InstrumentId, dto.Symbols);
+             return Ok(sheet);
         }
 
         // PUT api/<SheetsController>/5
