@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Services.Interface
 {
-    public interface IServiceWrapper
+    public interface ISystemService
     {
-        public ISystemService System { get; }
+        public Task Nuke();
     }
 }

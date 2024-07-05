@@ -1,6 +1,8 @@
 using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Seed;
+using ServiceLayer.Services.Implementation;
+using ServiceLayer.Services.Interface;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,10 @@ builder.Services.AddDbContext<PianoContext>(options =>
 });
 #endregion
 
+#region service and repo
+builder.Services.AddScoped<IServiceWrapper, ServiceWrapper>();
+#endregion
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -39,7 +45,17 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+#region cors
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("allcors", builder => builder
+//        .AllowAnyMethod()
+//        .AllowAnyHeader()
+//        .AllowCredentials()
+//        .SetIsOriginAllowed(hostName => true));
 
+//});
+#endregion
 var app = builder.Build();
 if (IsInMemory)
 {
@@ -48,11 +64,8 @@ if (IsInMemory)
 }
 app.SeedInMemoryDb(IsInMemory);
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 
