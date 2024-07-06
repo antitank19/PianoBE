@@ -18,7 +18,12 @@ namespace ServiceLayer.Mapper
             MapSheet();
             MapMeasure();
             MapSongNote();
-            
+            MapNote();
+        }
+
+        private void MapNote()
+        {
+            CreateMap<Note, NoteGetDto>();
         }
 
         private void MapMeasure()

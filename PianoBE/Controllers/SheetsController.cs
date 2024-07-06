@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
 using DataLayer.DbObject;
 using ServiceLayer.DTOs.Sheet;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,9 +31,11 @@ namespace API.Controllers
 
         // GET api/<SheetsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return "value";
+            Sheet sheet = await context.Sheets.FirstOrDefaultAsync(x => x.Id == id);
+            SheetGetDto dto = mapper.Map<SheetGetDto>(sheet);    
+            return Ok(dto);
         }
 
         // POST api/<SheetsController>
