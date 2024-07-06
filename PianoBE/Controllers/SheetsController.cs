@@ -29,21 +29,36 @@ namespace API.Controllers
             return Ok(context.Sheets.ProjectTo<SheetGetDto>(mapper.ConfigurationProvider));
         }
 
+        [HttpGet("Song/{songId}")]
+        public async Task<IActionResult> GetListBySong(int songId)
+        {
+            if (!await context.Songs.AnyAsync(s=>s.Id==songId)) 
+            {
+                return NotFound("Không tìm thấy bài hát");
+            }
+            return Ok(context.Sheets.Where(s=>s.SongId==songId).ProjectTo<SheetGetDto>(mapper.ConfigurationProvider));
+        }
+
         // GET api/<SheetsController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            Sheet sheet = await context.Sheets.FirstOrDefaultAsync(x => x.Id == id);
+            Sheet sheet = await context.Sheets
+                .Include(s => s.Measures).ThenInclude(s => s.SongNotes)
+                .FirstOrDefaultAsync(x => x.Id == id);
             SheetGetDto dto = mapper.Map<SheetGetDto>(sheet);    
             return Ok(dto);
         }
 
         // POST api/<SheetsController>
         [HttpPost("symbol")]
-        public async Task<IActionResult> Post(SheetSymbolCreateDto dto)
+        public async Task<IActionResult> CreateSheetWithSymbol(SheetSymbolCreateDto input)
         {
-            Sheet sheet = new Sheet(dto.SongId, dto.InstrumentId, dto.Symbols);
-             return Ok(sheet);
+            Sheet sheet = new Sheet(input.SongId, input.InstrumentId, input.Symbols);
+            await context.Sheets.AddAsync(sheet);
+            await context.SaveChangesAsync();
+            SheetGetDto dto = mapper.Map<SheetGetDto>(sheet);
+            return Ok(dto);
         }
 
         // PUT api/<SheetsController>/5

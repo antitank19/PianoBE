@@ -36,7 +36,7 @@ namespace DataLayer.DbObject
         /// <summary>
         /// Link of .mid file
         /// </summary>
-        public string SheetFile { get; set; }
+        public string? SheetFile { get; set; }
         public ICollection<Measure> Measures { get; set; }
     }
 }

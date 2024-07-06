@@ -152,6 +152,13 @@ namespace ServiceLayer.Seed
                  InstrumentId = 2,
                  SongId = 1,
                  SheetFile = "",
+             },
+             new Sheet
+             {
+                 Id = 3,
+                 InstrumentId = 2,
+                 SongId = 2,
+                 SheetFile = "",
              }
         };
         public static Measure[] Measures = new Measure[]
@@ -171,8 +178,14 @@ namespace ServiceLayer.Seed
             new Measure
             {
                 Id = 3,
-                SheetId = 1,
-                Position = 3,
+                SheetId = 2,
+                Position = 1,
+            },
+             new Measure
+            {
+                Id = 4,
+                SheetId = 3,
+                Position = 1,
             }
         };
         public static SongNote[] SongNotes = new SongNote[]
@@ -238,6 +251,15 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 MeasureId = 3,
                 Position = 4,
+                Chromatic = (int)ChromaticEnum.Natural
+            },
+            new SongNote
+            {
+                Id = 8,
+                NoteID = 4,
+                Duration = 4,
+                MeasureId = 4,
+                Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
             },
         };
