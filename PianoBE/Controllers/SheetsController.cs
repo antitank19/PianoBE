@@ -44,13 +44,22 @@ namespace API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             Sheet sheet = await context.Sheets
-                .Include(s => s.Measures).ThenInclude(s => s.SongNotes)
+                .Include(s => s.Measures).ThenInclude(s => s.SongNotes).ThenInclude(sn=>sn.Note)
                 .FirstOrDefaultAsync(x => x.Id == id);
             SheetGetDto dto = mapper.Map<SheetGetDto>(sheet);    
             return Ok(dto);
         }
 
-        // POST api/<SheetsController>
+        [HttpPost]
+        public async Task<IActionResult> CreateSheet(SheetCreateDto input)
+        {
+            Sheet sheet = mapper.Map<Sheet>(input);
+            await context.Sheets.AddAsync(sheet);
+            await context.SaveChangesAsync();
+            SheetGetDto dto = mapper.Map<SheetGetDto>(sheet);
+            return Ok(dto);
+        }
+
         [HttpPost("symbol")]
         public async Task<IActionResult> CreateSheetWithSymbol(SheetSymbolCreateDto input)
         {

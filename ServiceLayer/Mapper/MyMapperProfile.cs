@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataLayer.DbObject;
 using ServiceLayer.DTOs;
+using ServiceLayer.DTOs.Note;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,19 +27,25 @@ namespace ServiceLayer.Mapper
             CreateMap<Note, NoteGetDto>();
         }
 
-        private void MapMeasure()
-        {
-            CreateMap<Measure, MeasureGetDto>();
-        }
-
         private void MapSongNote()
         {
             CreateMap<SongNote, SongNoteGetDto>();
+
+            CreateMap<SongNoteCreateDto, SongNote>();
+        }
+
+        private void MapMeasure()
+        {
+            CreateMap<Measure, MeasureGetDto>();
+
+            CreateMap<MeasureCreateDto, Measure>();
         }
 
         private void MapSheet()
         {
             CreateMap<Sheet, SheetGetDto>();
+
+            CreateMap<SheetCreateDto, Sheet>();
         }
 
         private void MapSong() { 

@@ -32,8 +32,15 @@ namespace DataLayer.DbObject
                 MeasureId = measureId;
                 Position = position;
                 FillPitch(noteString);
-                FillOctave(noteString);
-                FillChromatic(noteString);
+                if (NoteID == PitchConst.PauseId)
+                {
+                    Chromatic = (int)ChromaticEnum.Natural;
+                }
+                else
+                {
+                    FillOctave(noteString);
+                    FillChromatic(noteString);
+                }
                 FillDuration(noteString);
             }
             catch (Exception ex)
@@ -83,6 +90,9 @@ namespace DataLayer.DbObject
                     break;
                 case ("B"):
                     NoteID = PitchConst.B4id;
+                    break;
+                case ("-"):
+                    NoteID = PitchConst.PauseId;
                     break;
             }
             #region old code
