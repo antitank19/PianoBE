@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.DbObject;
 using ServiceLayer.DTOs;
-using ServiceLayer.DTOs.Note;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,17 +26,43 @@ namespace ServiceLayer.Mapper
         {
             CreateMap<Note, NoteGetDto>();
         }
+//        {
+//  "songId": 2,
+//  "instrumentId": 2,
+//  "measures": [
+//    {
+//      "sheetId": 0,
+//      "position": 1,
+//      "chords": [
+//        {
+//          "noteIds": [
+//            22, 24
+//          ],
+//          "duration": 4,
+//          "chromatic": 1,
+//          "measureId": 0,
+//          "position": 1
+//        }
+//      ]
+//    }
+//  ]
+//}
 
         private void MapChord()
         {
             CreateMap<Chord, ChordGetDto>();
+            CreateMap<ChordCreateDto, Chord>()
+                .ForMember(dest=>dest.ChordNotes, opt =>
+                {
+                    opt.MapFrom(src => src.NoteIds.Select(noteId => new ChordNote { NoteId = noteId }));
+                });
         }
 
         private void MapChordNote()
         {
             CreateMap<ChordNote, ChordNoteGetDto>();
 
-            CreateMap<ChordNoteCreateDto, ChordNote>();
+            CreateMap<ChordCreateDto, ChordNote>();
         }
 
         private void MapMeasure()

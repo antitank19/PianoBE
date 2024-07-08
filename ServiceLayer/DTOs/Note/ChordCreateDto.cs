@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.DTOs.Note
+namespace ServiceLayer.DTOs
 {
-    public class ChordNoteCreateDto
+    public class ChordCreateDto
     {
         public int[] NoteIds { get; set; }
         public float Duration { get; set; }
