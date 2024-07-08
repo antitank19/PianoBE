@@ -13,6 +13,8 @@ namespace ServiceLayer.DTOs
 
         public int SongId { get; set; }
         public string SongTitle { get; set; }
+        public int TopSignature { get; set; }
+        public int BottomSignature { get; set; }
         public int InstrumentId { get; set; }
         public string InstrumentName { get; set; }
         public string SheetFile { get; set; }

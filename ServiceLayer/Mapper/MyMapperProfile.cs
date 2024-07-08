@@ -81,6 +81,7 @@ namespace ServiceLayer.Mapper
 
         private void MapSong() { 
             CreateMap<Song, SongGetDto>();
+            CreateMap<SongCreateDto, Song>();
         }
     }
 }

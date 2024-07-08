@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using DataLayer.DbContext;
+using DataLayer.DbObject;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ServiceLayer.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,24 +14,48 @@ namespace API.Controllers
     [ApiController]
     public class SongsController : ControllerBase
     {
+        private readonly PianoContext context;
+        private readonly IMapper mapper;
+        public SongsController(PianoContext context, IMapper mapper)
+        {
+            this.context = context;
+            this.mapper = mapper;
+        }
         // GET: api/<SongsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> GetSongList()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(context.Songs.ProjectTo<SongGetDto>(mapper.ConfigurationProvider));
         }
 
         // GET api/<SongsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            Song song = await context.Songs.SingleOrDefaultAsync(s => s.Id == id);
+            SongGetDto dto = mapper.Map<SongGetDto>(song);
+            return Ok(dto);
         }
 
         // POST api/<SongsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> CreateSong([FromBody] SongCreateDto input)
         {
+            Song newSong = mapper.Map<Song>(input);
+            await context.Songs.AddAsync(newSong);
+            await context.SaveChangesAsync();
+            SongGetDto dto = mapper.Map<SongGetDto>(newSong);
+            return Ok(dto);
+        }
+
+        [HttpPost("Symbol")]
+        public async Task<IActionResult> CreateSongWithSymbol([FromBody] SongSymbolCreateDto input)
+        {
+            Song newSong = mapper.Map<Song>(input);
+            await context.Songs.AddAsync(newSong);
+            await context.SaveChangesAsync();
+            SongGetDto dto = mapper.Map<SongGetDto>(newSong);
+            return Ok(dto);
         }
 
         // PUT api/<SongsController>/5

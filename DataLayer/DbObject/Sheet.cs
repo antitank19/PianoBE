@@ -30,6 +30,9 @@ namespace DataLayer.DbObject
         public int Id { get; set; }
 
         public int SongId { get; set; }
+        ///// <summary>
+        ///// Signature là cái kí hiệu cho như 2/4, 3/4 trên khuôn nhạc
+        ///// </summary>
         public int TopSignature { get; set; }
         public int BottomSignature { get; set; }
         public Song Song { get; set; }
