@@ -44,7 +44,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             Sheet sheet = await context.Sheets
-                .Include(s => s.Measures).ThenInclude(s => s.SongNotes).ThenInclude(sn=>sn.Note)
+                .Include(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s=>s.ChordNotes).ThenInclude(sn=>sn.Note)
                 .FirstOrDefaultAsync(x => x.Id == id);
             SheetGetDto dto = mapper.Map<SheetGetDto>(sheet);    
             return Ok(dto);

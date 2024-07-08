@@ -44,7 +44,7 @@ namespace ServiceLayer.Services.Implementation
                     dbContext.Songs.Delete();
                     dbContext.Sheets.Delete();
                     dbContext.Measures.Delete();
-                    dbContext.SongNotes.Delete();
+                    dbContext.ChordNotes.Delete();
 
                     tryAgain = false;
                 }

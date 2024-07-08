@@ -28,7 +28,7 @@ namespace DataLayer.DbObject
         public string Composer { get; set; }
         public string Genre { get; set; }
         public int ArtistId { get; set; }
-        public Artist Artist { get; set; }
+        public User Artist { get; set; }
         /// <summary>
         /// Signature là cái kí hiệu cho như 2/4, 3/4 trên khuôn nhạc
         /// </summary>

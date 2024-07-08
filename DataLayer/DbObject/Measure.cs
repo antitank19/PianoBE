@@ -18,8 +18,8 @@ namespace DataLayer.DbObject
         {
             SheetId = sheetId;
             Position = position;
-            string[] noteStrings = measureString.Split(new char[] { ' ' });
-            SongNotes = noteStrings.Select((nString, i)=> new SongNote(0,i+1, nString)).ToList();
+            string[] chordStrings = measureString.Split(new char[] { ' ' });
+            Chords = chordStrings.Select((nString, i)=> new Chord(0,i+1, nString)).ToList();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -28,7 +28,7 @@ namespace DataLayer.DbObject
         public int SheetId { get; set; }
         public Sheet Sheet { get; set; }
         public int Position { get; set; }
-        public ICollection<SongNote> SongNotes { get; set; }
+        public ICollection<Chord> Chords { get; set; }
 
     }
 }

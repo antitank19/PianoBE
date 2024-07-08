@@ -15,7 +15,7 @@ namespace ServiceLayer.DTOs
         public string Composer { get; set; }
         public string Genre { get; set; }
         public int ArtistId { get; set; }
-        public Artist Artist { get; set; }
+        public User Artist { get; set; }
         public int Signature1 { get; set; }
         public int Signature2 { get; set; }
         public ICollection<SheetGetDto> Sheets { get; set; } = new List<SheetGetDto>();

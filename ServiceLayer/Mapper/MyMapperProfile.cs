@@ -18,7 +18,8 @@ namespace ServiceLayer.Mapper
             MapSong();
             MapSheet();
             MapMeasure();
-            MapSongNote();
+            MapChord();
+            MapChordNote();
             MapNote();
         }
 
@@ -27,11 +28,16 @@ namespace ServiceLayer.Mapper
             CreateMap<Note, NoteGetDto>();
         }
 
-        private void MapSongNote()
+        private void MapChord()
         {
-            CreateMap<SongNote, SongNoteGetDto>();
+            CreateMap<Chord, ChordGetDto>();
+        }
 
-            CreateMap<SongNoteCreateDto, SongNote>();
+        private void MapChordNote()
+        {
+            CreateMap<ChordNote, ChordNoteGetDto>();
+
+            CreateMap<ChordNoteCreateDto, ChordNote>();
         }
 
         private void MapMeasure()

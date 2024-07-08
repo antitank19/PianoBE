@@ -100,16 +100,16 @@ namespace ServiceLayer.Seed
             //Pause
             new Note { Id = 57, Name = "Pause", Octave = 8, Pitch = "Pause" }
         };
-        public static Artist[] Artists = new Artist[]
+        public static User[] Artists = new User[]
         {
-            new Artist
+            new User
             {
                  Id = 1,
                  Email = "artist1",
                  Username = "artist1@gmail.com",
                  Password = "123456789",
             }   ,
-            new Artist
+            new User
             {
                  Id = 2,
                  Email = "artist2",
@@ -188,79 +188,122 @@ namespace ServiceLayer.Seed
                 Position = 1,
             }
         };
-        public static SongNote[] SongNotes = new SongNote[]
+        public static Chord[] Chords = new Chord[]
         {
-            new SongNote
+            new Chord
             {
                 Id = 1,
-                NoteID = 1,
                 Duration = 4,
                 MeasureId = 1,
                 Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
             },
-            new SongNote
+            new Chord
             {
                 Id = 2,
-                NoteID = 2,
                 Duration = 2,
                 MeasureId = 2,
                 Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
             },
-            new SongNote
+            new Chord
             {
                 Id = 3,
-                NoteID = 3,
                 Duration = 2,
                 MeasureId = 2,
                 Position = 2,
                 Chromatic = (int)ChromaticEnum.Natural
             },
-            new SongNote
+            new Chord
             {
                 Id = 4,
-                NoteID = 4,
                 Duration = 1,
                 MeasureId = 3,
                 Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
             },
-            new SongNote
+            new Chord
             {
                 Id = 5,
-                NoteID = 4,
                 Duration = 1,
                 MeasureId = 3,
                 Position = 2,
                 Chromatic = (int)ChromaticEnum.Natural
             },
-            new SongNote
+            new Chord
             {
                 Id = 6,
-                NoteID = 4,
                 Duration = 1,
                 MeasureId = 3,
                 Position = 3,
                 Chromatic = (int)ChromaticEnum.Natural
             },
-            new SongNote
+            new Chord
             {
                 Id = 7,
-                NoteID = 4,
                 Duration = 1,
                 MeasureId = 3,
                 Position = 4,
                 Chromatic = (int)ChromaticEnum.Natural
             },
-            new SongNote
+            new Chord
             {
                 Id = 8,
-                NoteID = 4,
                 Duration = 4,
                 MeasureId = 4,
                 Position = 1,
                 Chromatic = (int)ChromaticEnum.Natural
+            },
+        };
+        public static ChordNote[] ChordNotes = new ChordNote[]
+        {
+            new ChordNote
+            {
+                Id = 1,
+                ChordId = 1,
+                NoteId = PitchConst.C4id,
+            },
+            new ChordNote
+            {
+                Id = 2,
+                ChordId = 2,
+                NoteId = PitchConst.D4id,
+            },
+            new ChordNote
+            {
+                Id = 3,
+                ChordId = 3,
+                NoteId = PitchConst.E4id,
+            },
+            new ChordNote
+            {
+                Id = 4,
+                ChordId = 4,
+                NoteId = 4,
+            },
+            new ChordNote
+            {
+                Id = 5,
+                ChordId = 5,
+                NoteId = 4,
+            },
+            new ChordNote
+            {
+                Id = 6,
+                ChordId = 6,
+                NoteId = 4,
+            },
+            new ChordNote
+            {
+                Id = 7,
+                ChordId = 7,
+                NoteId = 4,
+            },
+            new ChordNote
+            {
+                Id = 8,
+                ChordId = 8,
+                NoteId = 4,
             },
         };
     }

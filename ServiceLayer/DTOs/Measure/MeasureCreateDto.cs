@@ -12,6 +12,6 @@ namespace ServiceLayer.DTOs
     {
         public int SheetId { get; set; }
         public int Position { get; set; }
-        public ICollection<SongNoteCreateDto> SongNotes { get; set; }
+        public ICollection<ChordNoteCreateDto> SongNotes { get; set; }
     }
 }

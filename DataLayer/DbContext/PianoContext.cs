@@ -12,12 +12,13 @@ namespace DataLayer.DbContext
     {
         public PianoContext(DbContextOptions<PianoContext> options) : base(options)
         { }
-        public DbSet<Artist> Artists { get; set; }
+        public DbSet<User> Artists { get; set; }
         public DbSet<Song> Songs { get; set; }
         public DbSet<Sheet> Sheets { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<Measure> Measures { get; set; }
-        public DbSet<SongNote> SongNotes { get; set; }
+        public DbSet<Chord> Chords { get; set; }
+        public DbSet<ChordNote> ChordNotes { get; set; }
         public DbSet<Instrument> Instruments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

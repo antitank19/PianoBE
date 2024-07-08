@@ -72,11 +72,11 @@ namespace ServiceLayer.Seed
                         context.Sheets.AddRange(DbSeed.Sheets);
                     }
                     #endregion
-                    #region seed SongNote
-                    if (!context.SongNotes.Any())
+                    #region seed ChordNote
+                    if (!context.ChordNotes.Any())
                     {
 
-                        context.SongNotes.AddRange(DbSeed.SongNotes);
+                        context.ChordNotes.AddRange(DbSeed.ChordNotes);
                     }
                     #endregion
                     context.SaveChanges();
@@ -161,13 +161,26 @@ namespace ServiceLayer.Seed
                         }
                     }
                     #endregion
-                    #region seed SongNote
-                    if (!context.SongNotes.Any())
+                    #region seed Chords
+                    if (!context.Chords.Any())
                     {
                         using (var transaction = context.Database.BeginTransaction())
                         {
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT SongNotes ON");
-                            context.SongNotes.AddRange(DbSeed.SongNotes);
+                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chords ON");
+                            context.Chords.AddRange(DbSeed.Chords);
+                            context.SaveChanges();
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chords OFF");
+                            transaction.Commit();
+                        }
+                    }
+                    #endregion
+                    #region seed ChordNotes
+                    if (!context.ChordNotes.Any())
+                    {
+                        using (var transaction = context.Database.BeginTransaction())
+                        {
+                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ChordNotes ON");
+                            context.ChordNotes.AddRange(DbSeed.ChordNotes);
                             context.SaveChanges();
                             //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT SongNotes OFF");
                             transaction.Commit();

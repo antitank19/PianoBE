@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer.DbObject
 {
-    public class Artist
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
