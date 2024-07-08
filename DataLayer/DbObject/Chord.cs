@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DataLayer.DbObject
@@ -34,7 +35,9 @@ namespace DataLayer.DbObject
                 else
                 {
                     string[] noteSymbols = new string[] { PitchConst.C, PitchConst.D, PitchConst.E, PitchConst.F, PitchConst.G, PitchConst.A, PitchConst.B, PitchConst.Pause };
-                    string[] noteStrings = chordString.Split(noteSymbols, StringSplitOptions.RemoveEmptyEntries);
+                    string regex = @"(?=[" + PitchConst.C+ PitchConst.D+ PitchConst.E+ PitchConst.F+ PitchConst.G+ PitchConst.A+ PitchConst.B+ PitchConst.Pause +@"])";
+                    //string[] noteStrings = chordString.Split(noteSymbols, StringSplitOptions.RemoveEmptyEntries);
+                    var noteStrings = Regex.Split(chordString, regex).Where(s=>!String.IsNullOrWhiteSpace(s));
                     ChordNotes = noteStrings.Select(noteString=>new ChordNote(noteString)).ToList(); 
                     //FillPitch(chordString);
                     //FillOctave(chordString);
