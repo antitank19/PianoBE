@@ -14,8 +14,17 @@ namespace DataLayer.DbObject
         public ChordNote() { }
         public ChordNote(string noteInfo)
         {
-              FillPitch(noteInfo);
-            FillOctave(noteInfo);   
+            FillPitch(noteInfo);
+            FillOctave(noteInfo);
+            if (noteInfo.Contains(PitchConst.Pause))
+            {
+
+                Chromatic = (int)ChromaticEnum.Natural;
+            }
+            else
+            {
+                FillChromatic(noteInfo);
+            }
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -25,6 +34,7 @@ namespace DataLayer.DbObject
         public Note Note { get; set; }
         public int ChordId  { get; set; }
         public Chord Chord  { get; set; }
+        public int Chromatic { get; set; } = (int)ChromaticEnum.Natural;
 
         public void FillPitch(string noteInfo)
         {
@@ -109,6 +119,39 @@ namespace DataLayer.DbObject
             //Khi lưu cao độ là lưu theo của khoảng 4 trc, giờ trừ
             NoteId += (4 - octaveInt) * 7;
 
+        }
+        public void FillChromatic(string NoteInfo)
+        {
+            if (NoteInfo.IndexOf('b') != -1)
+            {
+                Chromatic = (int)ChromaticEnum.Flat;
+            }
+            else if (NoteInfo.IndexOf('#') != -1)
+            {
+                Chromatic = (int)ChromaticEnum.Sharp;
+            }
+            else if (NoteInfo.IndexOf('n') != -1)
+            {
+                Chromatic = (int)ChromaticEnum.Natural;
+            }
+            else
+            {
+                Chromatic = (int)ChromaticEnum.Natural;
+            }
+            #region old code
+            //if (NoteInfo.IndexOf('f') != -1)
+            //{
+            //    this.TheChromatic = Chromatic.Flat;
+            //}
+            //if (NoteInfo.IndexOf('n') != -1)
+            //{
+            //    this.TheChromatic = Chromatic.Natural;
+            //}
+            //if (NoteInfo.IndexOf('s') != -1)
+            //{
+            //    this.TheChromatic = Chromatic.Sharp;
+            //}
+            #endregion
         }
 
     }

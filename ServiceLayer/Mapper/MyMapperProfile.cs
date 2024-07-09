@@ -51,18 +51,18 @@ namespace ServiceLayer.Mapper
         private void MapChord()
         {
             CreateMap<Chord, ChordGetDto>();
-            CreateMap<ChordCreateDto, Chord>()
-                .ForMember(dest=>dest.ChordNotes, opt =>
-                {
-                    opt.MapFrom(src => src.NoteIds.Select(noteId => new ChordNote { NoteId = noteId }));
-                });
+            CreateMap<ChordCreateDto, Chord>();
+                //.ForMember(dest=>dest.ChordNotes, opt =>
+                //{
+                //    opt.MapFrom(src => src.NoteIds.Select(noteId => new ChordNote { NoteId = noteId }));
+                //});
         }
 
         private void MapChordNote()
         {
             CreateMap<ChordNote, ChordNoteGetDto>();
 
-            CreateMap<ChordCreateDto, ChordNote>();
+            CreateMap<ChordNoteCreateDto, ChordNote>();
         }
 
         private void MapMeasure()

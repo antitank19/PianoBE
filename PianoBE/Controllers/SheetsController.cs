@@ -36,7 +36,10 @@ namespace API.Controllers
             {
                 return NotFound("Không tìm thấy bài hát");
             }
-            return Ok(context.Sheets.Where(s=>s.SongId==songId).ProjectTo<SheetGetDto>(mapper.ConfigurationProvider));
+            return Ok(context.Sheets
+                //.Include(s => s.Song)
+                .Where(s=>s.SongId==songId)
+                .ProjectTo<SheetGetDto>(mapper.ConfigurationProvider));
         }
 
         // GET api/<SheetsController>/5
@@ -44,8 +47,10 @@ namespace API.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             Sheet sheet = await context.Sheets
+                .Include(s => s.Song)
+                .Include(s => s.Instrument)
                 .Include(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s=>s.ChordNotes).ThenInclude(sn=>sn.Note)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .SingleOrDefaultAsync(x => x.Id == id);
             SheetGetDto dto = mapper.Map<SheetGetDto>(sheet);    
             return Ok(dto);
         }

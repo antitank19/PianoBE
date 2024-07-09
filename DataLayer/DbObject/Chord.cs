@@ -27,22 +27,15 @@ namespace DataLayer.DbObject
             {
                 MeasureId = measureId;
                 Position = position;
-                if (chordString.Contains(PitchConst.Pause))
-                {
 
-                    Chromatic = (int)ChromaticEnum.Natural;
-                }
-                else
-                {
-                    string[] noteSymbols = new string[] { PitchConst.C, PitchConst.D, PitchConst.E, PitchConst.F, PitchConst.G, PitchConst.A, PitchConst.B, PitchConst.Pause };
-                    string regex = @"(?=[" + PitchConst.C+ PitchConst.D+ PitchConst.E+ PitchConst.F+ PitchConst.G+ PitchConst.A+ PitchConst.B+ PitchConst.Pause +@"])";
-                    //string[] noteStrings = chordString.Split(noteSymbols, StringSplitOptions.RemoveEmptyEntries);
-                    var noteStrings = Regex.Split(chordString, regex).Where(s=>!String.IsNullOrWhiteSpace(s));
-                    ChordNotes = noteStrings.Select(noteString=>new ChordNote(noteString)).ToList(); 
-                    //FillPitch(chordString);
-                    //FillOctave(chordString);
-                    FillChromatic(chordString);
-                }
+                string[] noteSymbols = new string[] { PitchConst.C, PitchConst.D, PitchConst.E, PitchConst.F, PitchConst.G, PitchConst.A, PitchConst.B, PitchConst.Pause };
+                string regex = @"(?=[" + PitchConst.C + PitchConst.D + PitchConst.E + PitchConst.F + PitchConst.G + PitchConst.A + PitchConst.B + PitchConst.Pause + @"])";
+                //string[] noteStrings = chordString.Split(noteSymbols, StringSplitOptions.RemoveEmptyEntries);
+                var noteStrings = Regex.Split(chordString, regex).Where(s => !String.IsNullOrWhiteSpace(s));
+                ChordNotes = noteStrings.Select(noteString => new ChordNote(noteString)).ToList();
+                //FillPitch(chordString);
+                //FillOctave(chordString);
+
                 FillDuration(chordString);
             }
             catch (Exception ex)
@@ -55,15 +48,14 @@ namespace DataLayer.DbObject
         // Flat:0, Thường:1, Sharp: 2
 
         //Position: thứ tự note trong khuôn nhạc
-        public int Position { get; set; }  = 1;
-        public int Chromatic { get; set; } = (int)ChromaticEnum.Natural;
+        public int Position { get; set; } = 1;
         public ICollection<ChordNote> ChordNotes { get; set; }
 
         //Measure: thứ tự khuôn nhạc
         public int MeasureId { get; set; }
         public Measure Measure { get; set; }
 
-        
+
 
         public void FillDuration(string NoteInfo)
         {
@@ -98,38 +90,6 @@ namespace DataLayer.DbObject
         }
 
 
-        public void FillChromatic(string NoteInfo)
-        {
-            if (NoteInfo.IndexOf('b') != -1)
-            {
-                Chromatic = (int)ChromaticEnum.Flat;
-            }
-            else if (NoteInfo.IndexOf('#') != -1)
-            {
-                Chromatic = (int)ChromaticEnum.Sharp;
-            }
-            else if (NoteInfo.IndexOf('n') != -1)
-            {
-                Chromatic = (int)ChromaticEnum.Natural;
-            }
-            else
-            {
-                Chromatic = (int)ChromaticEnum.Natural;
-            }
-            #region old code
-            //if (NoteInfo.IndexOf('f') != -1)
-            //{
-            //    this.TheChromatic = Chromatic.Flat;
-            //}
-            //if (NoteInfo.IndexOf('n') != -1)
-            //{
-            //    this.TheChromatic = Chromatic.Natural;
-            //}
-            //if (NoteInfo.IndexOf('s') != -1)
-            //{
-            //    this.TheChromatic = Chromatic.Sharp;
-            //}
-            #endregion
-        }
+
     }
 }

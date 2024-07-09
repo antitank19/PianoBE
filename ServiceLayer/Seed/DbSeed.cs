@@ -23,6 +23,7 @@ namespace ServiceLayer.Seed
                 Name = "Guitar"
             }
         };
+        
         public static Note[] Notes = new Note[]
         {
             // Octave 1
@@ -100,6 +101,7 @@ namespace ServiceLayer.Seed
             //Pause
             new Note { Id = 57, Name = "Pause", Octave = 8, Pitch = "Pause" }
         };
+        
         public static User[] Artists = new User[]
         {
             new User
@@ -127,6 +129,7 @@ namespace ServiceLayer.Seed
                 Composer = "artist1",
                 Genre="Country",
                 Title="Song 1",
+                
             }   ,
             new Song
             {
@@ -137,6 +140,7 @@ namespace ServiceLayer.Seed
                 Title="Song 2",
             }
         };
+       
         public static Sheet[] Sheets = new Sheet[]
         {
              new Sheet
@@ -145,6 +149,8 @@ namespace ServiceLayer.Seed
                  InstrumentId = 1,
                  SongId = 1,
                  SheetFile = "",
+                 TopSignature = 4,
+                 BottomSignature = 4,
              },
              new Sheet
              {
@@ -152,6 +158,8 @@ namespace ServiceLayer.Seed
                  InstrumentId = 2,
                  SongId = 1,
                  SheetFile = "",
+                 TopSignature = 4,
+                 BottomSignature = 4,
              },
              new Sheet
              {
@@ -159,8 +167,11 @@ namespace ServiceLayer.Seed
                  InstrumentId = 2,
                  SongId = 2,
                  SheetFile = "",
+                 TopSignature = 4,
+                 BottomSignature = 4,
              }
         };
+       
         public static Measure[] Measures = new Measure[]
         {
             new Measure
@@ -188,6 +199,7 @@ namespace ServiceLayer.Seed
                 Position = 1,
             }
         };
+        
         public static Chord[] Chords = new Chord[]
         {
             new Chord
@@ -196,7 +208,6 @@ namespace ServiceLayer.Seed
                 Duration = 4,
                 MeasureId = 1,
                 Position = 1,
-                Chromatic = (int)ChromaticEnum.Natural
             },
             new Chord
             {
@@ -204,7 +215,6 @@ namespace ServiceLayer.Seed
                 Duration = 2,
                 MeasureId = 2,
                 Position = 1,
-                Chromatic = (int)ChromaticEnum.Natural
             },
             new Chord
             {
@@ -212,7 +222,6 @@ namespace ServiceLayer.Seed
                 Duration = 2,
                 MeasureId = 2,
                 Position = 2,
-                Chromatic = (int)ChromaticEnum.Natural
             },
             new Chord
             {
@@ -220,7 +229,6 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 MeasureId = 3,
                 Position = 1,
-                Chromatic = (int)ChromaticEnum.Natural
             },
             new Chord
             {
@@ -228,7 +236,6 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 MeasureId = 3,
                 Position = 2,
-                Chromatic = (int)ChromaticEnum.Natural
             },
             new Chord
             {
@@ -236,7 +243,6 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 MeasureId = 3,
                 Position = 3,
-                Chromatic = (int)ChromaticEnum.Natural
             },
             new Chord
             {
@@ -244,7 +250,6 @@ namespace ServiceLayer.Seed
                 Duration = 1,
                 MeasureId = 3,
                 Position = 4,
-                Chromatic = (int)ChromaticEnum.Natural
             },
             new Chord
             {
@@ -252,9 +257,9 @@ namespace ServiceLayer.Seed
                 Duration = 4,
                 MeasureId = 4,
                 Position = 1,
-                Chromatic = (int)ChromaticEnum.Natural
             },
         };
+
         public static ChordNote[] ChordNotes = new ChordNote[]
         {
             new ChordNote
@@ -262,48 +267,56 @@ namespace ServiceLayer.Seed
                 Id = 1,
                 ChordId = 1,
                 NoteId = PitchConst.C4id,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new ChordNote
             {
                 Id = 2,
                 ChordId = 2,
                 NoteId = PitchConst.D4id,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new ChordNote
             {
                 Id = 3,
                 ChordId = 3,
                 NoteId = PitchConst.E4id,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new ChordNote
             {
                 Id = 4,
                 ChordId = 4,
                 NoteId = 4,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new ChordNote
             {
                 Id = 5,
                 ChordId = 5,
                 NoteId = 4,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new ChordNote
             {
                 Id = 6,
                 ChordId = 6,
                 NoteId = 4,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new ChordNote
             {
                 Id = 7,
                 ChordId = 7,
                 NoteId = 4,
+                Chromatic = (int)ChromaticEnum.Natural
             },
             new ChordNote
             {
                 Id = 8,
                 ChordId = 8,
                 NoteId = 4,
+                Chromatic = (int)ChromaticEnum.Natural
             },
         };
     }

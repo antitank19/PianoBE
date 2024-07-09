@@ -14,6 +14,7 @@ namespace ServiceLayer.DTOs
         public int ChordPosition{ get; set; }
         public string NoteName { get; set; }
         public string NotePitch { get; set; }
+        public int Chromatic { get; set; }
         public int NoteOctave { get; set; }
     }
 }

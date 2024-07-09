@@ -72,6 +72,20 @@ namespace ServiceLayer.Seed
                         context.Sheets.AddRange(DbSeed.Sheets);
                     }
                     #endregion
+                    #region seed Measures
+                    if (!context.Measures.Any())
+                    {
+
+                        context.Measures.AddRange(DbSeed.Measures);
+                    }
+                    #endregion
+                    #region seed Chords
+                    if (!context.Chords.Any())
+                    {
+
+                        context.Chords.AddRange(DbSeed.Chords);
+                    }
+                    #endregion
                     #region seed ChordNote
                     if (!context.ChordNotes.Any())
                     {

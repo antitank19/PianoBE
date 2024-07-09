@@ -32,7 +32,11 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Song song = await context.Songs.SingleOrDefaultAsync(s => s.Id == id);
+            Song song = await context.Songs
+                .Include(s => s.Sheets).ThenInclude(s=>s.Instrument)
+                .Include(s=>s.Sheets).ThenInclude(s=>s.Measures).ThenInclude(m=>m.Chords).ThenInclude(c=>c.ChordNotes).ThenInclude(cn=>cn.Note)
+                .AsSingleQuery()
+                .SingleOrDefaultAsync(s => s.Id == id);
             SongGetDto dto = mapper.Map<SongGetDto>(song);
             return Ok(dto);
         }
