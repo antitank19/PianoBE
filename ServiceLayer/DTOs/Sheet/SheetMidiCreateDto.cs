@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ServiceLayer.DTOs.Sheet
+namespace ServiceLayer.DTOs
 {
     public class SheetMidiCreateDto
     {
@@ -8,6 +8,6 @@ namespace ServiceLayer.DTOs.Sheet
         public int InstrumentId { get; set; }
         public int TopSignature { get; set; }
         public int BottomSignature { get; set; }
-        public IFormFile MidiFile { get; set; }
+        public IFormFile SheetFile { get; set; }
     }
 }

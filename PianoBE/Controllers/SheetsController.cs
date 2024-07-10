@@ -4,7 +4,6 @@ using DataLayer.DbContext;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
 using DataLayer.DbObject;
-using ServiceLayer.DTOs.Sheet;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Utils;
 
@@ -81,7 +80,7 @@ namespace API.Controllers
         [HttpPost("Midi")]
         public async Task<IActionResult> CreateSheetWithMidi([FromForm] SheetMidiCreateDto input)
         {
-            string midiUrl = await FirebaseStorageUtil.UploadFileAsync(input.MidiFile, "Midi", config["Firebase:StorageBucket"]);
+            string midiUrl = await FirebaseStorageUtil.UploadFileAsync(input.SheetFile, "Midi", config["Firebase:StorageBucket"]);
             Sheet sheet = new Sheet
             {
                 BottomSignature = input.BottomSignature,
