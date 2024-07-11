@@ -10,5 +10,6 @@ namespace ServiceLayer.Services.Interface.Db
     {
         public IQueryable<T> GetSongList<T>();
         public Task<T> GetSongById<T>(int id);
+        public Task<bool> IsExistAsync(int songId);
     }
 }

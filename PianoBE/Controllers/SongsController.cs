@@ -65,7 +65,7 @@ namespace API.Controllers
             return Ok(dto);
         }
 
-        [HttpPost("Symbol")]
+        [HttpPost("Midi")]
         public async Task<IActionResult> CreateSongWithMidi([FromForm] SongMidiCreateDto input)
         {
             string midiUrl = await FirebaseStorageUtil.UploadFileAsync(input.Sheet.SheetFile, "Midi", config["Firebase:StorageBucket"]);
