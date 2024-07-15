@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface;
+using ServiceLayer.Validation;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -54,8 +55,22 @@ namespace API.Controllers
         [HttpPost("symbol")]
         public async Task<IActionResult> CreateSheetWithSymbol(SheetSymbolCreateDto input)
         {
-            var created = await services.Sheets.CreateSheetAsync(input);
-            return Ok(created);
+            ValidationResult valRe = new ValidationResult();
+            try
+            {
+                valRe.Validate(input);
+                if (!valRe.IsValid)
+                {
+                    return BadRequest(valRe);
+                }
+                SheetGetDto created = await services.Sheets.CreateSheetAsync(input);
+                return Ok(created);
+            }
+            catch (Exception ex)
+            {
+                valRe.AddError(ex.Message);
+                return BadRequest(valRe);
+            }
         }
 
         [HttpPost("Midi")]

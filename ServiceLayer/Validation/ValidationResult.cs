@@ -9,13 +9,21 @@ namespace ServiceLayer.Validation
 {
     public class ValidationResult
     {
-        public bool IsValid => !ErrorList.Any() && !ErrorMap.Any();
+        public bool IsValid { get { return !ErrorList.Any() && !ErrorMap.Any(); } }
         public List<string> ErrorList { get; } = new List<string>();
         public Dictionary<string, string> ErrorMap { get; } = new Dictionary<string, string>();
         public void AddError(string error, string? errorType = "Exception")
         {
             ErrorList.Add(error);
-            ErrorMap.Add(errorType, error);
+            if (ErrorMap.ContainsKey(errorType)) 
+            { 
+                string old = ErrorMap[errorType];   
+                ErrorMap[errorType] = ErrorMap[errorType] + " " +  error;
+            }
+            else
+            {
+                ErrorMap.Add(errorType, error);
+            }
         }
 
         #region song
@@ -47,12 +55,13 @@ namespace ServiceLayer.Validation
             }
             else
             {
-                string[] measureStrings = input.Symbols.Split(new char[] { ' ' });
+                string[] measureStrings = input.Symbols.Split(new char[] { '/' });
                 for (int i = 0; i < measureStrings.Length; i++)
                 {
                     string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
                     double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
-                    if (ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature))
+                    bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+                    if (!isGoodBeatNum)
                     {
                         AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
                     }
