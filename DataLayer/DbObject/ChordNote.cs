@@ -15,14 +15,13 @@ namespace DataLayer.DbObject
         public ChordNote(string noteInfo)
         {
             FillPitch(noteInfo);
-            FillOctave(noteInfo);
             if (noteInfo.Contains(PitchConst.Pause))
             {
-
                 Chromatic = (int)ChromaticEnum.Natural;
             }
             else
             {
+                FillOctave(noteInfo);
                 FillChromatic(noteInfo);
             }
         }
