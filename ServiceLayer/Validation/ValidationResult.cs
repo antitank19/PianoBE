@@ -1,4 +1,5 @@
 ﻿using ServiceLayer.DTOs;
+using ServiceLayer.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ServiceLayer.Validation
             if (ErrorMap.ContainsKey(errorType)) 
             { 
                 string old = ErrorMap[errorType];   
-                ErrorMap[errorType] = ErrorMap[errorType] + " " +  error;
+                ErrorMap[errorType] = ErrorMap[errorType] + ". " +  error;
             }
             else
             {
@@ -43,10 +44,24 @@ namespace ServiceLayer.Validation
             }
         }
         #endregion
-        public void Validate(SheetSymbolCreateDto input)
+        public async Task ValidateAsync(SheetSymbolCreateDto input, IServiceWrapper services)
         {
+            if(!await services.Songs.IsExistAsync(input.SongId))
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+            }
+            //if (!await services.Instruments.IsExistAsync(input.InstrumentId))
+            //{
+            //    AddError("Invalid top signature", nameof(input.TopSignature));
+            //}
             if (input.TopSignature <= 0)
             {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+
+            }
+            if (input.BottomSignature < input.TopSignature)
+            {
+                AddError("Invalid bottom signature", nameof(input.BottomSignature));
 
             }
             if (String.IsNullOrWhiteSpace(input.Symbols))
@@ -69,6 +84,34 @@ namespace ServiceLayer.Validation
 
 
             }
+        }
+
+        public void Validate(SheetCreateDto input)
+        {
+            if (input.TopSignature <= 0)
+            {
+
+            }
+            //if (String.IsNullOrWhiteSpace(input.Symbols))
+            //{
+            //    AddError("Missing symbols", nameof(input.Symbols));
+            //}
+            //else
+            //{
+            //    string[] measureStrings = input.Symbols.Split(new char[] { '/' });
+            //    for (int i = 0; i < measureStrings.Length; i++)
+            //    {
+            //        string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+            //        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+            //        bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+            //        if (!isGoodBeatNum)
+            //        {
+            //            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+            //        }
+            //    }
+
+
+            //}
         }
 
         private bool ValiddateMeasureBeats(double totalDuration, int topSignature, int bottomSignature)

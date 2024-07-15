@@ -58,7 +58,7 @@ namespace API.Controllers
             ValidationResult valRe = new ValidationResult();
             try
             {
-                valRe.Validate(input);
+                await valRe.ValidateAsync(input, services);
                 if (!valRe.IsValid)
                 {
                     return BadRequest(valRe);
