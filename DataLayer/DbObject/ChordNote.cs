@@ -116,7 +116,7 @@ namespace DataLayer.DbObject
             string octaveString = noteInfo.Substring(1, 1);
             int octaveInt = Int32.Parse(octaveString);
             //Khi lưu cao độ là lưu theo của khoảng 4 trc, giờ trừ
-            NoteId += (4 - octaveInt) * 7;
+            NoteId -= (4 - octaveInt) * 7;
 
         }
         public void FillChromatic(string NoteInfo)
