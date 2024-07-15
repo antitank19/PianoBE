@@ -12,7 +12,7 @@ namespace ServiceLayer.Validation
         public bool IsValid => !ErrorList.Any() && !ErrorMap.Any();
         public List<string> ErrorList { get; } = new List<string>();
         public Dictionary<string, string> ErrorMap { get; } = new Dictionary<string, string>();
-        public void Add(string error, string? errorType = "Exception")
+        public void AddError(string error, string? errorType = "Exception")
         {
             ErrorList.Add(error);
             ErrorMap.Add(errorType, error);
@@ -23,28 +23,41 @@ namespace ServiceLayer.Validation
         {
             if (String.IsNullOrWhiteSpace(input.Genre))
             {
-                Add("Missing genre", nameof(input.Genre));
+                AddError("Missing genre", nameof(input.Genre));
             }
             if (String.IsNullOrWhiteSpace(input.Title))
             {
-                Add("Missing title", nameof(input.Title));
+                AddError("Missing title", nameof(input.Title));
             }
             if (String.IsNullOrWhiteSpace(input.Composer))
             {
-                Add("Missing composer", nameof(input.Composer));
+                AddError("Missing composer", nameof(input.Composer));
             }
         }
         #endregion
         public void Validate(SheetSymbolCreateDto input)
         {
-            if (input.TopSignature <= 0) 
+            if (input.TopSignature <= 0)
             {
-                
+
             }
             if (String.IsNullOrWhiteSpace(input.Symbols))
             {
-                Add("Missing symbols", nameof (input.Symbols));
-            } else {
+                AddError("Missing symbols", nameof(input.Symbols));
+            }
+            else
+            {
+                string[] measureStrings = input.Symbols.Split(new char[] { ' ' });
+                for (int i = 0; i < measureStrings.Length; i++)
+                {
+                    string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+                    double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+                    if (ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature))
+                    {
+                        AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                    }
+                }
+
 
             }
         }

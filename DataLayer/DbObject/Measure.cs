@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataLayer.EnumsAndConsts;
 
 namespace DataLayer.DbObject
 {
@@ -28,6 +29,7 @@ namespace DataLayer.DbObject
         public int SheetId { get; set; }
         public Sheet Sheet { get; set; }
         public int Position { get; set; }
+        public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<Chord> Chords { get; set; }
 
     }
