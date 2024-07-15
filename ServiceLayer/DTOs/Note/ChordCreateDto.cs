@@ -10,7 +10,7 @@ namespace ServiceLayer.DTOs
 {
     public class ChordCreateDto
     {
-        public float Duration { get; set; }
+        public double Duration { get; set; }
         // Flat:0, Thường:1, Sharp: 2
         //public int Chromatic { get; set; } = (int)ChromaticEnum.Natural;
         //Vị trí nốt nhạc

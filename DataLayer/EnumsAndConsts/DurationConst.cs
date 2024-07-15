@@ -11,22 +11,22 @@ namespace DataLayer.EnumsAndConsts
         /// <summary>
         ///  Tròn
         /// </summary>
-        public static float Whole = 4;
+        public static double Whole = 4;
         /// <summary>
         /// Trắng
         /// </summary>
-        public static float Half = 4;
+        public static double Half = 4;
         /// <summary>
         /// Đen
         /// </summary>
-        public static float Quater = 4;
+        public static double Quater = 4;
         /// <summary>
         /// Móc đơn
         /// </summary>
-        public static float Eighth = 4;
+        public static double Eighth = 4;
         /// <summary>
         /// Móc đôi
         /// </summary>
-        public static float Sixteenth = 4;
+        public static double Sixteenth = 4;
     }
 }

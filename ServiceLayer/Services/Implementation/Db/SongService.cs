@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using DataLayer.DbContext;
+using DataLayer.DbObject;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ServiceLayer.DTOs;
 using ServiceLayer.Services.Interface.Db;
+using ServiceLayer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,21 +19,73 @@ namespace ServiceLayer.Services.Implementation.Db
     {
         private readonly PianoContext context;
         private readonly IMapper mapper;
+        private readonly IConfiguration config;
 
-        public SongService(PianoContext context, IMapper mapper)
+        public SongService(PianoContext context, IMapper mapper, IConfiguration config)
         {
             this.context = context;
             this.mapper = mapper;
-        }
-
-        public Task<T> GetSongById<T>(int id)
-        {
-            throw new NotImplementedException();
+            this.config = config;
         }
 
         public IQueryable<T> GetSongList<T>()
         {
-            throw new NotImplementedException();
+            return context.Songs.ProjectTo<T>(mapper.ConfigurationProvider);
+        }
+
+        public async Task<T> GetSongById<T>(int id)
+        {
+            Song song = await context.Songs
+                 .Include(s => s.Sheets).ThenInclude(s => s.Instrument)
+                 .Include(s => s.Sheets).ThenInclude(s => s.Measures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
+                 .AsSingleQuery()
+                 .SingleOrDefaultAsync(s => s.Id == id);
+            T dto = mapper.Map<T>(song);
+            return dto;
+        }
+
+        public async Task<SongGetDto> CreateSong(SongCreateDto input)
+        {
+            Song newSong = mapper.Map<Song>(input);
+            await context.Songs.AddAsync(newSong);
+            await context.SaveChangesAsync();
+            SongGetDto dto = mapper.Map<SongGetDto>(newSong);
+            return dto;
+        }
+
+        public async Task<SongGetDto> CreateSong(SongSymbolCreateDto input)
+        {
+            Song newSong = mapper.Map<Song>(input);
+            await context.Songs.AddAsync(newSong);
+            await context.SaveChangesAsync();
+            SongGetDto dto = mapper.Map<SongGetDto>(newSong);
+            return dto;
+        }
+
+        public async Task<SongGetDto> CreateSong(SongMidiCreateDto input)
+        {
+            string midiUrl = await FirebaseStorageUtil.UploadFileAsync(input.Sheet.SheetFile, "Midi", config["Firebase:StorageBucket"]);
+            Song newSong = new Song
+            {
+                ArtistId = input.ArtistId,
+                Genre = input.Genre,
+                Composer = input.Composer,
+                Title = input.Title,
+                Sheets = new Sheet[]
+                {
+                    new Sheet
+                    {
+                        BottomSignature = input.Sheet.BottomSignature,
+                        TopSignature = input.Sheet.TopSignature,
+                        InstrumentId = input.Sheet.InstrumentId,
+                        SheetFile = midiUrl,
+                    }
+                },
+            };
+            await context.Songs.AddAsync(newSong);
+            await context.SaveChangesAsync();
+            SongGetDto dto = mapper.Map<SongGetDto>(newSong);
+            return dto;
         }
 
         public async Task<bool> IsExistAsync(int songId)

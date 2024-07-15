@@ -46,7 +46,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 if (songs == null)
                 {
-                    songs = new SongService(context, mapper);
+                    songs = new SongService(context, mapper, config);
                 }
                 return songs;
             }

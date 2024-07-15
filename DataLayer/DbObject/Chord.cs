@@ -44,7 +44,7 @@ namespace DataLayer.DbObject
             }
         }
         public int Id { get; set; }
-        public float Duration { get; set; }
+        public double Duration { get; set; }
         // Flat:0, Thường:1, Sharp: 2
 
         //Position: thứ tự note trong khuôn nhạc
@@ -60,7 +60,7 @@ namespace DataLayer.DbObject
         public void FillDuration(string NoteInfo)
         {
             string duartionString = NoteInfo.Split('_')[1];
-            Duration = float.Parse(duartionString);
+            Duration = double.Parse(duartionString);
             #region old code
             //if (NoteInfo.IndexOf('x') != -1)
             //{
