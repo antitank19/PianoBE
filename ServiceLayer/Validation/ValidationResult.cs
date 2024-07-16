@@ -73,6 +73,10 @@ namespace ServiceLayer.Validation
                 for (int i = 0; i < measureStrings.Length; i++)
                 {
                     string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+                    if (chordStrings[0].Length == 1)
+                    {
+                        chordStrings = chordStrings.Skip(1).ToArray();
+                    }
                     double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
                     bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
                     if (!isGoodBeatNum)
@@ -85,7 +89,7 @@ namespace ServiceLayer.Validation
             }
         }
 
-        public async Task Validate(SheetCreateDto input, IServiceWrapper services)
+        public async Task ValidateAsync(SheetCreateDto input, IServiceWrapper services)
         {
             if (!await services.Songs.IsExistAsync(input.SongId))
             {
@@ -119,6 +123,27 @@ namespace ServiceLayer.Validation
                         AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Measures));
                     }
                 }
+            }
+        }
+
+        public async Task ValidateAsync(SheetMidiCreateDto input, IServiceWrapper services)
+        {
+            if (!await services.Songs.IsExistAsync(input.SongId))
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+            }
+            if (!await services.Instruments.IsExistAsync(input.InstrumentId))
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+            }
+            if (input.TopSignature <= 0)
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+
+            }
+            if (input.BottomSignature < input.TopSignature)
+            {
+                AddError("Invalid bottom signature", nameof(input.BottomSignature));
             }
         }
 

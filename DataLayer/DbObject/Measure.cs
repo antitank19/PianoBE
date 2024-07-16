@@ -13,14 +13,30 @@ namespace DataLayer.DbObject
     {
         public Measure()
         {
-            
+
         }
         public Measure(int sheetId, int position, string measureString)
         {
             SheetId = sheetId;
             Position = position;
             string[] chordStrings = measureString.Split(new char[] { ' ' });
-            Chords = chordStrings.Select((nString, i)=> new Chord(0,i+1, nString)).ToList();
+            if (chordStrings[0].Length == 1)
+            {
+                if (chordStrings[0].StartsWith('F'))
+                {
+                    Clef = (int)ClefEnum.Fa;
+                }
+                else
+                {
+                    Clef = (int)ClefEnum.Sol;
+                }
+                Chords = chordStrings.Skip(1).Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
+            }
+            else
+            {
+                Clef = (int)ClefEnum.Sol;
+                Chords = chordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
+            }
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
