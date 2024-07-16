@@ -42,6 +42,9 @@ namespace DataLayer.DbObject
         /// Link of .mid file
         /// </summary>
         public string? SheetFile { get; set; }
+
+        public int? LeftHandSheetId { get; set; }
+        public Sheet? LeftHandSheet { get; set; }
         public ICollection<Measure> Measures { get; set; }
     }
 }

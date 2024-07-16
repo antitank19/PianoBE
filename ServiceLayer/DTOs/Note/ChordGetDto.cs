@@ -10,7 +10,7 @@ namespace ServiceLayer.DTOs
     {
         public int Id { get; set; }
         public ICollection<ChordNoteGetDto> ChordNotes { get; set; }
-        public float Duration { get; set; }
+        public double Duration { get; set; }
         //Vị trí nốt nhạc
         //Measure: thứ tự khuôn nhạc
         //Position: thứ tự note trong khuôn nhạc

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.Services.Interface.Db
 {
-    public interface INoteService
+    public interface IInstrumentService
     {
-        public IQueryable<T> GetNoteList<T>(); 
-        public Task<T> GetNoteById<T>(int id);
-        public Task<bool> IsIdExisted<T>(int id);
+        public IQueryable<T> GetList<T>();
+        public Task<bool> IsExistAsync(int id);
     }
 }
