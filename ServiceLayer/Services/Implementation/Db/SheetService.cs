@@ -31,21 +31,26 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public IQueryable<T> GetSheetList<T>()
         {
-            return context.Sheets.ProjectTo<T>(mapper.ConfigurationProvider);
+            return context.Sheets
+                //.Include(s => s.LeftHandSheet).ThenInclude(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
+                .ProjectTo<T>(mapper.ConfigurationProvider);
         }
 
         public IQueryable<T> GetSheetListBySongId<T>(int songId)
         {
             IQueryable<T> dtos = context.Sheets
-                            //.Include(s => s.Song)
-                            .Where(s => s.SongId == songId)
-                            .ProjectTo<T>(mapper.ConfigurationProvider);
+                //.Include(s => s.LeftHandSheet)
+                //.ThenInclude(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
+                //.Include(s => s.Song)
+                .Where(s => s.SongId == songId)
+                .ProjectTo<T>(mapper.ConfigurationProvider);
             return dtos;
         }
 
         public async Task<T> GetSheetByIdAsync<T>(int sheetId)
         {
             Sheet sheet = await context.Sheets
+                .Include(s => s.LeftHandSheet).ThenInclude(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
                 .Include(s => s.Song)
                 .Include(s => s.Instrument)
                 .Include(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)

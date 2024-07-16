@@ -1,5 +1,6 @@
 ﻿using DataLayer.DbObject;
 using DataLayer.EnumsAndConsts;
+using DataLayer.Migrations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -161,6 +162,7 @@ namespace ServiceLayer.Seed
                  SheetFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
+                 LeftHandSheetId = 1
              },
              new Sheet
              {
