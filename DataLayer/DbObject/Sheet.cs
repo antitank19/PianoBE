@@ -14,16 +14,21 @@ namespace DataLayer.DbObject
         {
             
         }
-        public Sheet(int songId, int instrumentId, string sheetString)
+        public Sheet(int songId, int instrumentId, int topSignature, int bottomSignature, string sheetString, string? leftHandSheetString=null)
         {
-           
-                SongId = songId;
-                InstrumentId = instrumentId;
-                string[] measureStrings = sheetString.Split('/');
-                //var measures = measureStrings.Select(mString => new Measure(mString));
-                //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
-                Measures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString)).ToList();
-                //foreach
+            SongId = songId;
+            InstrumentId = instrumentId;
+            TopSignature = topSignature;
+            BottomSignature = bottomSignature;
+            string[] measureStrings = sheetString.Split('/');
+            //var measures = measureStrings.Select(mString => new Measure(mString));
+            //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
+            Measures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString)).ToList();
+            if (!String.IsNullOrWhiteSpace(leftHandSheetString))
+            {
+                LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftHandSheetString);
+            }
+            //foreach
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
