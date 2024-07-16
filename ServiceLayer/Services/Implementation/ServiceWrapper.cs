@@ -22,8 +22,9 @@ namespace ServiceLayer.Services.Implementation
         {
             this.context = context;
             this.mapper = mapper;
-            system = new SystemService(context);
             this.config = config;
+            system = new SystemService(context);
+            instruments = new InstrumentService(context, mapper);
         }
 
         private ISystemService system;
@@ -39,7 +40,7 @@ namespace ServiceLayer.Services.Implementation
             }
         }
 
-        private ISongService songs; 
+        private ISongService songs;
         public ISongService Songs
         {
             get
@@ -62,6 +63,19 @@ namespace ServiceLayer.Services.Implementation
                     sheets = new SheetService(context, mapper, config);
                 }
                 return sheets;
+            }
+        }
+
+        private IInstrumentService instruments;
+        public IInstrumentService Instruments
+        {
+            get
+            {
+                if (instruments == null)
+                {
+                    instruments = new InstrumentService(context, mapper);
+                }
+                return instruments;
             }
         }
     }

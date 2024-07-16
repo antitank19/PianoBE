@@ -10,5 +10,6 @@ namespace ServiceLayer.Services.Interface.Db
     {
         public IQueryable<T> GetNoteList<T>(); 
         public Task<T> GetNoteById<T>(int id);
+        public Task<bool> IsIdExisted<T>(int id);
     }
 }

@@ -11,6 +11,7 @@ namespace ServiceLayer.Services.Interface
     {
         public ISongService Songs { get; }
         public ISheetService Sheets { get; }
+        public IInstrumentService Instruments { get; }
         public ISystemService System { get; }
     }
 }

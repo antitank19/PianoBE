@@ -48,8 +48,20 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSheet(SheetCreateDto input)
         {
-            var created = await services.Sheets.CreateSheetAsync(input);
-            return Ok(created);
+            ValidationResult valResult = new ValidationResult();
+            try
+            {
+                await valResult.Validate(input, services);
+                var created = await services.Sheets.CreateSheetAsync(input);
+                if (!valResult.IsValid) {
+                    return BadRequest(valResult);
+                }
+                return Ok(created);
+            }
+            catch (Exception ex) {
+                valResult.AddError(ex.Message);
+                return BadRequest(valResult);
+            }
         }
 
         [HttpPost("symbol")]

@@ -1,4 +1,8 @@
-﻿using DataLayer.DbContext;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using DataLayer.DbContext;
+using DataLayer.DbObject;
+using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Services.Interface.Db;
 using System;
 using System.Collections.Generic;
@@ -11,20 +15,28 @@ namespace ServiceLayer.Services.Implementation.Db
     public class NoteService : INoteService
     {
         private readonly PianoContext context;
+        private readonly IMapper mapper;
 
-        public NoteService(PianoContext context)
+        public NoteService(PianoContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
-        public Task<T> GetNoteById<T>(int id)
+        public async Task<T> GetNoteById<T>(int id)
         {
-            throw new NotImplementedException();
+            Note note = await context.Notes.SingleOrDefaultAsync(x => x.Id == id);
+            return mapper.Map<T>(note);
         }
 
         public IQueryable<T> GetNoteList<T>()
         {
-            throw new NotImplementedException();
+            return context.Notes.ProjectTo<T>(mapper.ConfigurationProvider);
+        }
+
+        public async Task<bool> IsIdExisted<T>(int id)
+        {
+            return await context.Notes.AnyAsync(x => x.Id == id);
         }
     }
 }
