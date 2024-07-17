@@ -1,4 +1,6 @@
 using DataLayer.DbContext;
+using DataLayer.DbObject;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Seed;
 using ServiceLayer.Services.Implementation;
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
 IWebHostEnvironment environment = builder.Environment;
 bool IsInMemory = configuration["ConnectionStrings:InMemory"].ToLower() == "true";
+bool SeedOnStartUp = configuration["ConnectionStrings:SeedOnStartUp"].ToLower() == "true";
 // Add services to the container.
 #region dbContext
 builder.Services.AddDbContext<PianoContext>(options =>
@@ -30,6 +33,32 @@ builder.Services.AddDbContext<PianoContext>(options =>
     }
 });
 #endregion
+
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<Role>()
+    .AddEntityFrameworkStores<PianoContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = false;
+});
 
 #region service and repo
 builder.Services.AddScoped<IServiceWrapper, ServiceWrapper>();
@@ -62,7 +91,7 @@ if (IsInMemory)
     Console.WriteLine("++++++++++================+++++++++++++++InMemory++++++++++++=============++++++++++");
     //app.SeedInMemoryDb();
 }
-app.SeedInMemoryDb(IsInMemory);
+app.SeedInMemoryDb(IsInMemory, SeedOnStartUp);
 // Configure the HTTP request pipeline.
     app.UseSwagger();
     app.UseSwaggerUI();

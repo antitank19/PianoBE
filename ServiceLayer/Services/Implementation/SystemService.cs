@@ -38,7 +38,7 @@ namespace ServiceLayer.Services.Implementation
                     //dbContext.Artists.Clear();
 
                     //way faster
-                    dbContext.Artists.Delete();
+                    dbContext.Users.Delete();
                     dbContext.Notes.Delete();
                     dbContext.Instruments.Delete();
                     dbContext.Songs.Delete();

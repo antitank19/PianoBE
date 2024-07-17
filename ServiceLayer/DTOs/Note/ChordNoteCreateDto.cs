@@ -11,6 +11,5 @@ namespace ServiceLayer.DTOs
     {
         public int ChordId { get; set; }
         public int NoteId { get; set; }
-        public int Chromatic { get; set; } = (int)ChromaticEnum.Natural;
     }
 }

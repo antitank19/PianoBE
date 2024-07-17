@@ -24,6 +24,6 @@ namespace DataLayer.EnumsAndConsts
         public static int G4id = 26;   //Sol
         public static int A4id = 27;   //La
         public static int B4id = 28;   //Si
-        public static int PauseId = 57;//Nghỉ
+        public static int PauseId = 169;//Nghỉ
     }
 }

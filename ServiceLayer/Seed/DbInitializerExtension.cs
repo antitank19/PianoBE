@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer.DbContext;
+using DataLayer.DbObject;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,31 +14,45 @@ namespace ServiceLayer.Seed
 {
     public static class DbInitializerExtension
     {
-        public static IApplicationBuilder SeedInMemoryDb(this IApplicationBuilder app, bool isInMemory)
+        public static IApplicationBuilder SeedInMemoryDb(this IApplicationBuilder app, bool isInMemory, bool seedOnStartup)
         {
-            ArgumentNullException.ThrowIfNull(app, nameof(app));
+            if (seedOnStartup)
+            {
+                ArgumentNullException.ThrowIfNull(app, nameof(app));
 
-            using var scope = app.ApplicationServices.CreateScope();
-            var services = scope.ServiceProvider;
-            try
-            {
-                var context = services.GetRequiredService<PianoContext>();
-                DbInitializer.Initialize(context, isInMemory);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
+                using var scope = app.ApplicationServices.CreateScope();
+                var services = scope.ServiceProvider;
+                try
+                {
+                    PianoContext context = services.GetRequiredService<PianoContext>();
+                    RoleManager<Role> roleManager = services.GetRequiredService<RoleManager<Role>>();
+                    UserManager<User> userManager = services.GetRequiredService<UserManager<User>>();
+                    DbInitializer.Initialize(context, roleManager, userManager, isInMemory);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
 
             return app;
         }
         public class DbInitializer
         {
-            internal static void Initialize(PianoContext context, bool isInMemory)
+            internal static async void Initialize(PianoContext context, RoleManager<Role> roleManager, UserManager<User> userManager, bool isInMemory)
             {
                 ArgumentNullException.ThrowIfNull(context, nameof(context));
                 if (isInMemory)
                 {
+                    #region Roles
+                    if (!context.Roles.Any())
+                    {
+                        foreach (var role in DbSeed.Roles)
+                        {
+                            await roleManager.CreateAsync(new Role(role));
+                        }
+                    }
+                    #endregion
                     #region seed Instruments
                     if (!context.Instruments.Any())
                     {
@@ -51,11 +67,33 @@ namespace ServiceLayer.Seed
                         context.Notes.AddRange(DbSeed.Notes);
                     }
                     #endregion
-                    #region seed Artists
-                    if (!context.Artists.Any())
+                    #region seed Users
+                    if (!context.Users.Any())
                     {
-
-                        context.Artists.AddRange(DbSeed.Artists);
+                        foreach (var user in DbSeed.Admins)
+                        {
+                            var createdAdmin = await userManager.CreateAsync(user, "123456789");
+                            if (createdAdmin.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(user, "Admin");
+                            }
+                        }
+                        foreach (var user in DbSeed.Artists)
+                        {
+                            var createdArtists = await userManager.CreateAsync(user, "123456789");
+                            if (createdArtists.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(user, "Artist");
+                            }
+                        }
+                        foreach (var user in DbSeed.Players)
+                        {
+                            var createdPlayer = await userManager.CreateAsync(user, "123456789");
+                            if (createdPlayer.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(user, "Player");
+                            }
+                        }
                     }
                     #endregion
                     #region seed Songs
@@ -97,6 +135,15 @@ namespace ServiceLayer.Seed
                 }
                 else
                 {
+                    #region Roles
+                    if (!context.Roles.Any())
+                    {
+                        foreach (var role in DbSeed.Roles)
+                        {
+                            await roleManager.CreateAsync(new Role(role));
+                        }
+                    }
+                    #endregion
                     #region seed Instruments
                     if (!context.Instruments.Any())
                     {
@@ -124,15 +171,39 @@ namespace ServiceLayer.Seed
                     }
                     #endregion
                     #region seed Artists
-                    if (!context.Artists.Any())
+                    if (!context.Users.Any())
                     {
-                        using (var transaction = context.Database.BeginTransaction())
+                        //using (var transaction = context.Database.BeginTransaction())
+                        //{
+                        //    context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Artists ON");
+                        //    context.Users.AddRange(DbSeed.Artists);
+                        //    context.SaveChanges();
+                        //    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Artists OFF");
+                        //    transaction.Commit();
+                        //}
+                        foreach (var user in DbSeed.Admins)
                         {
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Artists ON");
-                            context.Artists.AddRange(DbSeed.Artists);
-                            context.SaveChanges();
-                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Artists OFF");
-                            transaction.Commit();
+                            var createdAdmin = await userManager.CreateAsync(user, "123456789");
+                            if (createdAdmin.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(user, "Admin");
+                            }
+                        }
+                        foreach (var user in DbSeed.Artists)
+                        {
+                            var createdArtists = await userManager.CreateAsync(user, "123456789");
+                            if (createdArtists.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(user, "Artist");
+                            }
+                        }
+                        foreach (var user in DbSeed.Players)
+                        {
+                            var createdPlayer = await userManager.CreateAsync(user, "123456789");
+                            if (createdPlayer.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(user, "Player");
+                            }
                         }
                     }
                     #endregion

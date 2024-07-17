@@ -6,13 +6,6 @@ using System.Threading.Tasks;
 
 namespace DataLayer.EnumsAndConsts
 {
-
-    public enum ChromaticEnum
-    {
-        Flat = 0,
-        Natural,
-        Sharp
-    }
     public static class ChromaticConst
     {
         public static string Flat = "b";

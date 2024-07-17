@@ -44,44 +44,51 @@ namespace ServiceLayer.Validation
             }
         }
         #endregion
-        public async Task ValidateAsync(SheetSymbolCreateDto input, IServiceWrapper services, string leftHandSheetNoti = "")
+        public async Task ValidateAsync(SheetSymbolCreateDto input, IServiceWrapper services)
         {
             if (!await services.Songs.IsExistAsync(input.SongId))
             {
-                AddError("Invalid top signature" + leftHandSheetNoti, nameof(input.TopSignature));
+                AddError("Invalid top signature", nameof(input.TopSignature));
             }
             if (!await services.Instruments.IsExistAsync(input.InstrumentId))
             {
-                AddError("Invalid top signature" + leftHandSheetNoti, nameof(input.TopSignature));
+                AddError("Invalid top signature", nameof(input.TopSignature));
             }
             if (input.TopSignature <= 0)
             {
-                AddError("Invalid top signature" + leftHandSheetNoti, nameof(input.TopSignature));
+                AddError("Invalid top signature", nameof(input.TopSignature));
 
             }
             if (input.BottomSignature < input.TopSignature)
             {
-                AddError("Invalid bottom signature" + leftHandSheetNoti, nameof(input.BottomSignature));
+                AddError("Invalid bottom signature", nameof(input.BottomSignature));
             }
             if (String.IsNullOrWhiteSpace(input.Symbols))
             {
-                AddError("Missing symbols" + leftHandSheetNoti, nameof(input.Symbols));
+                AddError("Missing symbols", nameof(input.Symbols));
             }
             else
             {
                 string[] measureStrings = input.Symbols.Split(new char[] { '/' });
                 for (int i = 0; i < measureStrings.Length; i++)
                 {
-                    string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
-                    if (chordStrings[0].Length == 1)
+                    try
                     {
-                        chordStrings = chordStrings.Skip(1).ToArray();
+                        string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+                        if (chordStrings[0].Length == 1)
+                        {
+                            chordStrings = chordStrings.Skip(1).ToArray();
+                        }
+                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+                        bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+                        if (!isGoodBeatNum)
+                        {
+                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                        }
                     }
-                    double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
-                    bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
-                    if (!isGoodBeatNum)
+                    catch (Exception ex)
                     {
-                        AddError($"Measure {i + 1}{leftHandSheetNoti} has invalid number of beats", nameof(input.Symbols));
+                        AddError($"Measure {i + 1}", nameof(input.Symbols));
                     }
                 }
 
@@ -91,16 +98,23 @@ namespace ServiceLayer.Validation
                 string[] measureStrings = input.LeftHandSymbols.Split(new char[] { '/' });
                 for (int i = 0; i < measureStrings.Length; i++)
                 {
-                    string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
-                    if (chordStrings[0].Length == 1)
+                    try
                     {
-                        chordStrings = chordStrings.Skip(1).ToArray();
+                        string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+                        if (chordStrings[0].Length == 1)
+                        {
+                            chordStrings = chordStrings.Skip(1).ToArray();
+                        }
+                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+                        bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+                        if (!isGoodBeatNum)
+                        {
+                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                        }
                     }
-                    double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
-                    bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
-                    if (!isGoodBeatNum)
+                    catch (Exception ex)
                     {
-                        AddError($"Measure {i + 1}{leftHandSheetNoti} has invalid number of beats", nameof(input.Symbols));
+                        AddError($"Measure {i + 1}", nameof(input.Symbols));
                     }
                 }
             }
