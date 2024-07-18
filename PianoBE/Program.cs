@@ -1,10 +1,16 @@
-using DataLayer.DbContext;
+﻿using DataLayer.DbContext;
 using DataLayer.DbObject;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Interfaces;
+using Microsoft.OpenApi.Models;
 using ServiceLayer.Seed;
 using ServiceLayer.Services.Implementation;
 using ServiceLayer.Services.Interface;
+using System.Text;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +41,7 @@ builder.Services.AddDbContext<PianoContext>(options =>
 #endregion
 
 builder.Services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = false)
-//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+    //builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     //.AddRoles<Role>()
     .AddEntityFrameworkStores<PianoContext>()
     .AddDefaultTokenProviders();
@@ -61,6 +67,26 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = false;
 });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ClockSkew = TimeSpan.Zero,
+    };
+});
 #region service and repo
 builder.Services.AddScoped<IServiceWrapper, ServiceWrapper>();
 #endregion
@@ -73,7 +99,84 @@ builder.Services.AddControllers()
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    #region jwt ui
+    string SecurityId = "Jwt Bearer";
+
+    options.AddSecurityDefinition(SecurityId, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,  //ko xài .ApiKey vì .http sẽ ko cần gõ Bearer
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization using the Bearer scheme. \"Bearer\" is not needed.Just paste the jwt"
+    }
+                   );
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = SecurityId
+                            }
+                        },
+                        new string[]{}
+                    }
+                }
+    );
+    #region google auth ui
+
+    //var securityScheme = new OpenApiSecurityScheme
+    //{
+    //    Name = "Authorization",
+    //    In = ParameterLocation.Header,
+    //    Type = SecuritySchemeType.OAuth2,
+    //    Flows = new OpenApiOAuthFlows()
+    //    {
+    //        Implicit = new OpenApiOAuthFlow()
+    //        {
+    //            AuthorizationUrl = new Uri(configuration["Authentication:Google:Web:auth_uri"]/*"https://accounts.google.com/o/oauth2/v2/auth"*/),
+    //            Scopes = new Dictionary<string, string> {
+    //                { "openid", "Allow this app to get some basic account info" },
+    //                { "email", "email" },
+    //                { "profile", "profile" }
+    //            },
+
+    //            TokenUrl = new Uri(configuration["Authentication:Google:Web:token_uri"])
+    //        }
+    //    },
+    //    Extensions = new Dictionary<string, IOpenApiExtension>
+    //    {
+    //        {"x-tokenName", new OpenApiString("id_token")}
+    //    },
+    //};
+
+    //options.AddSecurityDefinition("abc", securityScheme);
+
+    //var securityRequirements = new OpenApiSecurityRequirement
+    //{
+    //    {
+    //        new OpenApiSecurityScheme
+    //        {
+    //            Reference = new OpenApiReference
+    //            {
+    //                Type = ReferenceType.SecurityScheme,
+    //                Id = "abc"
+    //            }
+    //        },
+    //        new List<string> {"openid", "email", "profile"}
+    //    }
+    //};
+
+    //options.AddSecurityRequirement(securityRequirements);
+    #endregion
+    #endregion
+});
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #region cors
 //builder.Services.AddCors(options =>
@@ -93,11 +196,14 @@ if (IsInMemory)
     //app.SeedInMemoryDb();
 }
 // Configure the HTTP request pipeline.
-app.UseSwagger();       
+app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
