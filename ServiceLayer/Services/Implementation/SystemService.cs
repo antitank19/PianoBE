@@ -38,7 +38,15 @@ namespace ServiceLayer.Services.Implementation
                     //dbContext.Artists.Clear();
 
                     //way faster
+                    #region identity
                     dbContext.Users.Delete();
+                    dbContext.RoleClaims.Delete();
+                    dbContext.Roles.Delete();
+                    dbContext.UserRoles.Delete();
+                    dbContext.UserLogins.Delete();
+                    dbContext.UserClaims.Delete();
+                    dbContext.UserTokens.Delete();
+                    #endregion
                     dbContext.Notes.Delete();
                     dbContext.Instruments.Delete();
                     dbContext.Songs.Delete();

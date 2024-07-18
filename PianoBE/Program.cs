@@ -34,8 +34,9 @@ builder.Services.AddDbContext<PianoContext>(options =>
 });
 #endregion
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<Role>()
+builder.Services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = false)
+//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+    //.AddRoles<Role>()
     .AddEntityFrameworkStores<PianoContext>()
     .AddDefaultTokenProviders();
 
@@ -91,15 +92,30 @@ if (IsInMemory)
     Console.WriteLine("++++++++++================+++++++++++++++InMemory++++++++++++=============++++++++++");
     //app.SeedInMemoryDb();
 }
-app.SeedInMemoryDb(IsInMemory, SeedOnStartUp);
 // Configure the HTTP request pipeline.
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();       
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    try
+//    {
+//        await ApplicationDbInitializer.SeedRolesAndUsers(services);
+//    }
+//    catch (Exception ex)
+//    {
+//        var logger = services.GetRequiredService<ILogger<Program>>();
+//        logger.LogError(ex, "An error occurred seeding the DB.");
+//    }
+//}
+
+app.SeedInMemoryDb(IsInMemory, SeedOnStartUp);
 
 app.Run();

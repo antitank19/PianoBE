@@ -18,7 +18,7 @@ namespace DataLayer.DbContext
         { }
         public DbSet<Song> Songs { get; set; }
         public DbSet<Sheet> Sheets { get; set; }
-        public DbSet<Note> Notes { get; set; }
+        public DbSet<Note> Notes { get; set; }                  
         public DbSet<Measure> Measures { get; set; }
         public DbSet<Chord> Chords { get; set; }
         public DbSet<ChordNote> ChordNotes { get; set; }

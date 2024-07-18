@@ -12,9 +12,15 @@ namespace ServiceLayer.Seed
 {
     public static class DbSeed
     {
-        public static string[] Roles = { "Admin", "Artist" ,"Player" };
-        public static Instrument[] Instruments = new Instrument[]
+        //public static string[] Roles = { "Admin", "Artist", "Player" };
+        public static Role[] Roles = new[]
         {
+            new Role { Id = 1, Name = "Admin", NormalizedName = "ADMIN" },
+            new Role { Id = 2, Name = "Artist", NormalizedName = "ARTIST" },
+            new Role { Id = 3, Name = "Player", NormalizedName = "PLAYER" }
+        };
+        public static Instrument[] Instruments = new Instrument[]
+                {
             new Instrument
             {
                 Id    = 1,
@@ -25,7 +31,7 @@ namespace ServiceLayer.Seed
                 Id    = 2,
                 Name = "Guitar"
             }
-        };
+                };
 
         public static Note[] Notes = new Note[]
         {
@@ -254,28 +260,43 @@ namespace ServiceLayer.Seed
             new User
             {
                 Id = 1,
-                Email = "admin@gmail.com",
                 UserName = "admin",
+                Email = "admin@gmail.com",
+                NormalizedUserName = "ADMIN",
+                NormalizedEmail = "ADMIN@GMAIL.COM",
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                SecurityStamp = Guid.NewGuid().ToString("D")
                 //PasswordHash = "123456789",
-            } 
+            }
         };
 
         public static User[] Artists = new User[]
         {
             new User
             {
-                 Id = 2,
-                 Email = "artist1@gmail.com",
-                 UserName = "artist1",
+                Id = 2,
+                Email = "artist1@gmail.com",
+                UserName = "artist1",
+                NormalizedUserName = "ARTIST1",
+                NormalizedEmail = "ARTIST1@GMAIL.COM",
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                SecurityStamp = Guid.NewGuid().ToString("D")
                  //PasswordHash = "123456789",
-            }   ,
+            },
             new User
             {
-                 Id = 3,
-                 Email = "artist2@gmail.com",
-                 UserName = "artist2",
+                Id = 3,
+                Email = "artist2@gmail.com",
+                UserName = "artist2",
+                NormalizedUserName = "ARTIST2",
+                NormalizedEmail = "ARTIST2@GMAIL.COM",
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                SecurityStamp = Guid.NewGuid().ToString("D")
                  //PasswordHash = "123456789",
-            }
+            },
         };
 
         public static User[] Players = new User[]
