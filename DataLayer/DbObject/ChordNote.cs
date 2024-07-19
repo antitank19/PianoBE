@@ -126,7 +126,7 @@ namespace DataLayer.DbObject
             }
             else if (NoteInfo.Contains('#'))
             {
-                NoteId += 102;  //8*7*2
+                NoteId += 112;  //8*7*2
             }
             //else if (NoteInfo.IndexOf('n') != -1)
             //{
