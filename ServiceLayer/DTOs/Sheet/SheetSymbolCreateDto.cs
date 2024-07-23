@@ -14,5 +14,6 @@ namespace ServiceLayer.DTOs
         public int TopSignature { get; set; }
         public int BottomSignature { get; set; }
         public string Symbols { get; set; }
+        public string? LeftHandSymbols { get; set; }
     }
 }

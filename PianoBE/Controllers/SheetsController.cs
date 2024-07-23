@@ -12,7 +12,7 @@ namespace API.Controllers
     public class SheetsController : ControllerBase
     {
         private readonly IServiceWrapper services;
-        
+
         public SheetsController(IServiceWrapper services)
         {
             this.services = services;
@@ -51,14 +51,16 @@ namespace API.Controllers
             ValidationResult valResult = new ValidationResult();
             try
             {
-                await valResult.Validate(input, services);
+                await valResult.ValidateAsync(input, services);
                 var created = await services.Sheets.CreateSheetAsync(input);
-                if (!valResult.IsValid) {
+                if (!valResult.IsValid)
+                {
                     return BadRequest(valResult);
                 }
                 return Ok(created);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 valResult.AddError(ex.Message);
                 return BadRequest(valResult);
             }
@@ -88,8 +90,22 @@ namespace API.Controllers
         [HttpPost("Midi")]
         public async Task<IActionResult> CreateSheetWithMidi([FromForm] SheetMidiCreateDto input)
         {
-            var created = await services.Sheets.CreateSheetAsync(input);
-            return Ok(created);
+            ValidationResult valRe = new ValidationResult();
+            try
+            {
+                await valRe.ValidateAsync(input, services);
+                if (!valRe.IsValid)
+                {
+                    return BadRequest(valRe);
+                }
+                var created = await services.Sheets.CreateSheetAsync(input);
+                return Ok(created);
+            }
+            catch (Exception ex)
+            {
+                valRe.AddError(ex.Message);
+                return BadRequest(valRe);
+            }
         }
 
         // PUT api/<SheetsController>/5

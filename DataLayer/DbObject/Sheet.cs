@@ -12,18 +12,24 @@ namespace DataLayer.DbObject
     {
         public Sheet()
         {
-            
+
         }
-        public Sheet(int songId, int instrumentId, string sheetString)
+        public Sheet(int songId, int instrumentId, int topSignature, int bottomSignature, string rightSheetString, string? leftSheetString = null)
         {
-           
-                SongId = songId;
-                InstrumentId = instrumentId;
-                string[] measureStrings = sheetString.Split('/');
-                //var measures = measureStrings.Select(mString => new Measure(mString));
-                //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
-                Measures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString)).ToList();
-                //foreach
+            SongId = songId;
+            InstrumentId = instrumentId;
+            TopSignature = topSignature;
+            BottomSignature = bottomSignature;
+            string[] measureStrings = rightSheetString.Split('/');
+            //var measures = measureStrings.Select(mString => new Measure(mString));
+            //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
+            RightMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
+            if (!String.IsNullOrWhiteSpace(leftSheetString))
+            {
+                //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
+                LeftMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
+            }
+            //foreach
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -43,8 +49,8 @@ namespace DataLayer.DbObject
         /// </summary>
         public string? SheetFile { get; set; }
 
-        public int? LeftHandSheetId { get; set; }
-        public Sheet? LeftHandSheet { get; set; }
-        public ICollection<Measure> Measures { get; set; }
+
+        public ICollection<Measure> RightMeasures { get; set; }
+        public ICollection<Measure>? LeftMeasures { get; set; }
     }
 }

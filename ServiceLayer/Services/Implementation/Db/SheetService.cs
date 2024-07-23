@@ -50,10 +50,11 @@ namespace ServiceLayer.Services.Implementation.Db
         public async Task<T> GetSheetByIdAsync<T>(int sheetId)
         {
             Sheet sheet = await context.Sheets
-                .Include(s => s.LeftHandSheet).ThenInclude(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
+                //.Include(s => s.LeftHandSheet).ThenInclude(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
                 .Include(s => s.Song)
                 .Include(s => s.Instrument)
-                .Include(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
+                .Include(s => s.RightMeasures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
+                .Include(s => s.LeftMeasures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
                 .SingleOrDefaultAsync(x => x.Id == sheetId);
             T dto = mapper.Map<T>(sheet);
             return dto;
@@ -70,7 +71,7 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task<SheetGetDto> CreateSheetAsync(SheetSymbolCreateDto input)
         {
-            Sheet sheet = new Sheet(input.SongId, input.InstrumentId, input.Symbols);
+            Sheet sheet = new Sheet(input.SongId, input.InstrumentId, input.TopSignature, input.BottomSignature, input.Symbols, input.LeftHandSymbols);
             await context.Sheets.AddAsync(sheet);
             await context.SaveChangesAsync();
             var dto = mapper.Map<SheetGetDto>(sheet);

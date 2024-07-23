@@ -13,21 +13,47 @@ namespace DataLayer.DbObject
     {
         public Measure()
         {
-            
+
         }
-        public Measure(int sheetId, int position, string measureString)
+        public Measure(int sheetId, int position, string measureString, bool isRightHand)
         {
-            SheetId = sheetId;
+            if (isRightHand)
+            {
+                RightSheetId = sheetId;
+            }
+            else
+            {
+                LeftSheetId = sheetId;
+            }
             Position = position;
             string[] chordStrings = measureString.Split(new char[] { ' ' });
-            Chords = chordStrings.Select((nString, i)=> new Chord(0,i+1, nString)).ToList();
+            if (chordStrings[0].Length == 1)
+            {
+                if (chordStrings[0].StartsWith('F'))
+                {
+                    Clef = (int)ClefEnum.Fa;
+                }
+                else
+                {
+                    Clef = (int)ClefEnum.Sol;
+                }
+                Chords = chordStrings.Skip(1).Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
+            }
+            else
+            {
+                Clef = (int)ClefEnum.Sol;
+                Chords = chordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
+            }
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int SheetId { get; set; }
-        public Sheet Sheet { get; set; }
+        public int? RightSheetId { get; set; }
+        public Sheet? RightSheet { get; set; }
+        public int? LeftSheetId { get; set; }
+        public Sheet? LeftSheet { get; set; }
+
         public int Position { get; set; }
         public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<Chord> Chords { get; set; }

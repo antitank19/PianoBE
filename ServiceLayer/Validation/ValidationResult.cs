@@ -16,10 +16,10 @@ namespace ServiceLayer.Validation
         public void AddError(string error, string? errorType = "Exception")
         {
             ErrorList.Add(error);
-            if (ErrorMap.ContainsKey(errorType)) 
-            { 
-                string old = ErrorMap[errorType];   
-                ErrorMap[errorType] = ErrorMap[errorType] + ". " +  error;
+            if (ErrorMap.ContainsKey(errorType))
+            {
+                string old = ErrorMap[errorType];
+                ErrorMap[errorType] = ErrorMap[errorType] + ". " + error;
             }
             else
             {
@@ -46,7 +46,7 @@ namespace ServiceLayer.Validation
         #endregion
         public async Task ValidateAsync(SheetSymbolCreateDto input, IServiceWrapper services)
         {
-            if(!await services.Songs.IsExistAsync(input.SongId))
+            if (!await services.Songs.IsExistAsync(input.SongId))
             {
                 AddError("Invalid top signature", nameof(input.TopSignature));
             }
@@ -72,20 +72,55 @@ namespace ServiceLayer.Validation
                 string[] measureStrings = input.Symbols.Split(new char[] { '/' });
                 for (int i = 0; i < measureStrings.Length; i++)
                 {
-                    string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
-                    double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
-                    bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
-                    if (!isGoodBeatNum)
+                    try
                     {
-                        AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                        string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+                        if (chordStrings[0].Length == 1)
+                        {
+                            chordStrings = chordStrings.Skip(1).ToArray();
+                        }
+                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+                        bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+                        if (!isGoodBeatNum)
+                        {
+                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        AddError($"Measure {i + 1}", nameof(input.Symbols));
                     }
                 }
 
-
+            }
+            if (!String.IsNullOrWhiteSpace(input.LeftHandSymbols))
+            {
+                string[] measureStrings = input.LeftHandSymbols.Split(new char[] { '/' });
+                for (int i = 0; i < measureStrings.Length; i++)
+                {
+                    try
+                    {
+                        string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+                        if (chordStrings[0].Length == 1)
+                        {
+                            chordStrings = chordStrings.Skip(1).ToArray();
+                        }
+                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+                        bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+                        if (!isGoodBeatNum)
+                        {
+                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        AddError($"Measure {i + 1}", nameof(input.Symbols));
+                    }
+                }
             }
         }
 
-        public async Task Validate(SheetCreateDto input, IServiceWrapper services)
+        public async Task ValidateAsync(SheetCreateDto input, IServiceWrapper services)
         {
             if (!await services.Songs.IsExistAsync(input.SongId))
             {
@@ -108,8 +143,9 @@ namespace ServiceLayer.Validation
             {
                 AddError("Missing measures", nameof(input.Measures));
             }
-            else {
-                for(int i=0;i<input.Measures.Count;i++)
+            else
+            {
+                for (int i = 0; i < input.Measures.Count; i++)
                 {
                     var measures = input.Measures.ToArray();
                     var totalDuration = measures[i].Chords.Select(c => c.Duration).Sum();
@@ -119,6 +155,27 @@ namespace ServiceLayer.Validation
                         AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Measures));
                     }
                 }
+            }
+        }
+
+        public async Task ValidateAsync(SheetMidiCreateDto input, IServiceWrapper services)
+        {
+            if (!await services.Songs.IsExistAsync(input.SongId))
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+            }
+            if (!await services.Instruments.IsExistAsync(input.InstrumentId))
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+            }
+            if (input.TopSignature <= 0)
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+
+            }
+            if (input.BottomSignature < input.TopSignature)
+            {
+                AddError("Invalid bottom signature", nameof(input.BottomSignature));
             }
         }
 

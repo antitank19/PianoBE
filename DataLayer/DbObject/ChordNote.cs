@@ -15,15 +15,15 @@ namespace DataLayer.DbObject
         public ChordNote(string noteInfo)
         {
             FillPitch(noteInfo);
-            if (noteInfo.Contains(PitchConst.Pause))
-            {
-                Chromatic = (int)ChromaticEnum.Natural;
-            }
-            else
-            {
+            //if (noteInfo.Contains(PitchConst.Pause))
+            //{
+            //    Chromatic = (int)ChromaticEnum.Natural;
+            //}
+            //else
+            //{
                 FillOctave(noteInfo);
                 FillChromatic(noteInfo);
-            }
+            //}
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -33,7 +33,6 @@ namespace DataLayer.DbObject
         public Note Note { get; set; }
         public int ChordId  { get; set; }
         public Chord Chord  { get; set; }
-        public int Chromatic { get; set; } = (int)ChromaticEnum.Natural;
 
         public void FillPitch(string noteInfo)
         {
@@ -121,22 +120,19 @@ namespace DataLayer.DbObject
         }
         public void FillChromatic(string NoteInfo)
         {
-            if (NoteInfo.IndexOf('b') != -1)
+            if (NoteInfo.Contains('b'))
             {
-                Chromatic = (int)ChromaticEnum.Flat;
+                NoteId += 56;   //8*7
             }
-            else if (NoteInfo.IndexOf('#') != -1)
+            else if (NoteInfo.Contains('#'))
             {
-                Chromatic = (int)ChromaticEnum.Sharp;
+                NoteId += 112;  //8*7*2
             }
-            else if (NoteInfo.IndexOf('n') != -1)
-            {
-                Chromatic = (int)ChromaticEnum.Natural;
-            }
-            else
-            {
-                Chromatic = (int)ChromaticEnum.Natural;
-            }
+            //else if (NoteInfo.IndexOf('n') != -1)
+            //{
+            //    Chromatic = (int)ChromaticEnum.Natural;
+            //}
+
             #region old code
             //if (NoteInfo.IndexOf('f') != -1)
             //{

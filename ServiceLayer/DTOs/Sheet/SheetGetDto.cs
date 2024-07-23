@@ -18,8 +18,7 @@ namespace ServiceLayer.DTOs
         public int InstrumentId { get; set; }
         public string InstrumentName { get; set; }
         public string SheetFile { get; set; }
-        public ICollection<MeasureGetDto> Measures { get; set; }
-        public int? LeftHandSheetId { get; set; }
-        public SheetGetDto? LeftHandSheet { get; set; }
+        public ICollection<MeasureGetDto> RightMeasures { get; set; }
+        public ICollection<MeasureGetDto> LeftMeasures { get; set; }
     }
 }

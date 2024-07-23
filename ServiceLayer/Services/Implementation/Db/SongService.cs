@@ -37,7 +37,8 @@ namespace ServiceLayer.Services.Implementation.Db
         {
             Song song = await context.Songs
                  .Include(s => s.Sheets).ThenInclude(s => s.Instrument)
-                 .Include(s => s.Sheets).ThenInclude(s => s.Measures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
+                 .Include(s => s.Sheets).ThenInclude(s => s.RightMeasures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
+                 .Include(s => s.Sheets).ThenInclude(s => s.LeftMeasures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
                  .AsSingleQuery()
                  .SingleOrDefaultAsync(s => s.Id == id);
             T dto = mapper.Map<T>(song);
