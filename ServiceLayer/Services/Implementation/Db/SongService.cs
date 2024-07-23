@@ -69,7 +69,7 @@ namespace ServiceLayer.Services.Implementation.Db
             Song newSong = new Song
             {
                 ArtistId = input.ArtistId,
-                Genre = input.Genre,
+                GenreId = input.GenreId,
                 Composer = input.Composer,
                 Title = input.Title,
                 Sheets = new Sheet[]

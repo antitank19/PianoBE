@@ -317,6 +317,12 @@ namespace ServiceLayer.Seed
             }
         };
 
+        public static Genre[] Genres = new Genre[]
+        {
+            new Genre { Id = 1, Name = "Country" },
+            new Genre { Id = 2, Name = "Balad" }
+        };
+
         public static Song[] Songs = new Song[]
         {
             new Song
@@ -324,7 +330,7 @@ namespace ServiceLayer.Seed
                 Id=1,
                 ArtistId = 2,
                 Composer = "artist1",
-                Genre="Country",
+                GenreId=2,
                 Title="Song 1",
 
             }   ,
@@ -333,7 +339,7 @@ namespace ServiceLayer.Seed
                 Id=2,
                 ArtistId = 3,
                 Composer = "artist2",
-                Genre="Country",
+                GenreId=2,
                 Title="Song 2",
             }
         };

@@ -16,6 +16,7 @@ namespace DataLayer.DbContext
     {
         public PianoContext(DbContextOptions<PianoContext> options) : base(options)
         { }
+        public DbSet<Genre> Genres { get; set; }
         public DbSet<Song> Songs { get; set; }
         public DbSet<Sheet> Sheets { get; set; }
         public DbSet<Note> Notes { get; set; }                  

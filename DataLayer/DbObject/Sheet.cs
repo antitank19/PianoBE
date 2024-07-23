@@ -36,6 +36,7 @@ namespace DataLayer.DbObject
         public int Id { get; set; }
 
         public int SongId { get; set; }
+        public int Difficulty { get; set; }
         ///// <summary>
         ///// Signature là cái kí hiệu cho như 2/4, 3/4 trên khuôn nhạc
         ///// </summary>
@@ -49,8 +50,9 @@ namespace DataLayer.DbObject
         /// </summary>
         public string? SheetFile { get; set; }
 
-
-        public ICollection<Measure> RightMeasures { get; set; }
-        public ICollection<Measure>? LeftMeasures { get; set; }
+        public string? RightSymbol { get; set; }
+        public ICollection<Measure> RightMeasures { get; set; }   = new List<Measure>();
+        public string? LeftSymbol { get; set; }
+        public ICollection<Measure>? LeftMeasures { get; set; }  = new List<Measure> ();
     }
 }
