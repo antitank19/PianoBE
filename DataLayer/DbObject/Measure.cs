@@ -15,9 +15,16 @@ namespace DataLayer.DbObject
         {
 
         }
-        public Measure(int sheetId, int position, string measureString)
+        public Measure(int sheetId, int position, string measureString, bool isRightHand)
         {
-            SheetId = sheetId;
+            if (isRightHand)
+            {
+                RightSheetId = sheetId;
+            }
+            else
+            {
+                LeftSheetId = sheetId;
+            }
             Position = position;
             string[] chordStrings = measureString.Split(new char[] { ' ' });
             if (chordStrings[0].Length == 1)
@@ -42,8 +49,11 @@ namespace DataLayer.DbObject
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int SheetId { get; set; }
-        public Sheet Sheet { get; set; }
+        public int? RightSheetId { get; set; }
+        public Sheet? RightSheet { get; set; }
+        public int? LeftSheetId { get; set; }
+        public Sheet? LeftSheet { get; set; }
+
         public int Position { get; set; }
         public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<Chord> Chords { get; set; }

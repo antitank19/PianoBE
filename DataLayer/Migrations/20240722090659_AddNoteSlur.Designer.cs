@@ -4,6 +4,7 @@ using DataLayer.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(PianoContext))]
-    partial class PianoContextModelSnapshot : ModelSnapshot
+    [Migration("20240722090659_AddNoteSlur")]
+    partial class AddNoteSlur
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,20 +102,15 @@ namespace DataLayer.Migrations
                     b.Property<int>("Clef")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LeftSheetId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Position")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RightSheetId")
+                    b.Property<int>("SheetId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeftSheetId");
-
-                    b.HasIndex("RightSheetId");
+                    b.HasIndex("SheetId");
 
                     b.ToTable("Measures");
                 });
@@ -210,6 +207,9 @@ namespace DataLayer.Migrations
                     b.Property<int>("InstrumentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("LeftHandSheetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SheetFile")
                         .HasColumnType("nvarchar(max)");
 
@@ -222,6 +222,8 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InstrumentId");
+
+                    b.HasIndex("LeftHandSheetId");
 
                     b.HasIndex("SongId");
 
@@ -437,17 +439,13 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.DbObject.Measure", b =>
                 {
-                    b.HasOne("DataLayer.DbObject.Sheet", "LeftSheet")
-                        .WithMany("LeftMeasures")
-                        .HasForeignKey("LeftSheetId");
+                    b.HasOne("DataLayer.DbObject.Sheet", "Sheet")
+                        .WithMany("Measures")
+                        .HasForeignKey("SheetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("DataLayer.DbObject.Sheet", "RightSheet")
-                        .WithMany("RightMeasures")
-                        .HasForeignKey("RightSheetId");
-
-                    b.Navigation("LeftSheet");
-
-                    b.Navigation("RightSheet");
+                    b.Navigation("Sheet");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.RoleClaim", b =>
@@ -469,6 +467,10 @@ namespace DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DataLayer.DbObject.Sheet", "LeftHandSheet")
+                        .WithMany()
+                        .HasForeignKey("LeftHandSheetId");
+
                     b.HasOne("DataLayer.DbObject.Song", "Song")
                         .WithMany("Sheets")
                         .HasForeignKey("SongId")
@@ -476,6 +478,8 @@ namespace DataLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Instrument");
+
+                    b.Navigation("LeftHandSheet");
 
                     b.Navigation("Song");
                 });
@@ -562,9 +566,7 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.DbObject.Sheet", b =>
                 {
-                    b.Navigation("LeftMeasures");
-
-                    b.Navigation("RightMeasures");
+                    b.Navigation("Measures");
                 });
 
             modelBuilder.Entity("DataLayer.DbObject.Song", b =>

@@ -12,21 +12,22 @@ namespace DataLayer.DbObject
     {
         public Sheet()
         {
-            
+
         }
-        public Sheet(int songId, int instrumentId, int topSignature, int bottomSignature, string sheetString, string? leftHandSheetString=null)
+        public Sheet(int songId, int instrumentId, int topSignature, int bottomSignature, string rightSheetString, string? leftSheetString = null)
         {
             SongId = songId;
             InstrumentId = instrumentId;
             TopSignature = topSignature;
             BottomSignature = bottomSignature;
-            string[] measureStrings = sheetString.Split('/');
+            string[] measureStrings = rightSheetString.Split('/');
             //var measures = measureStrings.Select(mString => new Measure(mString));
             //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
-            Measures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString)).ToList();
-            if (!String.IsNullOrWhiteSpace(leftHandSheetString))
+            RightMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
+            if (!String.IsNullOrWhiteSpace(leftSheetString))
             {
-                LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftHandSheetString);
+                //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
+                LeftMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
             }
             //foreach
         }
@@ -48,8 +49,8 @@ namespace DataLayer.DbObject
         /// </summary>
         public string? SheetFile { get; set; }
 
-        public int? LeftHandSheetId { get; set; }
-        public Sheet? LeftHandSheet { get; set; }
-        public ICollection<Measure> Measures { get; set; }
+
+        public ICollection<Measure> RightMeasures { get; set; }
+        public ICollection<Measure>? LeftMeasures { get; set; }
     }
 }

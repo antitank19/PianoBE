@@ -52,13 +52,13 @@ namespace DataLayer.DbObject
         }
         public int Id { get; set; }
         public double Duration { get; set; }
-        // Flat:0, Thường:1, Sharp: 2
+
+        public int SlurPosition { get; set; }
 
         //Position: thứ tự note trong khuôn nhạc
         public int Position { get; set; } = 1;
         public ICollection<ChordNote> ChordNotes { get; set; }
 
-        //Measure: thứ tự khuôn nhạc
         public int MeasureId { get; set; }
         public Measure Measure { get; set; }
 
@@ -67,6 +67,14 @@ namespace DataLayer.DbObject
         public void FillDuration(string NoteInfo)
         {
             string duartionString = NoteInfo.Split('_')[1];
+            //Handle slur
+            int slurIndex = duartionString.IndexOf('-');
+            if (slurIndex != -1)
+            {
+                SlurPosition = int.Parse(duartionString.Substring(slurIndex));
+                duartionString = duartionString.Substring(0, slurIndex);
+            }
+
             Duration = double.Parse(duartionString);
             #region old code
             //if (NoteInfo.IndexOf('x') != -1)

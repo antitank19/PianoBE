@@ -357,7 +357,6 @@ namespace ServiceLayer.Seed
                  SheetFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
-                 LeftHandSheetId = 1
              },
              new Sheet
              {
@@ -385,25 +384,31 @@ namespace ServiceLayer.Seed
             new Measure
             {
                 Id = 1,
-                SheetId = 1,
+                RightSheetId = 1,
                 Position = 1,
             },
             new Measure
             {
                 Id = 2,
-                SheetId = 1,
+                RightSheetId = 1,
                 Position = 2,
             } ,
             new Measure
             {
                 Id = 3,
-                SheetId = 2,
+                RightSheetId = 2,
                 Position = 1,
             },
              new Measure
             {
                 Id = 4,
-                SheetId = 3,
+                RightSheetId = 3,
+                Position = 1,
+            }  ,
+             new Measure
+            {
+                Id = 5,
+                LeftSheetId = 3,
                 Position = 1,
             }
         };
@@ -466,6 +471,13 @@ namespace ServiceLayer.Seed
                 MeasureId = 4,
                 Position = 1,
             },
+            new Chord
+            {
+                Id = 9,
+                Duration = 4,
+                MeasureId = 5,
+                Position = 1,
+            },
         };
 
         public static ChordNote[] ChordNotes = new ChordNote[]
@@ -516,6 +528,12 @@ namespace ServiceLayer.Seed
             {
                 Id = 8,
                 ChordId = 8,
+                NoteId = 4,
+            },
+            new ChordNote
+            {
+                Id = 9,
+                ChordId = 9,
                 NoteId = 4,
             },
         };

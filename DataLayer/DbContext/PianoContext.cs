@@ -36,7 +36,7 @@ namespace DataLayer.DbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            #region identity
             modelBuilder.Entity<User>(b =>
             {
                 // Each User can have many UserClaims
@@ -77,6 +77,17 @@ namespace DataLayer.DbContext
                     .WithOne(e => e.Role)
                     .HasForeignKey(rc => rc.RoleId)
                     .IsRequired();
+            });
+            #endregion
+            modelBuilder.Entity<Sheet>(e =>
+            {
+                e.HasMany(e => e.RightMeasures)
+                    .WithOne(e => e.RightSheet)
+                    .HasForeignKey(e => e.RightSheetId);
+                    //.IsRequired();
+                e.HasMany(e => e.LeftMeasures)
+                    .WithOne(e => e.LeftSheet)
+                    .HasForeignKey(e => e.LeftSheetId);
             });
         }
     }
