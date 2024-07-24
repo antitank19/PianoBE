@@ -23,13 +23,27 @@ namespace DataLayer.DbObject
             string[] measureStrings = rightSheetString.Split('/');
             //var measures = measureStrings.Select(mString => new Measure(mString));
             //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
+            RightSymbol = rightSheetString;
             RightMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
             if (!String.IsNullOrWhiteSpace(leftSheetString))
             {
                 //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
                 LeftMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
+                LeftSymbol = leftSheetString;
             }
             //foreach
+        }
+        public void ToSymbol(List<Note> noteLists)
+        {
+            StringBuilder rightSB = new StringBuilder("");
+            for (int i = 0;i<RightMeasures.Count; i++)
+            {
+                
+            }
+            foreach (var measure in RightMeasures)
+            {
+                rightSB.AppendLine(measure.ToSymbol(noteLists));
+            }
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

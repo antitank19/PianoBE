@@ -57,6 +57,20 @@ namespace DataLayer.DbObject
         public int Position { get; set; }
         public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<Chord> Chords { get; set; }
+        public string ToSymbol(List<Note> noteList)
+        {
+            var sb = new StringBuilder();
+            if (Clef == (int)ClefEnum.Sol)
+            {
+                sb.Append("F ");
+            }
+            foreach (Chord ch in Chords)
+            {
+                sb.Append(ch.ToSymbol(noteList));
+            }
+            sb.Append('/');
+            return sb.ToString();
+        }
 
     }
 }

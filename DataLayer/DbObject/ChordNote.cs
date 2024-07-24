@@ -60,7 +60,7 @@ namespace DataLayer.DbObject
                 case ("B"):
                     NoteId = PitchConst.B4id;
                     break;
-                case ("-"):
+                case ("P"):
                     NoteId = PitchConst.PauseId;
                     break;
             }

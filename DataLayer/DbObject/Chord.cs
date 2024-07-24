@@ -104,6 +104,27 @@ namespace DataLayer.DbObject
             #endregion
         }
 
+        public string ToSymbol(List<Note> noteList)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (ChordNote chordNote in ChordNotes)
+            {
+                string noteSymbol = "";
+                if (chordNote.Note == null || chordNote.Note.Pitch == null)
+                {
+                    Note note = noteList.FirstOrDefault(n => n.Id == chordNote.NoteId);
+                    if (note != null) {
+                        noteSymbol = note.Pitch;
+                    }
+                } else {
+                    noteSymbol=chordNote.Note.Pitch;
+                }
+                sb.Append(noteSymbol);
+            }
+            sb.Append("_"+Duration);
+            if (SlurPosition != 0) {  sb.Append("-"+SlurPosition);}
+            return sb.ToString();
+        }
 
 
     }

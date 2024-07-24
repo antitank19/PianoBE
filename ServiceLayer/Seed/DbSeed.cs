@@ -252,7 +252,7 @@ namespace ServiceLayer.Seed
             new Note { Id = 168, Name = "B8#", Octave = 8, Pitch = "B8#" },
 
             //Pause
-            new Note { Id = 169, Name = "Pause", Octave = 8, Pitch = "Pause" }
+            new Note { Id = 169, Name = "Pause", Octave = 8, Pitch = "-" }
         };
 
         public static User[] Admins = new User[]

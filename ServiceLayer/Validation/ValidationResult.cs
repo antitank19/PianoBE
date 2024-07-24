@@ -63,13 +63,13 @@ namespace ServiceLayer.Validation
             {
                 AddError("Invalid bottom signature", nameof(input.BottomSignature));
             }
-            if (String.IsNullOrWhiteSpace(input.Symbols))
+            if (String.IsNullOrWhiteSpace(input.RightSymbol))
             {
-                AddError("Missing symbols", nameof(input.Symbols));
+                AddError("Missing symbols", nameof(input.RightSymbol));
             }
             else
             {
-                string[] measureStrings = input.Symbols.Split(new char[] { '/' });
+                string[] measureStrings = input.RightSymbol.Split(new char[] { '/' });
                 for (int i = 0; i < measureStrings.Length; i++)
                 {
                     try
@@ -83,19 +83,19 @@ namespace ServiceLayer.Validation
                         bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
                         if (!isGoodBeatNum)
                         {
-                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
                         }
                     }
                     catch (Exception ex)
                     {
-                        AddError($"Measure {i + 1}", nameof(input.Symbols));
+                        AddError($"Measure {i + 1}", nameof(input.RightSymbol));
                     }
                 }
 
             }
-            if (!String.IsNullOrWhiteSpace(input.LeftHandSymbols))
+            if (!String.IsNullOrWhiteSpace(input.LeftSymbol))
             {
-                string[] measureStrings = input.LeftHandSymbols.Split(new char[] { '/' });
+                string[] measureStrings = input.LeftSymbol.Split(new char[] { '/' });
                 for (int i = 0; i < measureStrings.Length; i++)
                 {
                     try
@@ -109,12 +109,12 @@ namespace ServiceLayer.Validation
                         bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
                         if (!isGoodBeatNum)
                         {
-                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Symbols));
+                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
                         }
                     }
                     catch (Exception ex)
                     {
-                        AddError($"Measure {i + 1}", nameof(input.Symbols));
+                        AddError($"Measure {i + 1}", nameof(input.RightSymbol));
                     }
                 }
             }
@@ -139,20 +139,20 @@ namespace ServiceLayer.Validation
             {
                 AddError("Invalid bottom signature", nameof(input.BottomSignature));
             }
-            if (!input.Measures.Any())
+            if (!input.RightMeasures.Any())
             {
-                AddError("Missing measures", nameof(input.Measures));
+                AddError("Missing measures", nameof(input.RightMeasures));
             }
             else
             {
-                for (int i = 0; i < input.Measures.Count; i++)
+                for (int i = 0; i < input.RightMeasures.Count; i++)
                 {
-                    var measures = input.Measures.ToArray();
+                    var measures = input.RightMeasures.ToArray();
                     var totalDuration = measures[i].Chords.Select(c => c.Duration).Sum();
                     bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
                     if (!isGoodBeatNum)
                     {
-                        AddError($"Measure {i + 1} has invalid number of beats", nameof(input.Measures));
+                        AddError($"Measure {i + 1} has invalid number of beats", nameof(input.RightMeasures));
                     }
                 }
             }
