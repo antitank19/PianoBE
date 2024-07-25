@@ -68,8 +68,8 @@ namespace DataLayer.DbObject
             {
                 sb.Append(ch.ToSymbol(noteList));
             }
-            sb.Append('/');
-            return sb.ToString();
+            string measureString = sb.ToString().Trim()+"/";
+            return measureString;
         }
 
     }

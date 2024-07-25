@@ -35,15 +35,26 @@ namespace DataLayer.DbObject
         }
         public void ToSymbol(List<Note> noteLists)
         {
-            StringBuilder rightSB = new StringBuilder("");
-            for (int i = 0;i<RightMeasures.Count; i++)
-            {
-                
-            }
+            StringBuilder rightSB1 = new StringBuilder("");
             foreach (var measure in RightMeasures)
             {
-                rightSB.AppendLine(measure.ToSymbol(noteLists));
+                string measureString = measure.ToSymbol(noteLists);
+                rightSB1.Append(measureString);
             }
+            rightSB1.Remove(rightSB1.Length - 1, 1);
+            RightSymbol = rightSB1.ToString();
+            if (LeftMeasures.Count != 0)
+            {
+                StringBuilder leftSB = new StringBuilder("");
+                foreach (var measure in RightMeasures)
+                {
+                    string measureString = measure.ToSymbol(noteLists);
+                    leftSB.Append(measureString);
+                }
+                leftSB.Remove(leftSB.Length - 1, 1);
+                LeftSymbol = leftSB.ToString();
+            }
+
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

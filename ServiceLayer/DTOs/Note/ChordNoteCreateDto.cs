@@ -9,7 +9,7 @@ namespace ServiceLayer.DTOs
 {
     public class ChordNoteCreateDto
     {
-        public int ChordId { get; set; }
+        //public int ChordId { get; set; }
         public int NoteId { get; set; }
     }
 }

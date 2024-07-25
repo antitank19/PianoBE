@@ -123,6 +123,7 @@ namespace DataLayer.DbObject
             }
             sb.Append("_"+Duration);
             if (SlurPosition != 0) {  sb.Append("-"+SlurPosition);}
+            sb.Append(' ');
             return sb.ToString();
         }
 

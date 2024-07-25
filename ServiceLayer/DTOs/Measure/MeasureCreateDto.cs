@@ -10,7 +10,7 @@ namespace ServiceLayer.DTOs
 {
     public class MeasureCreateDto
     {
-        public int SheetId { get; set; }
+        //public int SheetId { get; set; }
         public int Position { get; set; }
         public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<ChordCreateDto> Chords { get; set; }
