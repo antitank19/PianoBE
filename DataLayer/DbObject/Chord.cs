@@ -71,7 +71,8 @@ namespace DataLayer.DbObject
             int slurIndex = duartionString.IndexOf('-');
             if (slurIndex != -1)
             {
-                SlurPosition = int.Parse(duartionString.Substring(slurIndex));
+                string slurString = duartionString.Substring(slurIndex+1);
+                SlurPosition = int.Parse(slurString);
                 duartionString = duartionString.Substring(0, slurIndex);
             }
 

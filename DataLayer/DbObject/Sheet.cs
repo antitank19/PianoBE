@@ -20,15 +20,16 @@ namespace DataLayer.DbObject
             InstrumentId = instrumentId;
             TopSignature = topSignature;
             BottomSignature = bottomSignature;
-            string[] measureStrings = rightSheetString.Split('/');
+            string[] rightMeasureStrings = rightSheetString.Split('/');
             //var measures = measureStrings.Select(mString => new Measure(mString));
             //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
             RightSymbol = rightSheetString;
-            RightMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
+            RightMeasures = rightMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
             if (!String.IsNullOrWhiteSpace(leftSheetString))
             {
+                string[] leftMeasureStrings = leftSheetString.Split('/');
                 //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
-                LeftMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
+                LeftMeasures = leftMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
                 LeftSymbol = leftSheetString;
             }
             //foreach
@@ -46,7 +47,7 @@ namespace DataLayer.DbObject
             if (LeftMeasures.Count != 0)
             {
                 StringBuilder leftSB = new StringBuilder("");
-                foreach (var measure in RightMeasures)
+                foreach (var measure in LeftMeasures)
                 {
                     string measureString = measure.ToSymbol(noteLists);
                     leftSB.Append(measureString);

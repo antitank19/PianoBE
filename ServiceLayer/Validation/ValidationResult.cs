@@ -79,16 +79,16 @@ namespace ServiceLayer.Validation
                         {
                             chordStrings = chordStrings.Skip(1).ToArray();
                         }
-                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1].Split('-')[0])).Sum();
                         bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
                         if (!isGoodBeatNum)
                         {
-                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
+                            AddError($"Right hand measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
                         }
                     }
                     catch (Exception ex)
                     {
-                        AddError($"Measure {i + 1}", nameof(input.RightSymbol));
+                        AddError($"Right hand measure {i + 1} {ex.Message}", nameof(input.RightSymbol));
                     }
                 }
 
@@ -105,16 +105,16 @@ namespace ServiceLayer.Validation
                         {
                             chordStrings = chordStrings.Skip(1).ToArray();
                         }
-                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1])).Sum();
+                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1].Split('-')[0])).Sum();
                         bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
                         if (!isGoodBeatNum)
                         {
-                            AddError($"Measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
+                            AddError($"Left hand measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
                         }
                     }
                     catch (Exception ex)
                     {
-                        AddError($"Measure {i + 1}", nameof(input.RightSymbol));
+                        AddError($"Left hand measure {i + 1} {ex.Message}", nameof(input.RightSymbol));
                     }
                 }
             }
