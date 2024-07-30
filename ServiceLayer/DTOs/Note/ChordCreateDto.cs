@@ -13,7 +13,6 @@ namespace ServiceLayer.DTOs
         //public int MeasureId { get; set; }
         public int Position { get; set; }
         public double Duration { get; set; }
-        public int SlurPosition { get; set; }   = 0;
 
         // Flat:0, Thường:1, Sharp: 2
         //public int Chromatic { get; set; } = (int)ChromaticEnum.Natural;

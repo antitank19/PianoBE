@@ -27,7 +27,7 @@ namespace DataLayer.DbObject
             {
                 MeasureId = measureId;
                 Position = position;
-                if (!chordString.Contains("-"))
+                if (!chordString.Contains(PitchConst.Pause))
                 {
 
 
@@ -47,13 +47,13 @@ namespace DataLayer.DbObject
             }
             catch (Exception ex)
             {
-                if (ex is WrongNoteStringFormatException) throw ex;
+                //if (ex is WrongNoteStringFormatException) 
+                    throw ex;
             }
         }
         public int Id { get; set; }
         public double Duration { get; set; }
 
-        public int SlurPosition { get; set; }
 
         //Position: thứ tự note trong khuôn nhạc
         public int Position { get; set; } = 1;
@@ -68,13 +68,7 @@ namespace DataLayer.DbObject
         {
             string duartionString = NoteInfo.Split('_')[1];
             //Handle slur
-            int slurIndex = duartionString.IndexOf('-');
-            if (slurIndex != -1)
-            {
-                string slurString = duartionString.Substring(slurIndex+1);
-                SlurPosition = int.Parse(slurString);
-                duartionString = duartionString.Substring(0, slurIndex);
-            }
+           
 
             Duration = double.Parse(duartionString);
             #region old code
@@ -116,14 +110,15 @@ namespace DataLayer.DbObject
                     Note note = noteList.FirstOrDefault(n => n.Id == chordNote.NoteId);
                     if (note != null) {
                         noteSymbol = note.Pitch;
+
                     }
                 } else {
                     noteSymbol=chordNote.Note.Pitch;
                 }
+                if (chordNote.SlurPosition != 0) { sb.Append("-" + chordNote.SlurPosition); }
                 sb.Append(noteSymbol);
             }
             sb.Append("_"+Duration);
-            if (SlurPosition != 0) {  sb.Append("-"+SlurPosition);}
             sb.Append(' ');
             return sb.ToString();
         }

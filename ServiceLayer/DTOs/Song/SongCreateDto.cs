@@ -13,6 +13,6 @@ namespace ServiceLayer.DTOs
         public string Composer { get; set; }
         public string Genre { get; set; }
         public int ArtistId { get; set; }
-        public ICollection<SheetCreateDto> Sheets { get; set; }
+        public SheetCreateDto Sheet { get; set; }
     }
 }

@@ -23,6 +23,12 @@ namespace DataLayer.DbObject
             //{
                 FillOctave(noteInfo);
                 FillChromatic(noteInfo);
+            int slurIndex = noteInfo.IndexOf('-');
+            if (slurIndex != -1)
+            {
+                string slurString = noteInfo.Substring(slurIndex + 1, 1);
+                SlurPosition = int.Parse(slurString);
+            }
             //}
         }
         [Key]
@@ -33,6 +39,7 @@ namespace DataLayer.DbObject
         public Note Note { get; set; }
         public int ChordId  { get; set; }
         public Chord Chord  { get; set; }
+        public int SlurPosition { get; set; }
 
         public void FillPitch(string noteInfo)
         {

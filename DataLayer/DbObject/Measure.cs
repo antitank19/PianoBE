@@ -37,7 +37,9 @@ namespace DataLayer.DbObject
                 {
                     Clef = (int)ClefEnum.Sol;
                 }
-                Chords = chordStrings.Skip(1).Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
+
+                IEnumerable<string> realChordStrings = chordStrings.Skip(1);
+                Chords = realChordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
             }
             else
             {
