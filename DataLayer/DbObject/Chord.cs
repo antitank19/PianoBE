@@ -115,8 +115,8 @@ namespace DataLayer.DbObject
                 } else {
                     noteSymbol=chordNote.Note.Pitch;
                 }
-                if (chordNote.SlurPosition != 0) { sb.Append("-" + chordNote.SlurPosition); }
                 sb.Append(noteSymbol);
+                if (chordNote.SlurPosition != 0) { sb.Append("-" + chordNote.SlurPosition); }
             }
             sb.Append("_"+Duration);
             sb.Append(' ');
