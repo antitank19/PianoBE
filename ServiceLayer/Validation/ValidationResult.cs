@@ -30,10 +30,10 @@ namespace ServiceLayer.Validation
         #region song
         public void Validate(SongCreateDto input)
         {
-            if (String.IsNullOrWhiteSpace(input.Genre))
-            {
-                AddError("Missing genre", nameof(input.Genre));
-            }
+            //if (String.IsNullOrWhiteSpace(input.Genre))
+            //{
+            //    AddError("Missing genre", nameof(input.Genre));
+            //}
             if (String.IsNullOrWhiteSpace(input.Title))
             {
                 AddError("Missing title", nameof(input.Title));

@@ -48,6 +48,7 @@ namespace ServiceLayer.Services.Implementation.Db
         public async Task<SongGetDto> CreateSong(SongCreateDto input)
         {
             Song newSong = mapper.Map<Song>(input);
+            newSong.Sheets.FirstOrDefault().ToSymbol(context.Notes.ToList());
             await context.Songs.AddAsync(newSong);
             await context.SaveChangesAsync();
             SongGetDto dto = mapper.Map<SongGetDto>(newSong);
