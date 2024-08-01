@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
+using ServiceLayer.CustomException;
+using ServiceLayer.Filter;
 using ServiceLayer.Seed;
 using ServiceLayer.Services.Implementation;
 using ServiceLayer.Services.Interface;
@@ -91,13 +93,23 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IServiceWrapper, ServiceWrapper>();
 #endregion
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-        //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidateModelAttribute>();
+    options.Filters.Add<CustomExceptionFilter>();
+})
+        .ConfigureApiBehaviorOptions(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                throw new InvalidModelStateException(context.ModelState);
+            };
+        })
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
