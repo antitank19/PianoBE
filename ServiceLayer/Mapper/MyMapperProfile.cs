@@ -27,27 +27,6 @@ namespace ServiceLayer.Mapper
         {
             CreateMap<Note, NoteGetDto>();
         }
-//        {
-//  "songId": 2,
-//  "instrumentId": 2,
-//  "measures": [
-//    {
-//      "sheetId": 0,
-//      "position": 1,
-//      "chords": [
-//        {
-//          "noteIds": [
-//            22, 24
-//          ],
-//          "duration": 4,
-//          "chromatic": 1,
-//          "measureId": 0,
-//          "position": 1
-//        }
-//      ]
-//    }
-//  ]
-//}
 
         private void MapChord()
         {
