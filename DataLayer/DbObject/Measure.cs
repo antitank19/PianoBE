@@ -37,7 +37,9 @@ namespace DataLayer.DbObject
                 {
                     Clef = (int)ClefEnum.Sol;
                 }
-                Chords = chordStrings.Skip(1).Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
+
+                IEnumerable<string> realChordStrings = chordStrings.Skip(1);
+                Chords = realChordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
             }
             else
             {
@@ -57,6 +59,20 @@ namespace DataLayer.DbObject
         public int Position { get; set; }
         public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<Chord> Chords { get; set; }
+        public string ToSymbol(List<Note> noteList)
+        {
+            var sb = new StringBuilder();
+            if (Clef == (int)ClefEnum.Sol)
+            {
+                sb.Append("F ");
+            }
+            foreach (Chord ch in Chords)
+            {
+                sb.Append(ch.ToSymbol(noteList));
+            }
+            string measureString = sb.ToString().Trim()+"/";
+            return measureString;
+        }
 
     }
 }

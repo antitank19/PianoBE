@@ -15,7 +15,7 @@ namespace DataLayer.EnumsAndConsts
         public static string G = "G";   //Sol
         public static string A = "A";   //La
         public static string B = "B";   //Si
-        public static string Pause = "-"; //Nghỉ
+        public static string Pause = "P"; //Nghỉ
 
         public static int C4id = 22;   //Đồ
         public static int D4id = 23;   //Rê

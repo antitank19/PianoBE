@@ -26,7 +26,9 @@ namespace DataLayer.DbObject
 
         public string Title { get; set; }
         public string Composer { get; set; }
-        public string Genre { get; set; }
+
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; }
         public int ArtistId { get; set; }
         public User Artist { get; set; }
         ///// <summary>

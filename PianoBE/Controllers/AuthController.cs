@@ -15,26 +15,51 @@ namespace API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto input)
+        public async Task<IActionResult> Register([FromBody] RegisterDto input, string role)
         {
-            var user = new User { UserName = input.Username, Email = input.Email };
-            var result = await _userManager.CreateAsync(user, input.Password);
-            if (result.Succeeded)
+            //Check User Exist 
+            var userExist = await _userManager.FindByEmailAsync(input.Email);
+            if (userExist != null)
             {
-                return Ok(new { message = "User registered successfully" });
+                return BadRequest("User already exists!");
             }
-            return BadRequest(result.Errors);
+
+            var user = new User { 
+                UserName = input.Username, 
+                Email = input.Email 
+            };
+            if (await _roleManager.RoleExistsAsync(role))
+            {
+                var result = await _userManager.CreateAsync(user, input.Password);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new { Message = "Failed to create user", Errors = result.Errors });
+                }
+                //Add role to the user....
+
+                await _userManager.AddToRoleAsync(user, role);
+
+                return Ok($"User created SuccessFully");
+                //return Ok($"User created & Email Sent to {user.Email} SuccessFully");
+
+            }
+            else
+            {
+                return BadRequest(new  { Status = "Error", Message = "This Role Doesnot Exist." });
+            }
         }
 
         [HttpPost("login")]

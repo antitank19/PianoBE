@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.DbObject;
+using DataLayer.Migrations;
 using ServiceLayer.DTOs;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,20 @@ namespace ServiceLayer.Mapper
 
         private void MapSong() { 
             CreateMap<Song, SongGetDto>();
-            CreateMap<SongCreateDto, Song>();
+            CreateMap<SongCreateDto, Song>()
+                .ForMember(dest => dest.Sheets, opt =>
+                {
+                    opt.MapFrom(src => new List<SheetCreateDto> { src.Sheet });
+                });
+            CreateMap<SongSymbolCreateDto, Song>()
+                .ForMember(dest => dest.Sheets, opt =>
+                {
+
+                    opt.MapFrom(src =>
+                         new List<Sheet> 
+                         { new Sheet(src.Sheet.SongId, src.Sheet.InstrumentId, src.Sheet.TopSignature, src.Sheet.BottomSignature, src.Sheet.RightSymbol, src.Sheet.LeftSymbol) }
+                    );
+                });
         }
     }
 }

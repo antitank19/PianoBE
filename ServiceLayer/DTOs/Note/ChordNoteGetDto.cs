@@ -15,5 +15,6 @@ namespace ServiceLayer.DTOs
         public string NoteName { get; set; }
         public string NotePitch { get; set; }
         public int NoteOctave { get; set; }
+        public int SlurPosition { get; set; }
     }
 }
