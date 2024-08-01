@@ -23,10 +23,14 @@ namespace DataLayer.DbObject
             //{
                 FillOctave(noteInfo);
                 FillChromatic(noteInfo);
-            int slurIndex = noteInfo.IndexOf('-');
-            if (slurIndex != -1)
+            //int slurIndex = noteInfo.IndexOf('-');
+            if (noteInfo.Contains("-"))
             {
-                string slurString = noteInfo.Substring(slurIndex + 1, 1);
+                string slurString = noteInfo.Split("-")[1];
+                if (slurString.Contains("_"))
+                {
+                    slurString= slurString.Split("_")[0];
+                }
                 SlurPosition = int.Parse(slurString);
             }
             //}
