@@ -13,6 +13,7 @@ namespace ServiceLayer.DTOs
         public int InstrumentId { get; set; }
         public int TopSignature { get; set; }
         public int BottomSignature { get; set; }
-        public ICollection<MeasureCreateDto> Measures { get; set; }
+        public ICollection<MeasureCreateDto> RightMeasures { get; set; }
+        public ICollection<MeasureCreateDto> LeftMeasures { get; set; }
     }
 }

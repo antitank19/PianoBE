@@ -27,7 +27,7 @@ namespace DataLayer.DbObject
             {
                 MeasureId = measureId;
                 Position = position;
-                if (!chordString.Contains("-"))
+                if (!chordString.Contains(PitchConst.Pause))
                 {
 
 
@@ -47,13 +47,13 @@ namespace DataLayer.DbObject
             }
             catch (Exception ex)
             {
-                if (ex is WrongNoteStringFormatException) throw ex;
+                //if (ex is WrongNoteStringFormatException) 
+                    throw ex;
             }
         }
         public int Id { get; set; }
         public double Duration { get; set; }
 
-        public int SlurPosition { get; set; }
 
         //Position: thứ tự note trong khuôn nhạc
         public int Position { get; set; } = 1;
@@ -68,12 +68,7 @@ namespace DataLayer.DbObject
         {
             string duartionString = NoteInfo.Split('_')[1];
             //Handle slur
-            int slurIndex = duartionString.IndexOf('-');
-            if (slurIndex != -1)
-            {
-                SlurPosition = int.Parse(duartionString.Substring(slurIndex));
-                duartionString = duartionString.Substring(0, slurIndex);
-            }
+           
 
             Duration = double.Parse(duartionString);
             #region old code
@@ -104,6 +99,29 @@ namespace DataLayer.DbObject
             #endregion
         }
 
+        public string ToSymbol(List<Note> noteList)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (ChordNote chordNote in ChordNotes)
+            {
+                string noteSymbol = "";
+                if (chordNote.Note == null || chordNote.Note.Pitch == null)
+                {
+                    Note note = noteList.FirstOrDefault(n => n.Id == chordNote.NoteId);
+                    if (note != null) {
+                        noteSymbol = note.Pitch;
+
+                    }
+                } else {
+                    noteSymbol=chordNote.Note.Pitch;
+                }
+                sb.Append(noteSymbol);
+                if (chordNote.SlurPosition != 0) { sb.Append("-" + chordNote.SlurPosition); }
+            }
+            sb.Append("_"+Duration);
+            sb.Append(' ');
+            return sb.ToString();
+        }
 
 
     }

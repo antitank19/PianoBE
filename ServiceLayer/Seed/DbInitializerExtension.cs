@@ -44,6 +44,12 @@ namespace ServiceLayer.Seed
                 ArgumentNullException.ThrowIfNull(context, nameof(context));
                 if (isInMemory)
                 {
+                    #region Genres
+                    if (!context.Genres.Any())
+                    {
+                        context.Genres.AddRange(DbSeed.Genres);
+                    }
+                    #endregion
                     #region Roles
                     if (!context.Roles.Any())
                     {
@@ -134,6 +140,19 @@ namespace ServiceLayer.Seed
                 }
                 else
                 {
+                    #region seed Genres
+                    if (!context.Genres.Any())
+                    {
+                        using (var transaction = context.Database.BeginTransaction())
+                        {
+                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Genres ON");
+                            context.Genres.AddRange(DbSeed.Genres);
+                            context.SaveChanges();
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Genres OFF");
+                            transaction.Commit();
+                        }
+                    }
+                    #endregion
                     #region seed Instruments
                     if (!context.Instruments.Any())
                     {

@@ -13,7 +13,7 @@ namespace ServiceLayer.DTOs
         public int InstrumentId { get; set; }
         public int TopSignature { get; set; }
         public int BottomSignature { get; set; }
-        public string Symbols { get; set; }
-        public string? LeftHandSymbols { get; set; }
+        public string RightSymbol { get; set; }
+        public string? LeftSymbol { get; set; }
     }
 }

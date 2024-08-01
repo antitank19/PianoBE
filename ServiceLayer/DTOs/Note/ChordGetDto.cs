@@ -9,12 +9,12 @@ namespace ServiceLayer.DTOs
     public class ChordGetDto
     {
         public int Id { get; set; }
-        public ICollection<ChordNoteGetDto> ChordNotes { get; set; }
+        public int MeasureId { get; set; }
         public double Duration { get; set; }
         //Vị trí nốt nhạc
         //Measure: thứ tự khuôn nhạc
         //Position: thứ tự note trong khuôn nhạc
-        public int MeasureId { get; set; }
         public int Position { get; set; }
+        public ICollection<ChordNoteGetDto> ChordNotes { get; set; }
     }
 }

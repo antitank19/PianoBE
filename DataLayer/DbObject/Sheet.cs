@@ -20,22 +20,49 @@ namespace DataLayer.DbObject
             InstrumentId = instrumentId;
             TopSignature = topSignature;
             BottomSignature = bottomSignature;
-            string[] measureStrings = rightSheetString.Split('/');
+            string[] rightMeasureStrings = rightSheetString.Split('/');
             //var measures = measureStrings.Select(mString => new Measure(mString));
             //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
-            RightMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
+            RightSymbol = rightSheetString;
+            RightMeasures = rightMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
             if (!String.IsNullOrWhiteSpace(leftSheetString))
             {
+                string[] leftMeasureStrings = leftSheetString.Split('/');
                 //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
-                LeftMeasures = measureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
+                LeftMeasures = leftMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
+                LeftSymbol = leftSheetString;
             }
             //foreach
+        }
+        public void ToSymbol(List<Note> noteLists)
+        {
+            StringBuilder rightSB1 = new StringBuilder("");
+            foreach (var measure in RightMeasures)
+            {
+                string measureString = measure.ToSymbol(noteLists);
+                rightSB1.Append(measureString);
+            }
+            rightSB1.Remove(rightSB1.Length - 1, 1);
+            RightSymbol = rightSB1.ToString();
+            if (LeftMeasures.Count != 0)
+            {
+                StringBuilder leftSB = new StringBuilder("");
+                foreach (var measure in LeftMeasures)
+                {
+                    string measureString = measure.ToSymbol(noteLists);
+                    leftSB.Append(measureString);
+                }
+                leftSB.Remove(leftSB.Length - 1, 1);
+                LeftSymbol = leftSB.ToString();
+            }
+
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public int SongId { get; set; }
+        public int Difficulty { get; set; }
         ///// <summary>
         ///// Signature là cái kí hiệu cho như 2/4, 3/4 trên khuôn nhạc
         ///// </summary>
@@ -49,8 +76,9 @@ namespace DataLayer.DbObject
         /// </summary>
         public string? SheetFile { get; set; }
 
-
-        public ICollection<Measure> RightMeasures { get; set; }
-        public ICollection<Measure>? LeftMeasures { get; set; }
+        public string? RightSymbol { get; set; }
+        public ICollection<Measure> RightMeasures { get; set; }   = new List<Measure>();
+        public string? LeftSymbol { get; set; }
+        public ICollection<Measure>? LeftMeasures { get; set; }  = new List<Measure> ();
     }
 }

@@ -14,8 +14,8 @@ namespace ServiceLayer.DTOs
         public string Title { get; set; }
         [Required(ErrorMessage = "Title is required!")] 
         public string Composer { get; set; }
-        public string Genre { get; set; }
+        public int GenreId { get; set; }
         public int ArtistId { get; set; }
-        public ICollection<SheetCreateDto> Sheets { get; set; }
+        public SheetCreateDto Sheet { get; set; }
     }
 }
