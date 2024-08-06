@@ -189,6 +189,15 @@ builder.Services.AddSwaggerGen(options =>
     #endregion
     #endregion
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("allcors", builder => builder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .SetIsOriginAllowed(hostName => true));
+
+});
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #region cors
 //builder.Services.AddCors(options =>
@@ -219,6 +228,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors("allcors");
 
 //using (var scope = app.Services.CreateScope())
 //{
