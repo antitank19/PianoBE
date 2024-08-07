@@ -15,6 +15,7 @@ namespace ServiceLayer.DTOs
         //Measure: thứ tự khuôn nhạc
         //Position: thứ tự note trong khuôn nhạc
         public int Position { get; set; }
+        public int Clef { get; set; } 
         public ICollection<ChordNoteGetDto> ChordNotes { get; set; }
     }
 }

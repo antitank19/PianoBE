@@ -72,7 +72,7 @@ namespace ServiceLayer.Mapper
 
                     opt.MapFrom(src =>
                          new List<Sheet> 
-                         { new Sheet(src.Sheet.SongId, src.Sheet.InstrumentId, src.Sheet.TopSignature, src.Sheet.BottomSignature, src.Sheet.RightSymbol, src.Sheet.LeftSymbol) }
+                         { new Sheet(src.Sheet.SongId, src.Sheet.InstrumentId, src.Sheet.TopSignature, src.Sheet.BottomSignature, src.Sheet.KeySignature, src.Sheet.RightSymbol, src.Sheet.LeftSymbol) }
                     );
                 });
         }

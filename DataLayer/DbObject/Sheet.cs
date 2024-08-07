@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataLayer.EnumsAndConsts;
 
 namespace DataLayer.DbObject
 {
@@ -14,12 +15,13 @@ namespace DataLayer.DbObject
         {
 
         }
-        public Sheet(int songId, int instrumentId, int topSignature, int bottomSignature, string rightSheetString, string? leftSheetString = null)
+        public Sheet(int songId, int instrumentId, int topSignature, int bottomSignature, KeySignatureEnum keySignature,  string rightSheetString, string? leftSheetString = null)
         {
             SongId = songId;
             InstrumentId = instrumentId;
             TopSignature = topSignature;
             BottomSignature = bottomSignature;
+            KeySignature = keySignature;
             string[] rightMeasureStrings = rightSheetString.Split('/');
             //var measures = measureStrings.Select(mString => new Measure(mString));
             //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
@@ -75,6 +77,8 @@ namespace DataLayer.DbObject
         /// Link of .mid file
         /// </summary>
         public string? SheetFile { get; set; }
+        public KeySignatureEnum KeySignature { get; set; } = KeySignatureEnum.None;
+
 
         public string? RightSymbol { get; set; }
         public ICollection<Measure> RightMeasures { get; set; }   = new List<Measure>();

@@ -1,4 +1,5 @@
 ﻿using DataLayer.DbObject;
+using DataLayer.EnumsAndConsts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace ServiceLayer.DTOs
         public int BottomSignature { get; set; }
         public ICollection<MeasureCreateDto> RightMeasures { get; set; }
         public ICollection<MeasureCreateDto> LeftMeasures { get; set; }
+        public KeySignatureEnum KeySignature { get; set; }
     }
 }

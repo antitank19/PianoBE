@@ -72,7 +72,7 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task<SheetGetDto> CreateSheetAsync(SheetSymbolCreateDto input)
         {
-            Sheet sheet = new Sheet(input.SongId, input.InstrumentId, input.TopSignature, input.BottomSignature, input.RightSymbol, input.LeftSymbol);
+            Sheet sheet = new Sheet(input.SongId, input.InstrumentId, input.TopSignature, input.BottomSignature, input.KeySignature, input.RightSymbol, input.LeftSymbol);
             await context.Sheets.AddAsync(sheet);
             await context.SaveChangesAsync();
             var dto = mapper.Map<SheetGetDto>(sheet);

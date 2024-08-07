@@ -13,7 +13,7 @@ namespace ServiceLayer.DTOs
 
         public int SheetId { get; set; }
         public int Position { get; set; }
-        public int Clef { get; set; }
+        //public int Clef { get; set; }
         public ICollection<ChordGetDto> Chords { get; set; }
     }
 }

@@ -27,25 +27,25 @@ namespace DataLayer.DbObject
             }
             Position = position;
             string[] chordStrings = measureString.Split(new char[] { ' ' });
-            if (chordStrings[0].Length == 1)
-            {
-                if (chordStrings[0].StartsWith('F'))
-                {
-                    Clef = (int)ClefEnum.Fa;
-                }
-                else
-                {
-                    Clef = (int)ClefEnum.Sol;
-                }
+            //if (chordStrings[0].Length == 1)
+            //{
+            //    if (chordStrings[0].StartsWith('F'))
+            //    {
+            //        Clef = (int)ClefEnum.Fa;
+            //    }
+            //    else
+            //    {
+            //        Clef = (int)ClefEnum.Sol;
+            //    }
 
-                IEnumerable<string> realChordStrings = chordStrings.Skip(1);
-                Chords = realChordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
-            }
-            else
-            {
-                Clef = (int)ClefEnum.Sol;
-                Chords = chordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
-            }
+            //    IEnumerable<string> realChordStrings = chordStrings.Skip(1);
+            //    Chords = realChordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
+            //}
+            //else
+            //{
+            //    Clef = (int)ClefEnum.Sol;
+            //}
+            Chords = chordStrings.Select((nString, i) => new Chord(0, i + 1, nString)).ToList();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -57,15 +57,14 @@ namespace DataLayer.DbObject
         public Sheet? LeftSheet { get; set; }
 
         public int Position { get; set; }
-        public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<Chord> Chords { get; set; }
         public string ToSymbol(List<Note> noteList)
         {
             var sb = new StringBuilder();
-            if (Clef == (int)ClefEnum.Sol)
-            {
-                sb.Append("F ");
-            }
+            //if (Clef == (int)ClefEnum.Sol)
+            //{
+            //    sb.Append("F ");
+            //}
             foreach (Chord ch in Chords)
             {
                 sb.Append(ch.ToSymbol(noteList));

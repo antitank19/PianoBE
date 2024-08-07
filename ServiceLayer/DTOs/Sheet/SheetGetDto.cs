@@ -1,4 +1,5 @@
 ﻿using DataLayer.DbObject;
+using DataLayer.EnumsAndConsts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace ServiceLayer.DTOs
         public int InstrumentId { get; set; }
         public string InstrumentName { get; set; }
         public string SheetFile { get; set; }
+        public KeySignatureEnum KeySignature{ get; set; }
         public string RightSymbol { get; set; }
         public string LeftSymbol { get; set; }
         public ICollection<MeasureGetDto> RightMeasures { get; set; }

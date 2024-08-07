@@ -27,6 +27,12 @@ namespace DataLayer.DbObject
             {
                 MeasureId = measureId;
                 Position = position;
+                int faClefIndex = chordString.IndexOf("F:");
+                if (chordString.Contains("F:"))
+                {
+                    Clef = (int)ClefEnum.Fa;
+                    chordString = chordString.Substring(faClefIndex + 2).Trim();
+                }
                 if (!chordString.Contains(PitchConst.Pause))
                 {
 
@@ -57,6 +63,8 @@ namespace DataLayer.DbObject
 
         //Position: thứ tự note trong khuôn nhạc
         public int Position { get; set; } = 1;
+        public int Clef { get; set; } = (int)ClefEnum.Sol;
+
         public ICollection<ChordNote> ChordNotes { get; set; }
 
         public int MeasureId { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DataLayer.EnumsAndConsts;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace ServiceLayer.DTOs
         public int BottomSignature { get; set; }
         public string RightSymbol { get; set; }
         public string? LeftSymbol { get; set; }
+        public KeySignatureEnum KeySignature { get; set; }
     }
 }
