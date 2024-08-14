@@ -93,6 +93,15 @@
             return sameTime && sameHand;
         }
 
+
+        //
+        public static int Compare(int noteNumber1, int noteNumber2)
+        {
+            bool sameHand = Math.Abs(noteNumber1 - noteNumber2) <= PitchThreshold;
+
+            return -1;
+        }
+
         public static bool AreNotesInSameTime(double startTime1, double startTime2)
         {
             return Math.Abs(startTime1 - startTime2) <= TimeThreshold;

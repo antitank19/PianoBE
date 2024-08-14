@@ -70,13 +70,15 @@ public partial class MeasureValidator
         //TestNumberOfBeat();
         //ReadMidiFile("D:\\FPT\\Piano\\f1d4cb7b-9e3b-445e-a3e7-f97fc78e5434_Sao_Sang.mid");
         //ReadMidiFileWithTimeSignature("C:\\Users\\DELL\\Documents\\Zalo Received Files\\Sao_Sang.mid");
-        ReadMidiFileWithTimeSignatureOld("C:\\Users\\DELL\\Documents\\Zalo Received Files\\Sao_Sang.mid");
+
+        //ReadMidiFileWithTimeSignatureOld("C:\\Users\\DELL\\Documents\\Zalo Received Files\\Sao_Sang.mid");
         Console.WriteLine("===========================================\n===========================================");
         Console.WriteLine("===========================================\n===========================================");
-        ReadMidiFileWithChordAndSynchronize("C:\\Users\\DELL\\Documents\\Zalo Received Files\\Sao_Sang.mid");
-        Console.WriteLine("===========================================\n===========================================");
-        Console.WriteLine("===========================================\n===========================================");
+        //ReadMidiFileWithChordAndSynchronize("C:\\Users\\DELL\\Documents\\Zalo Received Files\\Sao_Sang.mid");
+        //Console.WriteLine("===========================================\n===========================================");
+        //Console.WriteLine("===========================================\n===========================================");
         MyReadMidiFile("C:\\Users\\DELL\\Documents\\Zalo Received Files\\Sao_Sang.mid");
+        
         //ReadMidiFileWithChordAndSynchronize("C:\\Users\\DELL\\Documents\\Zalo Received Files\\fur_elise.mid");
         //Console.WriteLine("===========================================\n===========================================");
         //MyReadMidiFile("C:\\Users\\DELL\\Documents\\Zalo Received Files\\fur_elise.mid");
@@ -484,7 +486,7 @@ public partial class MeasureValidator
         foreach (var measure in notesInMeasures)
         {
             Console.WriteLine($"Measure {measure.Key + 1} (Time Signature: {beatsPerMeasure}/{bottomSignature}):");
-            foreach (var note in measure.Value)
+            foreach (var note in measure.Value.OrderBy(n=>n.Item2))
             {
                 string noteName = MidiUtils.GetNoteName(note.Item1);
                 string noteType = MidiUtils.GetNoteType(note.Item3, beatsPerMeasure);
@@ -923,13 +925,235 @@ public partial class MeasureValidator
                 {
                     double startBeat = noteOnEvent.AbsoluteTime / ticksPerBeat;
                     int deltaTime = noteOnEvent.DeltaTime;
+                    int noteLength = noteOnEvent.NoteLength;
+                    //var hand = MidiUtils.GetHand(noteOnEvent.NoteNumber, middleC);
+                    allNotes.Add(new MidiNote
+                    {
+                        NoteNumber = noteOnEvent.NoteNumber,
+                        StartTime = startBeat,
+                        EndTime = 0,
+                        NoteLength = noteLength,
+                        DurationInBeat = noteLength/ticksPerBeat,
+                        DeltaTime = deltaTime,
+                        OffEventEndTime = noteOnEvent.OffEvent.AbsoluteTime / ticksPerBeat,
+                        //EndTime = noteOnEvent.OffEvent.AbsoluteTime / ticksPerBeat
+                        //Hand = hand
+                    });
+                }
+                else if (midiEvent is NoteEvent noteEvent && (noteEvent is NoteOnEvent && noteEvent.Velocity == 0 || midiEvent.CommandCode == MidiCommandCode.NoteOff))
+                {
+                    var startNote = allNotes.FirstOrDefault(n => n.NoteNumber == noteEvent.NoteNumber && n.EndTime == 0);
+                    if (startNote != null)
+                    {
+                        allNotes.Remove(startNote);
+                        double startBeat = startNote.StartTime;
+                        double endBeat = noteEvent.AbsoluteTime / ticksPerBeat;
+                        startNote.EndTime = endBeat;
+
+                        allNotes.Add(new MidiNote
+                        {
+                            StartTime = startBeat,
+                            NoteNumber = noteEvent.NoteNumber,
+                            EndTime = endBeat,
+                            NoteLength = startNote.NoteLength,
+                            DurationInBeat = startNote.DurationInBeat,
+                            DeltaTime = startNote.DeltaTime,
+                            OffEventEndTime = startNote.OffEventEndTime,
+                            //Hand = hand
+                        });
+                    }
+                }
+            }
+        }
+        Console.WriteLine("All notes: ");
+
+        // Group notes into measures
+        foreach (var note in allNotes.OrderBy(n=>n.StartTime))
+        {
+            int measure = (int)(note.StartTime / beatsPerMeasure);
+            //if(MidiUtils.GetHand(note.NoteNumber, MiddleC)== "Right Hand")
+            {
+                Console.WriteLine($"{MidiUtils.GetHand(note.NoteNumber, MiddleC)}, Measure: {measure} - Notes: {MidiUtils.GetNoteName(note.NoteNumber)}, Start Time (beats): {note.StartTime}, DeltaTime: {note.DeltaTime}");
+                //Console.WriteLine($"Based on End-Start  Duration: {note.Duration} DurationBeat: {note.Duration}, End Time (beats): {note.EndTime}");
+                //Console.WriteLine($"Based on NoteLength Duration: {note.NoteLength} DurationBeat: {note.DurationInBeat}, End Time (beats): {note.EndTime}");
+                Console.WriteLine($"Based on OffEvent   Duration: {note.NoteLength} DurationBeat: {note.DurationInBeat}, End Time (beats): {note.OffEventEndTime}");
+            }
+            Console.WriteLine("/////////////////////////////////////////////");
+            if (!measures.ContainsKey(measure))
+            {
+                measures[measure] = new List<MidiNote>();
+            }
+            measures[measure].Add(note);
+        }
+
+        // Process each measure
+        string leftSybol = "";
+        string rightSybol = "";
+
+        foreach (var measure in measures)
+        {
+            Console.WriteLine($"Measure {measure.Key + 1}:");
+            var notesInMeasure = measure.Value;
+
+            // Group notes into chords based on synchronization
+            var chords = new List<MidiChord>();
+
+            foreach (MidiNote note in notesInMeasure)
+            {
+                List<MidiChord> sameTimeChords = chords.Where(chord => MidiUtils.AreNotesInSameTime(chord.StartTime, note.StartTime)).ToList();
+
+                if (sameTimeChords.Any())
+                {
+                    List<MidiChord> matchingChords = chords.Where(chord => MidiUtils.AreNotesInSameChord(chord.StartTime, note.StartTime, chord.Notes.First().NoteNumber, note.NoteNumber)).ToList();
+                    if (matchingChords.Any())
+                    {
+                        MidiChord chord = matchingChords.First();
+                        chord.Notes.Add(note);
+                    }
+                    else
+                    {
+                        //chords.Add(new MidiChord
+                        //{
+                        //    StartTime = note.StartTime,
+                        //    Notes = new List<MidiNote> { note },
+                        //    DurationInBeat = note.DurationInBeat,
+                        //    Hand = MidiUtils.GetHand(note.NoteNumber, sameTimeChords.First().Notes.First().NoteNumber)
+                        //});
+                        
+                        foreach (var chord in sameTimeChords)
+                        {
+                            //nằm trên ngưỡng trên của chord
+                            if (note.NoteNumber - chord.Notes.Select(n => n.NoteNumber).Max() > 5)
+                            {
+                                chords.Add(new MidiChord
+                                {
+                                    StartTime = note.StartTime,
+                                    Notes = new List<MidiNote> { note },
+                                    DurationInBeat = note.DurationInBeat,
+                                    //Hand = MidiUtils.GetHand(note.NoteNumber, sameTimeChords.First().Notes.First().NoteNumber)
+                                    Hand = "Right Hand"
+                                });
+                                chord.Hand = "Left Hand";
+                            } 
+                            else
+                            {
+                                chords.Add(new MidiChord
+                                {
+                                    StartTime = note.StartTime,
+                                    Notes = new List<MidiNote> { note },
+                                    DurationInBeat = note.DurationInBeat,
+                                    //Hand = MidiUtils.GetHand(note.NoteNumber, sameTimeChords.First().Notes.First().NoteNumber)
+                                    Hand = "Left Hand"
+                                });
+                            }
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    chords.Add(new MidiChord
+                    {
+                        StartTime = note.StartTime,
+                        Notes = new List<MidiNote> { note },
+                        DurationInBeat = note.DurationInBeat,
+                        //Hand = MidiUtils.GetHand(note.NoteNumber, MiddleC)
+                        Hand = "Right Hand"
+                    });
+                }
+
+            }
+
+            // Print the synchronized notes and chords for this measure
+            foreach (var chord in chords)
+            {
+                var notesNames = chord.Notes
+                    .Select(n => $"{MidiUtils.GetNoteName(n.NoteNumber)}_{MidiUtils.GetNoteTypeDuration(n.DurationInBeat, beatsPerMeasure)}")
+                    .ToList();
+                string notesName = string.Join(", ", notesNames);
+                double chordEndTime = chord.Notes.Max(n => n.StartTime); // Use max end time to calculate duration
+                double durationBeats = chordEndTime - chord.StartTime;
+                string noteType = MidiUtils.GetNoteType(durationBeats, beatsPerMeasure);
+                double noteTypeDuration = MidiUtils.GetNoteTypeDuration(durationBeats, beatsPerMeasure);
+
+                //Console.WriteLine($"  {chord.Notes.First().Hand} - Notes: {notesName}, Start Time (beats): {chord.StartTime}, Duration (beats): {durationBeats}, Type: {noteType}");
+                //Console.WriteLine($"  {chord.Hand} - Notes: {notesName}, Type: {noteType}, Duration (beats): {durationBeats}, Type: {noteType}, Start Time (beats): {chord.StartTime}");
+                Console.WriteLine($"  {chord.Hand} - Notes: {notesName}, Type: {noteType}, Duration (beats): {chord.DurationInBeat}, Type: {noteType}, Start Time (beats): {chord.StartTime}");
+                if(chord.Hand == "Left Hand")
+                {
+                    leftSybol += $"{notesName}_{noteTypeDuration} ";
+                }
+                else
+                {
+                    rightSybol += $"{notesName}_{noteTypeDuration} ";
+                }
+            }
+            leftSybol += "/";
+            rightSybol += "/";
+        }
+        Console.WriteLine();
+        Console.WriteLine("Left symbol: " + leftSybol);
+        Console.WriteLine();
+        Console.WriteLine("Right symbol: " + rightSybol);
+        Console.ReadLine();
+    }
+
+    public static void MyReadMidiFile2(string filePath)
+    {
+        var midiFile = new MidiFile(filePath, false);
+
+        // Calculate Middle C dynamically
+        //int middleC = 60; // MIDI note number for Middle C (C4)
+
+        // Default tempo and time signature
+        double tempoBPM = 120.0;
+        int beatsPerMeasure = 4;
+        int bottomSignature = 4;
+        bool timeSignatureFound = false;
+
+        // Find the tempo and time signature of the MIDI file
+        foreach (IList<MidiEvent>? track in midiFile.Events)
+        {
+            foreach (MidiEvent midiEvent in track)
+            {
+                if (midiEvent is TempoEvent tempoEvent)
+                {
+                    tempoBPM = tempoEvent.Tempo;
+                }
+                else if (midiEvent is TimeSignatureEvent timeSignatureEvent && !timeSignatureFound)
+                {
+                    beatsPerMeasure = timeSignatureEvent.Numerator;
+                    bottomSignature = (int)Math.Pow(2, timeSignatureEvent.Denominator);
+                    timeSignatureFound = true;
+                    Console.WriteLine($"Initial time signature event: {beatsPerMeasure}/{bottomSignature}");
+                }
+            }
+        }
+
+        // Calculate the ticks per beat based on tempo
+        double ticksPerBeat = midiFile.DeltaTicksPerQuarterNote;
+        Console.WriteLine($"Ticks per beat: {ticksPerBeat}");
+
+        // Maps to hold note on events and their start ticks
+        var allNotes = new List<MidiNote>();
+        var measures = new SortedDictionary<int, List<MidiNote>>();
+
+        foreach (IList<MidiEvent>? track in midiFile.Events)
+        {
+            foreach (MidiEvent midiEvent in track)
+            {
+                if (midiEvent is NoteOnEvent noteOnEvent && noteOnEvent.Velocity > 0)
+                {
+                    double startBeat = noteOnEvent.AbsoluteTime / ticksPerBeat;
+                    int deltaTime = noteOnEvent.DeltaTime;
                     int length = noteOnEvent.NoteLength;
                     //var hand = MidiUtils.GetHand(noteOnEvent.NoteNumber, middleC);
                     allNotes.Add(new MidiNote
                     {
                         StartTime = startBeat,
                         NoteNumber = noteOnEvent.NoteNumber,
-                        Length = length,
+                        NoteLength = length,
                         DeltaTime = deltaTime,
                         //Hand = hand
                     });
@@ -1025,7 +1249,7 @@ public partial class MeasureValidator
 
                 //Console.WriteLine($"  {chord.Notes.First().Hand} - Notes: {notesName}, Start Time (beats): {chord.StartTime}, Duration (beats): {durationBeats}, Type: {noteType}");
                 Console.WriteLine($"  {chord.Hand} - Notes: {notesName}, Type: {noteType}, Duration (beats): {durationBeats}, Type: {noteType}, Start Time (beats): {chord.StartTime}");
-                if(chord.Hand == "Left Hand")
+                if (chord.Hand == "Left Hand")
                 {
                     leftSybol += $"{notesName}_{noteTypeDuration} ";
                 }
@@ -1043,7 +1267,6 @@ public partial class MeasureValidator
         Console.WriteLine("Right symbol: " + rightSybol);
         Console.ReadLine();
     }
-
 
     #endregion
 }
