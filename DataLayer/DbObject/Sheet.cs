@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer.EnumsAndConsts;
+using DataLayer.Base;
 
 namespace DataLayer.DbObject
 {
-    public class Sheet
+    public class Sheet : BaseEntity
     {
         public Sheet()
         {
@@ -84,5 +85,6 @@ namespace DataLayer.DbObject
         public ICollection<Measure> RightMeasures { get; set; }   = new List<Measure>();
         public string? LeftSymbol { get; set; }
         public ICollection<Measure>? LeftMeasures { get; set; }  = new List<Measure> ();
+        public ICollection<PlayTracking> PlayTrackings { get; set; }
     }
 }

@@ -63,6 +63,7 @@ namespace ServiceLayer.Services.Implementation.Db
         public async Task<SheetGetDto> CreateSheetAsync(SheetCreateDto input)
         {
             Sheet sheet = mapper.Map<Sheet>(input);
+            sheet.CreatedTime = DateTime.Now;
             sheet.ToSymbol(context.Notes.ToList());
             await context.Sheets.AddAsync(sheet);
             await context.SaveChangesAsync();

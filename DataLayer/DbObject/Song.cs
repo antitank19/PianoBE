@@ -26,9 +26,11 @@ namespace DataLayer.DbObject
 
         public string Title { get; set; }
         public string Composer { get; set; }
+        public string Image { get; set; }
 
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
+
         public int ArtistId { get; set; }
         public User Artist { get; set; }
         ///// <summary>
@@ -37,6 +39,7 @@ namespace DataLayer.DbObject
         //public int Signature1 { get; set; }
         //public int Signature2 { get; set; }
         public ICollection<Sheet> Sheets { get; set; } = new List<Sheet>();
+        public ICollection<Genre>? Genres { get; set; } = new List<Genre>();
     }
 }
   

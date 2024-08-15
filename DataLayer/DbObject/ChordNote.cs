@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataLayer.EnumsAndConsts;
+using DataLayer.Base;
 
 namespace DataLayer.DbObject
 {
-    public class ChordNote
+    public class ChordNote : BaseEntity
     {
         public ChordNote() { }
         public ChordNote(string noteInfo)

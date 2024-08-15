@@ -17,5 +17,6 @@ namespace ServiceLayer.DTOs
         public int GenreId { get; set; }
         public int ArtistId { get; set; }
         public SheetCreateDto Sheet { get; set; }
+        public string Image { get; set; }
     }
 }

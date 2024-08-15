@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using DataLayer.DbObject;
-using DataLayer.Migrations;
 using ServiceLayer.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ServiceLayer.DTOs.User;
+using ServiceLayer.ModelViews.Genre;
+using ServiceLayer.ModelViews.Instruments;
+using ServiceLayer.ModelViews.Songs;
 
 namespace ServiceLayer.Mapper
 {
@@ -21,11 +19,48 @@ namespace ServiceLayer.Mapper
             MapChord();
             MapChordNote();
             MapNote();
+            MapUser();
+            MapGenre();
+            MapInstruments();
+        }
+
+        private void MapInstruments()
+        {
+            CreateMap<Instrument, UpdateInstrumentsModel>().ReverseMap();
+            CreateMap<Instrument, CreateInstrumentsModel>().ReverseMap();
+            CreateMap<Instrument, ResponseInstrumentsModel>().ReverseMap();
+        }
+
+
+        private void MapGenre()
+        {
+            CreateMap<Genre, GetGenreResponse>().ReverseMap();
+            CreateMap<Genre, CreateGenreResponse>().ReverseMap();
+            CreateMap<CreateGenreRequest, Genre>();
+            CreateMap<UpdateGenreRequest, Genre>();
+            CreateMap<UpdateGenreRequest, UpdateGenreResponse>();
+            CreateMap<Genre, UpdateGenreResponse>().ReverseMap();
         }
 
         private void MapNote()
         {
             CreateMap<Note, NoteGetDto>();
+        }
+
+        private void MapUser()
+        {
+            CreateMap<User, GetArtistInSongResponse>().ReverseMap();
+
+            CreateMap<AddNewUserDto, User>()
+                .ForMember(dest => dest.DateOfBirth, opt =>
+                {
+                    opt.MapFrom(src => DateOnly.Parse(src.DateOfBirth));
+                });
+            CreateMap<UpdateUserDto, User>()
+                .ForMember(dest => dest.DateOfBirth, opt =>
+                {
+                    opt.MapFrom(src => DateOnly.Parse(src.DateOfBirth));
+                });
         }
 
         private void MapChord()
@@ -71,10 +106,16 @@ namespace ServiceLayer.Mapper
                 {
 
                     opt.MapFrom(src =>
-                         new List<Sheet> 
-                         { new Sheet(src.Sheet.SongId, src.Sheet.InstrumentId, src.Sheet.TopSignature, src.Sheet.BottomSignature, src.Sheet.KeySignature, src.Sheet.RightSymbol, src.Sheet.LeftSymbol) }
+                         new List<Sheet> { 
+                             new Sheet(src.Sheet.SongId, src.Sheet.InstrumentId, src.Sheet.TopSignature, src.Sheet.BottomSignature, src.Sheet.KeySignature, src.Sheet.RightSymbol, src.Sheet.LeftSymbol) 
+                         }
                     );
                 });
+            CreateMap<Song, SongResponse>()
+               .ForMember(dest => dest.Genres, opt =>
+               {
+                   opt.MapFrom(src => src.Genres.Select(g => g.Name).ToList());
+               });
         }
     }
 }
