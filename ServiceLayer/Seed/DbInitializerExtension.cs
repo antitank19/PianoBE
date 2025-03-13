@@ -44,10 +44,13 @@ namespace ServiceLayer.Seed
                 ArgumentNullException.ThrowIfNull(context, nameof(context));
                 if (isInMemory)
                 {
-                    #region Genres
+                    #region Genre
                     if (!context.Genres.Any())
                     {
-                        context.Genres.AddRange(DbSeed.Genres);
+                        foreach (var Genre in DbSeed.Genres)
+                        {
+                            await context.Genres.AddAsync(Genre);
+                        }
                     }
                     #endregion
                     #region Roles
@@ -140,7 +143,7 @@ namespace ServiceLayer.Seed
                 }
                 else
                 {
-                    #region seed Genres
+                    #region Genre
                     if (!context.Genres.Any())
                     {
                         using (var transaction = context.Database.BeginTransaction())

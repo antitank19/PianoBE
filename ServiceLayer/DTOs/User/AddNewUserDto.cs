@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -33,6 +34,6 @@ namespace ServiceLayer.DTOs.User
         public String DateOfBirth { get; set; }
         [Required(ErrorMessage = "Role is required")]
         public String Role { get; set; }
-        public String Image { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

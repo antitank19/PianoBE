@@ -15,5 +15,7 @@ namespace ServiceLayer.ModelViews.Songs
         public string CreatedTime {  get; set; }
         public string LastUpdatedTime { get; set;}
         public string Image {  get; set; }
+        public List<string> GenreId { get; set; }
+        public string ArtistName { get; set; }
     }
 }

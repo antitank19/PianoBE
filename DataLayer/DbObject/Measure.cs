@@ -5,7 +5,7 @@ using DataLayer.Base;
 
 namespace DataLayer.DbObject
 {
-    public class Measure : BaseEntity
+    public class Measure: BaseEntity
     {
         public Measure()
         {
@@ -65,7 +65,7 @@ namespace DataLayer.DbObject
             {
                 sb.Append(ch.ToSymbol(noteList));
             }
-            string measureString = sb.ToString().Trim()+"/";
+            string measureString = sb.ToString().Trim() + "/";
             return measureString;
         }
 

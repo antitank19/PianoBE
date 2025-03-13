@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -31,5 +32,7 @@ namespace ServiceLayer.DTOs.User
         [Required(ErrorMessage = "Date of Birth is required")]
         [DataType(DataType.Date, ErrorMessage = "Invalid Date of Birth")]
         public String DateOfBirth { get; set; }
+
+        public IFormFile? Image { get; set; }
     }
 }

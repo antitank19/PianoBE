@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using DataLayer.Base;
 namespace DataLayer.DbObject
 {
     /// <summary>
@@ -18,28 +18,27 @@ namespace DataLayer.DbObject
     ///     currentX -= newNote.durration
     /// }
     /// </summary>
-    public class Song
+    public class Song: BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         public string Title { get; set; }
         public string Composer { get; set; }
         public string Image { get; set; }
 
-        public int GenreId { get; set; }
-        public Genre Genre { get; set; }
-
         public int ArtistId { get; set; }
         public User Artist { get; set; }
+
         ///// <summary>
         ///// Signature là cái kí hiệu cho như 2/4, 3/4 trên khuôn nhạc
         ///// </summary>
         //public int Signature1 { get; set; }
         //public int Signature2 { get; set; }
         public ICollection<Sheet> Sheets { get; set; } = new List<Sheet>();
+        
         public ICollection<Genre>? Genres { get; set; } = new List<Genre>();
+        public ICollection<User>? Players { get; set; }
     }
 }
   

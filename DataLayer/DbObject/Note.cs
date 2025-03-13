@@ -4,7 +4,7 @@ using DataLayer.Base;
 
 namespace DataLayer.DbObject
 {
-    public class Note    : BaseEntity
+    public class Note : BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

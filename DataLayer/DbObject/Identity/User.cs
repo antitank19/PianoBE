@@ -1,5 +1,7 @@
-﻿using DataLayer.EnumsAndConsts;
+﻿using DataLayer.DbObject.Enum;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.DbObject
 {
@@ -30,5 +32,6 @@ namespace DataLayer.DbObject
 
 
         public ICollection<Song> Songs { get; set; }
+        public ICollection<Song> FavoriteSong { get; set; } = new List<Song>();
     }
 }

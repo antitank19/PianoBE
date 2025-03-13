@@ -1,4 +1,5 @@
 ﻿using ServiceLayer.DTOs;
+using ServiceLayer.DTOs.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace ServiceLayer.Services.Interface.Db
         public Task<SheetGetDto> CreateSheetAsync(SheetCreateDto input);
         public Task<SheetGetDto> CreateSheetAsync(SheetSymbolCreateDto input);
         public Task<SheetGetDto> CreateSheetAsync(SheetMidiCreateDto input);
+        public Task<SheetGetDto> CreateSheetAsync(SheetXmlCreateDto input);
+        public Task<SheetGetDto> UpdateSheetAsync(SheetUpdateDto input);
         public Task<bool> IsExistAsync(int sheetId);
+        Task DeleteSheet(int id);
     }
 }

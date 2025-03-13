@@ -46,11 +46,11 @@ namespace ServiceLayer.Validation
         #endregion
         public async Task ValidateAsync(SheetSymbolCreateDto input, IServiceWrapper services)
         {
-            if (!await services.Songs.IsExistAsync(input.SongId))
+            if (!await services.SongService.IsExistAsync(input.SongId))
             {
                 AddError("Invalid top signature", nameof(input.TopSignature));
             }
-            if (!await services.Instruments.IsExistAsync(input.InstrumentId))
+            if (!await services.InstrumentService.IsExistAsync(input.InstrumentId))
             {
                 AddError("Invalid top signature", nameof(input.TopSignature));
             }
@@ -122,11 +122,11 @@ namespace ServiceLayer.Validation
 
         public async Task ValidateAsync(SheetCreateDto input, IServiceWrapper services)
         {
-            if (!await services.Songs.IsExistAsync(input.SongId))
+            if (!await services.SongService.IsExistAsync(input.SongId))
             {
                 AddError("Invalid top signature", nameof(input.TopSignature));
             }
-            if (!await services.Instruments.IsExistAsync(input.InstrumentId))
+            if (!await services.InstrumentService.IsExistAsync(input.InstrumentId))
             {
                 AddError("Invalid top signature", nameof(input.TopSignature));
             }
@@ -158,13 +158,35 @@ namespace ServiceLayer.Validation
             }
         }
 
+
         public async Task ValidateAsync(SheetMidiCreateDto input, IServiceWrapper services)
         {
-            if (!await services.Songs.IsExistAsync(input.SongId))
+            if (!await services.SongService.IsExistAsync(input.SongId))
             {
                 AddError("Invalid top signature", nameof(input.TopSignature));
             }
-            if (!await services.Instruments.IsExistAsync(input.InstrumentId))
+            if (!await services.InstrumentService.IsExistAsync(input.InstrumentId))
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+            }
+            if (input.TopSignature <= 0)
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+
+            }
+            if (input.BottomSignature < input.TopSignature)
+            {
+                AddError("Invalid bottom signature", nameof(input.BottomSignature));
+            }
+        }
+
+        public async Task ValidateAsync(SheetXmlCreateDto input, IServiceWrapper services)
+        {
+            if (!await services.SongService.IsExistAsync(input.SongId))
+            {
+                AddError("Invalid top signature", nameof(input.TopSignature));
+            }
+            if (!await services.InstrumentService.IsExistAsync(input.InstrumentId))
             {
                 AddError("Invalid top signature", nameof(input.TopSignature));
             }

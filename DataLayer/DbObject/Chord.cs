@@ -1,15 +1,11 @@
 ﻿using DataLayer.Base;
 using DataLayer.EnumsAndConsts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DataLayer.DbObject
 {
-    public class Chord : BaseEntity
+    public class Chord: BaseEntity
     {
         public Chord() { }
         /// <summary>

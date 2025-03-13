@@ -15,7 +15,6 @@ using ServiceLayer.CustomException;
 using DataLayer.DbObject;
 using Microsoft.AspNetCore.Http;
 using ServiceLayer.Services.Interface;
-using DataLayer.EnumsAndConsts;
 
 namespace ServiceLayer.Services.Implementation
 {
@@ -72,7 +71,7 @@ namespace ServiceLayer.Services.Implementation
             {
                 var user = await _userManager.FindByEmailAsync(email)
                     ?? throw new ErrorException(StatusCodes.Status404NotFound, "User not found");
-                if(user.LoginTypeEnum != LoginTypeEnum.DATABASE)
+                if(user.LoginTypeEnum != DataLayer.DbObject.Enum.LoginTypeEnum.DATABASE)
                 {
                     throw new ErrorException(StatusCodes.Status404NotFound, "User not found");
                 }

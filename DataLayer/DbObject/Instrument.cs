@@ -4,7 +4,7 @@ using DataLayer.Base;
 
 namespace DataLayer.DbObject
 {
-    public class Instrument : BaseEntity
+    public class Instrument: BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

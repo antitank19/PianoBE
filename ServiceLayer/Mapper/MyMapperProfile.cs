@@ -1,10 +1,17 @@
 ﻿using AutoMapper;
 using DataLayer.DbObject;
 using ServiceLayer.DTOs;
-using ServiceLayer.DTOs.User;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Diagnostics.Metrics;
 using ServiceLayer.ModelViews.Genre;
 using ServiceLayer.ModelViews.Instruments;
 using ServiceLayer.ModelViews.Songs;
+using Instrument = DataLayer.DbObject.Instrument;
+using ServiceLayer.DTOs.User;
 
 namespace ServiceLayer.Mapper
 {
@@ -23,7 +30,6 @@ namespace ServiceLayer.Mapper
             MapGenre();
             MapInstruments();
         }
-
         private void MapInstruments()
         {
             CreateMap<Instrument, UpdateInstrumentsModel>().ReverseMap();
@@ -41,7 +47,7 @@ namespace ServiceLayer.Mapper
             CreateMap<UpdateGenreRequest, UpdateGenreResponse>();
             CreateMap<Genre, UpdateGenreResponse>().ReverseMap();
         }
-
+        
         private void MapNote()
         {
             CreateMap<Note, NoteGetDto>();
@@ -92,30 +98,44 @@ namespace ServiceLayer.Mapper
             CreateMap<Sheet, SheetGetDto>();
 
             CreateMap<SheetCreateDto, Sheet>();
+            CreateMap<SheetUpdateDto, Sheet>();
         }
 
         private void MapSong() { 
-            CreateMap<Song, SongGetDto>();
-            CreateMap<SongCreateDto, Song>()
-                .ForMember(dest => dest.Sheets, opt =>
-                {
-                    opt.MapFrom(src => new List<SheetCreateDto> { src.Sheet });
-                });
+            CreateMap<Song, SongGetDto>()
+            .ForMember(dest => dest.GenreNames, opt =>
+            {
+                opt.MapFrom(src => src.Genres.Select(g=>g.Name));
+            });
+            CreateMap<SongUpdateDto, Song>();
+            CreateMap<SongCreateDto, Song>();
+            //.ForMember(dest => dest.Sheets, opt =>
+            //{
+            //    opt.MapFrom(src => new List<SheetCreateDto> { src.Sheet });
+            //});
             CreateMap<SongSymbolCreateDto, Song>()
                 .ForMember(dest => dest.Sheets, opt =>
                 {
-
-                    opt.MapFrom(src =>
-                         new List<Sheet> { 
-                             new Sheet(src.Sheet.SongId, src.Sheet.InstrumentId, src.Sheet.TopSignature, src.Sheet.BottomSignature, src.Sheet.KeySignature, src.Sheet.RightSymbol, src.Sheet.LeftSymbol) 
-                         }
+                    opt.MapFrom(src =>new List<Sheet>{ 
+                        new Sheet(src.Sheet.SongId, src.Sheet.InstrumentId, src.Sheet.Name, src.Sheet.Level, 
+                            src.Sheet.TopSignature, src.Sheet.BottomSignature, src.Sheet.KeySignature, 
+                            src.Sheet.RightSymbol, src.Sheet.LeftSymbol) 
+                        }
                     );
                 });
             CreateMap<Song, SongResponse>()
-               .ForMember(dest => dest.Genres, opt =>
-               {
-                   opt.MapFrom(src => src.Genres.Select(g => g.Name).ToList());
-               });
+                .ForMember(dest => dest.Genres, opt =>
+                {
+                    opt.MapFrom(src => src.Genres.Select(g => g.Name).ToList());
+                })
+                .ForMember(dest => dest.GenreId, opt =>
+                {
+                    opt.MapFrom(src => src.Genres.Select(g => g.Id.ToString()).ToList());
+                })
+                .ForMember(dest => dest.ArtistName, opt =>
+                {
+                    opt.MapFrom(src => src.Artist.Name);
+                }); ;
         }
     }
 }

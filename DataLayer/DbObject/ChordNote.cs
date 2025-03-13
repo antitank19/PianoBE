@@ -19,17 +19,16 @@ namespace DataLayer.DbObject
             //{
                 FillOctave(noteInfo);
                 FillChromatic(noteInfo);
-            //int slurIndex = noteInfo.IndexOf('-');
+            //}
             if (noteInfo.Contains("-"))
             {
                 string slurString = noteInfo.Split("-")[1];
                 if (slurString.Contains("_"))
                 {
-                    slurString= slurString.Split("_")[0];
+                    slurString = slurString.Split("_")[0];
                 }
                 SlurPosition = int.Parse(slurString);
             }
-            //}
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ServiceLayer.CustomException;
 using ServiceLayer.DTOs;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace ServiceLayer.Filter
 {
@@ -43,10 +44,37 @@ namespace ServiceLayer.Filter
                     error.AddError(fieldError.Key, fieldError.ErrorMessage);
                 }
             }
+            else if (ex is ErrorException errorException)
+            {
+
+                var errorResponse = new ErrorDTO
+                {
+                    Timestamp = DateTime.UtcNow,
+                    Status = errorException.StatusCode,
+                    Path = context.HttpContext.Request.Path
+                };
+                error.AddError(errorException.ErrorDetail.ErrorCode, errorException.ErrorDetail.ErrorMessage+"");
+                context.Result = new ObjectResult(errorResponse)
+                {
+                    StatusCode = errorException.StatusCode
+                };
+            }
             else
             {
-                error.AddError("General", ex.Message);
+                var genericErrorResponse = new ErrorDTO
+                {
+                    Timestamp = DateTime.UtcNow,
+                    Status = (int)HttpStatusCode.InternalServerError,
+                    Path = context.HttpContext.Request.Path
+                };
+
+                context.Result = new ObjectResult(genericErrorResponse)
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
             }
+
+            context.ExceptionHandled = true;
 
             context.Result = new ObjectResult(error)
             {

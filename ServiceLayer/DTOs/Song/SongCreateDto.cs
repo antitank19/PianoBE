@@ -1,4 +1,5 @@
 ﻿using DataLayer.DbObject;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,13 +11,13 @@ namespace ServiceLayer.DTOs
 {
     public class SongCreateDto
     {
-        [Required(ErrorMessage = "Title is required!")] 
+        [Required(ErrorMessage = "Title is required!")]
         public string Title { get; set; }
-        [Required(ErrorMessage = "Title is required!")] 
+        [Required(ErrorMessage = "Title is required!")]
         public string Composer { get; set; }
         public int GenreId { get; set; }
         public int ArtistId { get; set; }
-        public SheetCreateDto Sheet { get; set; }
-        public string Image { get; set; }
+        //public SheetCreateDto Sheet { get; set; }
+        public IFormFile ImageFile { get; set; }
     }
 }

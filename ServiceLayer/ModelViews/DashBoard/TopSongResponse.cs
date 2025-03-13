@@ -10,5 +10,8 @@ namespace ServiceLayer.ModelViews.DashBoard
     {
         public int Top {  get; set; }
         public int NumberPlays { get; set; }
+        public string SongName { get; set; }
+        public string ArtistName { get; set;}
+
     }
 }

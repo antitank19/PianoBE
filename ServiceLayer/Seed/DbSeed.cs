@@ -20,7 +20,7 @@ namespace ServiceLayer.Seed
             new Role { Id = 3, Name = "Player", NormalizedName = "PLAYER" }
         };
         public static Instrument[] Instruments = new Instrument[]
-                {
+        {
             new Instrument
             {
                 Id    = 1,
@@ -30,12 +30,32 @@ namespace ServiceLayer.Seed
             {
                 Id    = 2,
                 Name = "Guitar"
+            } 
+        };
+        public static DataLayer.DbObject.Genre[] Genres = new DataLayer.DbObject.Genre[]
+        {
+            new DataLayer.DbObject.Genre
+            {
+                Id    = 1,
+                Name = "Country"    ,
+                Description = "Country"    ,
+                CreatedTime = DateTime.Now,
+                IsActive = true,    
+                IsDeleted = false,
+            },
+            new DataLayer.DbObject.Genre
+            {
+                Id    = 2,
+                Name = "Rock"    ,
+                Description = "Rock"    ,
+                CreatedTime = DateTime.Now,
+                IsActive = true,
+                IsDeleted = false,
             }
-                };
+        };
 
         public static Note[] Notes = new Note[]
         {
-#region normal
             // Octave 1
             new Note { Id = 1, Name = "C1", Octave = 1, Pitch = "C1" },
             new Note { Id = 2, Name = "D1", Octave = 1, Pitch = "D1" },
@@ -107,8 +127,7 @@ namespace ServiceLayer.Seed
             new Note { Id = 54, Name = "G8", Octave = 8, Pitch = "G8" },
             new Note { Id = 55, Name = "A8", Octave = 8, Pitch = "A8" },
             new Note { Id = 56, Name = "B8", Octave = 8, Pitch = "B8" },
-            #endregion
-#region b flat
+
             //1b
             new Note { Id = 57, Name = "C1b", Octave = 1, Pitch = "C1b" },
             new Note { Id = 58, Name = "D1b", Octave = 1, Pitch = "D1b" },
@@ -180,8 +199,7 @@ namespace ServiceLayer.Seed
             new Note { Id = 110, Name = "G8b", Octave = 8, Pitch = "G8b" },
             new Note { Id = 111, Name = "A8b", Octave = 8, Pitch = "A8b" },
             new Note { Id = 112, Name = "B8b", Octave = 8, Pitch = "B8b" },
-            #endregion
-            #region #
+
             //1#
             new Note { Id = 113, Name = "C1#", Octave = 1, Pitch = "C1#" },
             new Note { Id = 114, Name = "D1#", Octave = 1, Pitch = "D1#" },
@@ -253,10 +271,9 @@ namespace ServiceLayer.Seed
             new Note { Id = 166, Name = "G8#", Octave = 8, Pitch = "G8#" },
             new Note { Id = 167, Name = "A8#", Octave = 8, Pitch = "A8#" },
             new Note { Id = 168, Name = "B8#", Octave = 8, Pitch = "B8#" },
-            #endregion
 
             //Pause
-            new Note { Id = 169, Name = "Pause", Octave = 8, Pitch = "P" }
+            new Note { Id = 169, Name = "Pause", Octave = 8, Pitch = "Pause" }
         };
 
         public static User[] Admins = new User[]
@@ -321,12 +338,6 @@ namespace ServiceLayer.Seed
             }
         };
 
-        public static Genre[] Genres = new Genre[]
-        {
-            new Genre { Id = 1, Name = "Country" },
-            new Genre { Id = 2, Name = "Balad" }
-        };
-
         public static Song[] Songs = new Song[]
         {
             new Song
@@ -334,17 +345,16 @@ namespace ServiceLayer.Seed
                 Id=1,
                 ArtistId = 2,
                 Composer = "artist1",
-                GenreId=2,
                 Title="Song 1",
-
+                Image="",
             }   ,
             new Song
             {
                 Id=2,
                 ArtistId = 3,
                 Composer = "artist2",
-                GenreId=2,
                 Title="Song 2",
+                Image="",
             }
         };
 
@@ -355,7 +365,7 @@ namespace ServiceLayer.Seed
                  Id = 1,
                  InstrumentId = 1,
                  SongId = 1,
-                 SheetFile = "",
+                 MidiFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
              },
@@ -364,7 +374,7 @@ namespace ServiceLayer.Seed
                  Id = 2,
                  InstrumentId = 2,
                  SongId = 1,
-                 SheetFile = "",
+                 MidiFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
              },
@@ -373,7 +383,7 @@ namespace ServiceLayer.Seed
                  Id = 3,
                  InstrumentId = 2,
                  SongId = 2,
-                 SheetFile = "",
+                 MidiFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
              },
@@ -382,7 +392,7 @@ namespace ServiceLayer.Seed
                  Id = 4,
                  InstrumentId = 1,
                  SongId = 1,
-                 SheetFile = "https://firebasestorage.googleapis.com/v0/b/pianoaiapi.appspot.com/o/Midi%2Ff1d4cb7b-9e3b-445e-a3e7-f97fc78e5434_Sao_Sang.mid?alt=media&token=fb758635-1027-43cc-bbff-1a0db24177bb",
+                 MidiFile = "https://firebasestorage.googleapis.com/v0/b/pianoaiapi.appspot.com/o/Midi%2Ff1d4cb7b-9e3b-445e-a3e7-f97fc78e5434_Sao_Sang.mid?alt=media&token=fb758635-1027-43cc-bbff-1a0db24177bb",
                  TopSignature = 4,
                  BottomSignature = 4,
              },

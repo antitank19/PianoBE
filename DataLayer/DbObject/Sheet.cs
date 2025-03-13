@@ -5,38 +5,60 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataLayer.EnumsAndConsts;
 using DataLayer.Base;
+using DataLayer.EnumsAndConsts;
 
 namespace DataLayer.DbObject
 {
-    public class Sheet : BaseEntity
+    public class Sheet: BaseEntity
     {
         public Sheet()
         {
 
         }
-        public Sheet(int songId, int instrumentId, int topSignature, int bottomSignature, KeySignatureEnum keySignature,  string rightSheetString, string? leftSheetString = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="songId">Id of sheet's song</param>
+        /// <param name="instrumentId">Id of sheet's instrument</param>
+        /// <param name="name">Name of sheet</param>
+        /// <param name="level">Difficulty of sheet</param>
+        /// <param name="topSignature"></param>
+        /// <param name="bottomSignature"></param>
+        /// <param name="keySignature"></param>
+        /// <param name="rightSheetString"></param>
+        /// <param name="leftSheetString"></param>
+        public Sheet(int songId, int instrumentId, 
+            string name, int level, int topSignature, int bottomSignature, 
+            KeySignatureEnum keySignature, string rightSheetString, string? leftSheetString = null)
         {
             SongId = songId;
             InstrumentId = instrumentId;
+            Name = name;
+            Level = level;
             TopSignature = topSignature;
             BottomSignature = bottomSignature;
             KeySignature = keySignature;
-            string[] rightMeasureStrings = rightSheetString.Split('/');
-            //var measures = measureStrings.Select(mString => new Measure(mString));
-            //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
             RightSymbol = rightSheetString;
-            RightMeasures = rightMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
-            if (!String.IsNullOrWhiteSpace(leftSheetString))
-            {
-                string[] leftMeasureStrings = leftSheetString.Split('/');
-                //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
-                LeftMeasures = leftMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
-                LeftSymbol = leftSheetString;
-            }
+            LeftSymbol = leftSheetString;
+            DecodeSymbolToMeasure();
             //foreach
         }
+
+        public void DecodeSymbolToMeasure()
+        {
+            string[] rightMeasureStrings = RightSymbol.Split('/');
+            //var measures = measureStrings.Select(mString => new Measure(mString));
+            //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
+            RightMeasures = rightMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
+            if (!String.IsNullOrWhiteSpace(LeftSymbol))
+            {
+                string[] leftMeasureStrings = LeftSymbol.Split('/');
+                //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
+                LeftMeasures = leftMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
+            }
+        }
+
         public void ToSymbol(List<Note> noteLists)
         {
             StringBuilder rightSB1 = new StringBuilder("");
@@ -74,17 +96,21 @@ namespace DataLayer.DbObject
         public Song Song { get; set; }
         public int InstrumentId { get; set; }
         public Instrument Instrument { get; set; }
+        public int Level {  get; set; }
+        public string Name {  get; set; }
         /// <summary>
         /// Link of .mid file
         /// </summary>
-        public string? SheetFile { get; set; }
+        public string? MidiFile { get; set; }
+        public string? XmlFile { get; set; }
+        public string? BackgroundMusicFile { get; set; }
         public KeySignatureEnum KeySignature { get; set; } = KeySignatureEnum.None;
 
 
         public string? RightSymbol { get; set; }
-        public ICollection<Measure> RightMeasures { get; set; }   = new List<Measure>();
+        public ICollection<Measure> RightMeasures { get; set; }
         public string? LeftSymbol { get; set; }
-        public ICollection<Measure>? LeftMeasures { get; set; }  = new List<Measure> ();
+        public ICollection<Measure>? LeftMeasures { get; set; }
         public ICollection<PlayTracking> PlayTrackings { get; set; }
     }
 }

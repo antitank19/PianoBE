@@ -1,5 +1,7 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ServiceLayer.PaggingItems;
 using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 

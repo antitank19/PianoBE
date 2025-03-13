@@ -36,6 +36,10 @@ namespace DataLayer.DbContext
             #region identity
             modelBuilder.Entity<User>(b =>
             {
+                b.Property(e => e.DateOfBirth)
+                .HasConversion(
+                    v => v.HasValue ? new DateTime(v.Value.Year, v.Value.Month, v.Value.Day) : (DateTime?)null,
+                    v => v.HasValue ? DateOnly.FromDateTime(v.Value) : (DateOnly?)null);
                 // Each User can have many UserClaims
                 b.HasMany(e => e.UserClaims)
                     .WithOne(e => e.User)
@@ -89,6 +93,14 @@ namespace DataLayer.DbContext
                 e.HasMany(e => e.PlayTrackings)
                     .WithOne(e => e.Sheet)
                     .HasForeignKey(e => e.SheetId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+            // Configure the relationship between Song and User
+            modelBuilder.Entity<Song>(b =>
+            {
+                b.HasOne(s => s.Artist) 
+                    .WithMany(u => u.Songs) 
+                    .HasForeignKey(s => s.ArtistId) 
                     .OnDelete(DeleteBehavior.Restrict);
             });
         }
