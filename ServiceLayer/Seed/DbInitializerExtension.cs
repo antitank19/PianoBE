@@ -139,6 +139,13 @@ namespace ServiceLayer.Seed
                         context.ChordNotes.AddRange(DbSeed.ChordNotes);
                     }
                     #endregion
+                    #region seed PlayTrackking
+                    if (!context.PlayTracking.Any())
+                    {
+
+                        context.PlayTracking.AddRange(DbSeed.PlayTrackings);
+                    }
+                    #endregion
                     context.SaveChanges();
                 }
                 else
@@ -313,6 +320,19 @@ namespace ServiceLayer.Seed
                         {
                             context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ChordNotes ON");
                             context.ChordNotes.AddRange(DbSeed.ChordNotes);
+                            context.SaveChanges();
+                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT SongNotes OFF");
+                            transaction.Commit();
+                        }
+                    }
+                    #endregion
+                    #region seed ChordNotes
+                    if (!context.PlayTracking.Any())
+                    {
+                        using (var transaction = context.Database.BeginTransaction())
+                        {
+                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT PlayTracking ON");
+                            context.PlayTracking.AddRange(DbSeed.PlayTrackings);
                             context.SaveChanges();
                             //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT SongNotes OFF");
                             transaction.Commit();

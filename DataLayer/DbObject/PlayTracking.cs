@@ -15,5 +15,9 @@ namespace DataLayer.DbObject
         public int Point {  get; set; }
         public int SheetId { get; set; }
         public Sheet Sheet { get; set; }
+
+        [ForeignKey(nameof(Player))]  
+        public int PlayerId { get; set; }
+        public User Player{ get; set; }
     }
 }

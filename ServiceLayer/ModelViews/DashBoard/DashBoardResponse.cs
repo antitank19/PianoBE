@@ -9,6 +9,7 @@ namespace ServiceLayer.ModelViews.DashBoard
     public class DashBoardResponse
     {
         public int? UserNumber { get; set; }
+        public int? ActiveUserNumber { get; set; }
         public int? ArtistNumber {  get; set; }
         public int? NumberPlays { get; set; }
         public int? NumberSong { get; set; }

@@ -18,11 +18,20 @@ namespace API.Controllers
             _serviceWrapper = serviceWrapper;
         }
 
+        /// <summary>
+        /// Get All dasboard info
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="dateStart">yyyy-MM-ddThh:mm:ss</param>
+        /// <param name="dateEnd">yyyy-MM-ddThh:mm:ss</param>
+        /// <returns></returns>
+
         [HttpGet]
         public async Task<IActionResult> getAllInformation(int year, String dateStart, String dateEnd)
         {
             int numberArtist = await _serviceWrapper.UserService.CountArtists();
             int numberUser = await _serviceWrapper.UserService.CountUsers();
+            int numActivePlayer = await _serviceWrapper.PlayTrackingService.CountPlayerPlaying(DateTime.Parse(dateStart), DateTime.Parse(dateEnd));
             int numberSongs = await _serviceWrapper.SongService.CountSongs();
             List<PlaysInYearResponse> playsInYearResponses = await _serviceWrapper.PlayTrackingService.CountPlaysByYear(year);
             List<TopSongResponse> topSongResponses = await _serviceWrapper.PlayTrackingService.GetTopSongByDays(dateStart, dateEnd);
@@ -30,6 +39,7 @@ namespace API.Controllers
             {
                 ArtistNumber = numberArtist,
                 UserNumber = numberUser,
+                ActiveUserNumber = numActivePlayer,
                 NumberSong = numberSongs,
                 PlaysInYear = playsInYearResponses,
                 TopSong = topSongResponses

@@ -29,6 +29,9 @@ IConfiguration configuration = builder.Configuration;
 IWebHostEnvironment environment = builder.Environment;
 bool IsInMemory = configuration["ConnectionStrings:InMemory"].ToLower() == "true";
 bool SeedOnStartUp = configuration["ConnectionStrings:SeedOnStartUp"].ToLower() == "true";
+
+string connectionString = configuration.GetConnectionString("Default");
+
 // Add services to the container.
 #region dbContext
 builder.Services.AddDbContext<PianoContext>(options =>
@@ -42,8 +45,17 @@ builder.Services.AddDbContext<PianoContext>(options =>
     }
     else
     {
-        Console.WriteLine(configuration.GetConnectionString("Default"));
-        options.UseSqlServer(configuration.GetConnectionString("Default"), o =>
+        Console.WriteLine("Connection String:");
+        if (environment.IsProduction())
+        {
+            connectionString = configuration.GetConnectionString("Production") ?? configuration.GetConnectionString("Default");
+        }
+        else
+        {
+            connectionString = configuration.GetConnectionString("Local") ?? configuration.GetConnectionString("Default");
+        }
+        Console.WriteLine(connectionString);
+        options.UseSqlServer(connectionString, o =>
         {
             o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
         });

@@ -14,5 +14,6 @@ namespace ServiceLayer.Services.Interface.Db
         Task createTrackingAsync(User user, Sheet sheet, int point);
         Task<int> getMaxPointBySheetId(int id);
         Task<List<TopSongResponse>> GetTopSongByDays(string dateStart, string dateEnd);
+        Task<int> CountPlayerPlaying(DateTime from, DateTime to);
     }
 }

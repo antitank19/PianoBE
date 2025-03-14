@@ -365,6 +365,7 @@ namespace ServiceLayer.Seed
                  Id = 1,
                  InstrumentId = 1,
                  SongId = 1,
+                 Name = "Sheet 1",
                  MidiFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
@@ -374,6 +375,7 @@ namespace ServiceLayer.Seed
                  Id = 2,
                  InstrumentId = 2,
                  SongId = 1,
+                 Name = "Sheet 2",
                  MidiFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
@@ -383,6 +385,7 @@ namespace ServiceLayer.Seed
                  Id = 3,
                  InstrumentId = 2,
                  SongId = 2,
+                 Name = "Sheet 3",
                  MidiFile = "",
                  TopSignature = 4,
                  BottomSignature = 4,
@@ -392,6 +395,7 @@ namespace ServiceLayer.Seed
                  Id = 4,
                  InstrumentId = 1,
                  SongId = 1,
+                 Name = "Sheet 4",
                  MidiFile = "https://firebasestorage.googleapis.com/v0/b/pianoaiapi.appspot.com/o/Midi%2Ff1d4cb7b-9e3b-445e-a3e7-f97fc78e5434_Sao_Sang.mid?alt=media&token=fb758635-1027-43cc-bbff-1a0db24177bb",
                  TopSignature = 4,
                  BottomSignature = 4,
@@ -556,6 +560,12 @@ namespace ServiceLayer.Seed
                 ChordId = 9,
                 NoteId = 4,
             },
+        };
+        public static PlayTracking[] PlayTrackings = new PlayTracking[] {
+            new PlayTracking { Id = 1, Point = 10,  PlayerId=4, SheetId = 1, CreatedTime = DateTime.Now},
+            new PlayTracking { Id = 2, Point = 10,  PlayerId=5, SheetId = 1, CreatedTime = DateTime.Now.AddDays(-1)},
+            new PlayTracking { Id = 3, Point = 10,  PlayerId=5, SheetId = 2, CreatedTime = DateTime.Now.AddDays(-1)},
+            new PlayTracking { Id = 4, Point = 10,  PlayerId=4, SheetId = 2, CreatedTime = DateTime.Now.AddDays(-1)},
         };
     }
 }

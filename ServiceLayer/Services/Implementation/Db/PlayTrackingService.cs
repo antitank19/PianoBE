@@ -22,6 +22,16 @@ namespace ServiceLayer.Services.Implementation.Db
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<int> CountPlayerPlaying(DateTime from, DateTime to)
+        {
+            List<PlayTracking> playTracksInTime = await _unitOfWork.PlayTrackingRepository.FindListAsync(pt => 
+                pt.IsActive && !pt.IsDeleted 
+                && pt.CreatedTime > from && pt.CreatedTime < to
+            );
+            var playerIds = playTracksInTime.Select( p => p.PlayerId ).Distinct();
+            return playerIds.Count();
+        }
+
         public async Task<List<PlaysInYearResponse>> CountPlaysByYear(int year)
         {
             IQueryable<PlayTracking> playTrackings = _unitOfWork.GetRepository<PlayTracking>().Entities;
