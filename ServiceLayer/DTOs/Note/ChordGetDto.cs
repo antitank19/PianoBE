@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataLayer.EnumsAndConsts;
 
 namespace ServiceLayer.DTOs
 {
@@ -15,6 +11,7 @@ namespace ServiceLayer.DTOs
         //Measure: thứ tự khuôn nhạc
         //Position: thứ tự note trong khuôn nhạc
         public int Position { get; set; }
+        public int Clef { get; set; } = (int)ClefEnum.Sol;
         public ICollection<ChordNoteGetDto> ChordNotes { get; set; }
     }
 }

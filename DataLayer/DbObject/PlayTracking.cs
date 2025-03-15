@@ -1,0 +1,23 @@
+﻿using DataLayer.Base;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataLayer.DbObject
+{
+    public class PlayTracking : BaseEntity
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public int Point {  get; set; }
+        public int SheetId { get; set; }
+        public Sheet Sheet { get; set; }
+
+        [ForeignKey(nameof(Player))]  
+        public int PlayerId { get; set; }
+        public User Player{ get; set; }
+    }
+}

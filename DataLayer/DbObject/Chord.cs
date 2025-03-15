@@ -1,14 +1,11 @@
-﻿using DataLayer.EnumsAndConsts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using DataLayer.Base;
+using DataLayer.EnumsAndConsts;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DataLayer.DbObject
 {
-    public class Chord
+    public class Chord: BaseEntity
     {
         public Chord() { }
         /// <summary>
@@ -27,6 +24,12 @@ namespace DataLayer.DbObject
             {
                 MeasureId = measureId;
                 Position = position;
+                int faClefIndex = chordString.IndexOf("F:");
+                if (chordString.Contains("F:"))
+                {
+                    Clef = (int)ClefEnum.Fa;
+                    chordString = chordString.Substring(faClefIndex + 2).Trim();
+                }
                 if (!chordString.Contains(PitchConst.Pause))
                 {
 
@@ -39,8 +42,9 @@ namespace DataLayer.DbObject
                     //FillPitch(chordString);
                     //FillOctave(chordString);
                 }
-                else { 
-                    ChordNotes = new List<ChordNote>(); 
+                else
+                {
+                    ChordNotes = new List<ChordNote>();
                 }
 
                 FillDuration(chordString);
@@ -48,7 +52,7 @@ namespace DataLayer.DbObject
             catch (Exception ex)
             {
                 //if (ex is WrongNoteStringFormatException) 
-                    throw ex;
+                throw ex;
             }
         }
         public int Id { get; set; }
@@ -57,6 +61,8 @@ namespace DataLayer.DbObject
 
         //Position: thứ tự note trong khuôn nhạc
         public int Position { get; set; } = 1;
+        public int Clef { get; set; } = (int)ClefEnum.Sol;
+
         public ICollection<ChordNote> ChordNotes { get; set; }
 
         public int MeasureId { get; set; }
@@ -68,7 +74,7 @@ namespace DataLayer.DbObject
         {
             string duartionString = NoteInfo.Split('_')[1];
             //Handle slur
-           
+
 
             Duration = double.Parse(duartionString);
             #region old code
@@ -102,23 +108,30 @@ namespace DataLayer.DbObject
         public string ToSymbol(List<Note> noteList)
         {
             StringBuilder sb = new StringBuilder();
+            if (Clef == (int)ClefEnum.Fa)
+            {
+                sb.Append("F:");
+            }
             foreach (ChordNote chordNote in ChordNotes)
             {
                 string noteSymbol = "";
                 if (chordNote.Note == null || chordNote.Note.Pitch == null)
                 {
                     Note note = noteList.FirstOrDefault(n => n.Id == chordNote.NoteId);
-                    if (note != null) {
+                    if (note != null)
+                    {
                         noteSymbol = note.Pitch;
-
                     }
-                } else {
-                    noteSymbol=chordNote.Note.Pitch;
+                }
+                else
+                {
+                    noteSymbol = chordNote.Note.Pitch;
+
                 }
                 sb.Append(noteSymbol);
                 if (chordNote.SlurPosition != 0) { sb.Append("-" + chordNote.SlurPosition); }
             }
-            sb.Append("_"+Duration);
+            sb.Append("_" + Duration);
             sb.Append(' ');
             return sb.ToString();
         }

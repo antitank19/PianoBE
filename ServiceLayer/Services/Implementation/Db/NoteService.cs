@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ServiceLayer.DTOs;
 
 namespace ServiceLayer.Services.Implementation.Db
 {
@@ -29,9 +30,13 @@ namespace ServiceLayer.Services.Implementation.Db
             return mapper.Map<T>(note);
         }
 
-        public IQueryable<T> GetNoteList<T>()
+        public async Task<IEnumerable<NoteGetDto>> GetNoteList<T>()
         {
+            return await context.Notes.Where(p => p.IsActive == true && p.IsDeleted == false)
+                .ProjectTo<NoteGetDto>(mapper.ConfigurationProvider).ToListAsync();
+            /*
             return context.Notes.ProjectTo<T>(mapper.ConfigurationProvider);
+        */
         }
 
         public async Task<bool> IsIdExisted<T>(int id)

@@ -1,4 +1,5 @@
-﻿using DataLayer.DbContext;
+﻿using System.Reflection;
+using DataLayer.DbContext;
 using DataLayer.DbObject;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -12,12 +13,25 @@ using ServiceLayer.Services.Implementation;
 using ServiceLayer.Services.Interface;
 using System.Text;
 using System.Text.Json;
+using API.Middleware;
+using RepositoryLayer;
+using RepositoryLayer.IRepository;
+using RepositoryLayer.Repository;
+using ServiceLayer;
+using ServiceLayer.Filter;
+using ServiceLayer.CustomException;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
 IWebHostEnvironment environment = builder.Environment;
 bool IsInMemory = configuration["ConnectionStrings:InMemory"].ToLower() == "true";
 bool SeedOnStartUp = configuration["ConnectionStrings:SeedOnStartUp"].ToLower() == "true";
+
+string connectionString = configuration.GetConnectionString("Default");
+
 // Add services to the container.
 #region dbContext
 builder.Services.AddDbContext<PianoContext>(options =>
@@ -31,8 +45,17 @@ builder.Services.AddDbContext<PianoContext>(options =>
     }
     else
     {
-        Console.WriteLine(configuration.GetConnectionString("Default"));
-        options.UseSqlServer(configuration.GetConnectionString("Default"), o =>
+        Console.WriteLine("Connection String:");
+        if (environment.IsProduction())
+        {
+            connectionString = configuration.GetConnectionString("Production") ?? configuration.GetConnectionString("Default");
+        }
+        else
+        {
+            connectionString = configuration.GetConnectionString("Local") ?? configuration.GetConnectionString("Default");
+        }
+        Console.WriteLine(connectionString);
+        options.UseSqlServer(connectionString, o =>
         {
             o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
         });
@@ -45,7 +68,6 @@ builder.Services.AddIdentity<User, Role>(options => options.SignIn.RequireConfir
     //.AddRoles<Role>()
     .AddEntityFrameworkStores<PianoContext>()
     .AddDefaultTokenProviders();
-
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings.
@@ -72,6 +94,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
 })
 .AddJwtBearer(options =>
 {
@@ -86,24 +109,61 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
         ClockSkew = TimeSpan.Zero,
     };
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+    options.Cookie.SameSite = SameSiteMode.Lax; // Use Lax or Strict for local development
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Allow insecure cookies for local development
+})
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.Scope.Add("profile");
+    options.Scope.Add("email");
+    options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+    options.CorrelationCookie.SameSite = SameSiteMode.Lax; // Use Lax or Strict for local development
+    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.None; // Allow insecure cookies for local development
+    options.CallbackPath = "/login/oauth2/code/google";
 });
-#region service and repo
-builder.Services.AddScoped<IServiceWrapper, ServiceWrapper>();
-#endregion
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-        //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    });
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
+    options.Secure = CookieSecurePolicy.None; // Allow insecure cookies for local development
+});
+
+builder.Services.ConfigureServiceService(builder.Configuration);
+builder.Services.ConfigureRepositoryService(builder.Configuration);
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidateModelAttribute>();
+    options.Filters.Add<CustomExceptionFilter>();
+})
+        .ConfigureApiBehaviorOptions(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                throw new InvalidModelStateException(context.ModelState);
+            };
+        })
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     #region jwt ui
     string SecurityId = "Jwt Bearer";
-
+    
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Piano API", Version = "v1" });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
     options.AddSecurityDefinition(SecurityId, new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -179,15 +239,13 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #region cors
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("allcors", builder => builder
-//        .AllowAnyMethod()
-//        .AllowAnyHeader()
-//        .AllowCredentials()
-//        .SetIsOriginAllowed(hostName => true));
-
-//});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("allcors", builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
 #endregion
 var app = builder.Build();
 if (IsInMemory)
@@ -196,8 +254,10 @@ if (IsInMemory)
     //app.SeedInMemoryDb();
 }
 // Configure the HTTP request pipeline.
+app.UseCookiePolicy();
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
@@ -223,5 +283,5 @@ app.MapControllers();
 //}
 
 app.SeedInMemoryDb(IsInMemory, SeedOnStartUp);
-
+app.UseCors("allcors");
 app.Run();

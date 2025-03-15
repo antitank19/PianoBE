@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataLayer.EnumsAndConsts;
+using DataLayer.Base;
 
 namespace DataLayer.DbObject
 {
-    public class ChordNote
+    public class ChordNote : BaseEntity
     {
         public ChordNote() { }
         public ChordNote(string noteInfo)
@@ -23,17 +19,16 @@ namespace DataLayer.DbObject
             //{
                 FillOctave(noteInfo);
                 FillChromatic(noteInfo);
-            //int slurIndex = noteInfo.IndexOf('-');
+            //}
             if (noteInfo.Contains("-"))
             {
                 string slurString = noteInfo.Split("-")[1];
                 if (slurString.Contains("_"))
                 {
-                    slurString= slurString.Split("_")[0];
+                    slurString = slurString.Split("_")[0];
                 }
                 SlurPosition = int.Parse(slurString);
             }
-            //}
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -36,7 +36,7 @@ namespace API.Controllers
             {
                 return Ok("In Memory");
             }
-            var list = services.System.Nuke();
+            var list = services.SystemService.Nuke();
             return Ok();
         }
     }

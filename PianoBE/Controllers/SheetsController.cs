@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Extensions;
+using DataLayer.DbObject;
+using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTOs;
+using ServiceLayer.DTOs.Tracking;
+using ServiceLayer.ModelViews;
+using ServiceLayer.Services.Implementation;
 using ServiceLayer.Services.Interface;
 using ServiceLayer.Validation;
 
@@ -19,21 +24,25 @@ namespace API.Controllers
         }
         // GET: api/<SheetsController>
         [HttpGet]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(int pageNumber = 1, int pageSize = 3)
         {
-            IQueryable<SheetGetDto> dtos = services.Sheets.GetSheetList<SheetGetDto>();
+            IQueryable<SheetGetDto> dtos = services.SheetService.GetSheetList<SheetGetDto>();
+
+            // Apply pagination
+            dtos = dtos.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
             return Ok(dtos);
         }
 
         [HttpGet("Song/{songId}")]
         public async Task<IActionResult> GetListBySong(int songId)
         {
-            if (!await services.Songs.IsExistAsync(songId))
+            if (!await services.SongService.IsExistAsync(songId))
             {
                 return NotFound("Không tìm thấy bài hát");
             }
 
-            IQueryable<SheetGetDto> dtos = services.Sheets.GetSheetListBySongId<SheetGetDto>(songId);
+            IQueryable<SheetGetDto> dtos = services.SheetService.GetSheetListBySongId<SheetGetDto>(songId);
             return Ok(dtos);
         }
 
@@ -41,18 +50,18 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            SheetGetDto dto = await services.Sheets.GetSheetByIdAsync<SheetGetDto>(id);
+            SheetGetDto dto = await services.SheetService.GetSheetByIdAsync<SheetGetDto>(id);
             return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSheet(SheetCreateDto input)
+        public async Task<IActionResult> CreateSheet([FromForm]SheetCreateDto input)
         {
             ValidationResult valResult = new ValidationResult();
             try
             {
                 await valResult.ValidateAsync(input, services);
-                var created = await services.Sheets.CreateSheetAsync(input);
+                var created = await services.SheetService.CreateSheetAsync(input);
                 if (!valResult.IsValid)
                 {
                     return BadRequest(valResult);
@@ -67,7 +76,7 @@ namespace API.Controllers
         }
 
         [HttpPost("symbol")]
-        public async Task<IActionResult> CreateSheetWithSymbol(SheetSymbolCreateDto input)
+        public async Task<IActionResult> CreateSheetWithSymbol([FromForm]SheetSymbolCreateDto input)
         {
             ValidationResult valRe = new ValidationResult();
             try
@@ -77,7 +86,7 @@ namespace API.Controllers
                 {
                     return BadRequest(valRe);
                 }
-                SheetGetDto created = await services.Sheets.CreateSheetAsync(input);
+                SheetGetDto created = await services.SheetService.CreateSheetAsync(input);
                 return Ok(created);
             }
             catch (Exception ex)
@@ -98,7 +107,7 @@ namespace API.Controllers
                 {
                     return BadRequest(valRe);
                 }
-                var created = await services.Sheets.CreateSheetAsync(input);
+                var created = await services.SheetService.CreateSheetAsync(input);
                 return Ok(created);
             }
             catch (Exception ex)
@@ -108,16 +117,82 @@ namespace API.Controllers
             }
         }
 
-        // PUT api/<SheetsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("Xml")]
+        public async Task<IActionResult> CreateSheetWithXml([FromForm] SheetXmlCreateDto input)
         {
+            ValidationResult valRe = new ValidationResult();
+            try
+            {
+                await valRe.ValidateAsync(input, services);
+                if (!valRe.IsValid)
+                {
+                    return BadRequest(valRe);
+                }
+                var created = await services.SheetService.CreateSheetAsync(input);
+                return Ok(created);
+            }
+            catch (Exception ex)
+            {
+                valRe.AddError(ex.Message);
+                return BadRequest(valRe);
+            }
+        }
+
+
+        [HttpPost("MidiAndSymbol")]
+        public async Task<IActionResult> CreateSheetWithMidiAndSymbol([FromForm] SheetMidiCreateDto input)
+        {
+            ValidationResult valRe = new ValidationResult();
+            try
+            {
+                await valRe.ValidateAsync(input, services);
+                if (!valRe.IsValid)
+                {
+                    return BadRequest(valRe);
+                }
+                var created = await services.SheetService.CreateSheetAsync(input);
+                return Ok(created);
+            }
+            catch (Exception ex)
+            {
+                valRe.AddError(ex.Message);
+                return BadRequest(valRe);
+            }
+        }
+
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromForm] SheetUpdateDto input)
+        {
+            SheetGetDto dto = await services.SheetService.UpdateSheetAsync(input);
+            return Ok(dto);
         }
 
         // DELETE api/<SheetsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<BaseResponse<string>>> DeleteSheet(int id)
         {
+            await services.SheetService.DeleteSheet(id);
+            return Ok(new BaseResponse<string>("Delete sheet successfully", StatusCodes.Status200OK));
+        }
+
+        //Save Tracking point and data player
+        [HttpPost("save-point")]
+        public async Task<IActionResult> savePointPlayerBySong([FromForm] CreateTrackingDto trackingDto)
+        {
+            //get Username by principal Claims
+            string username = User.GetUsername();
+            User user = await services.UserService.GetUserByUserName(username);
+            Sheet sheet = await services.SheetService.GetSheetByIdAsync<Sheet>(trackingDto.SheetId);
+            await services.PlayTrackingService.createTrackingAsync(user, sheet, trackingDto.Point);
+            return Created("", new BaseResponse<string>("Save point successfully!", 201));
+        }
+
+        [HttpGet("max-point/{id:int}")]
+        public async Task<IActionResult> getMaxPointBySheetId([FromRoute] int id)
+        {
+            int maxPointId = await services.PlayTrackingService.getMaxPointBySheetId(id);
+            return Ok(new BaseResponse<string>("Save point successfully!", 200, maxPointId+""));
         }
     }
 }

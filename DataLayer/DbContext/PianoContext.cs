@@ -1,11 +1,6 @@
 ﻿using DataLayer.DbObject;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayer.DbContext
 {
@@ -24,6 +19,7 @@ namespace DataLayer.DbContext
         public DbSet<Chord> Chords { get; set; }
         public DbSet<ChordNote> ChordNotes { get; set; }
         public DbSet<Instrument> Instruments { get; set; }
+        public DbSet<PlayTracking> PlayTracking { get; set; }
 
         //Identity
         public override DbSet<User> Users { get; set; }
@@ -40,6 +36,10 @@ namespace DataLayer.DbContext
             #region identity
             modelBuilder.Entity<User>(b =>
             {
+                b.Property(e => e.DateOfBirth)
+                .HasConversion(
+                    v => v.HasValue ? new DateTime(v.Value.Year, v.Value.Month, v.Value.Day) : (DateTime?)null,
+                    v => v.HasValue ? DateOnly.FromDateTime(v.Value) : (DateOnly?)null);
                 // Each User can have many UserClaims
                 b.HasMany(e => e.UserClaims)
                     .WithOne(e => e.User)
@@ -89,6 +89,19 @@ namespace DataLayer.DbContext
                 e.HasMany(e => e.LeftMeasures)
                     .WithOne(e => e.LeftSheet)
                     .HasForeignKey(e => e.LeftSheetId);
+
+                e.HasMany(e => e.PlayTrackings)
+                    .WithOne(e => e.Sheet)
+                    .HasForeignKey(e => e.SheetId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+            // Configure the relationship between Song and User
+            modelBuilder.Entity<Song>(b =>
+            {
+                b.HasOne(s => s.Artist) 
+                    .WithMany(u => u.Songs) 
+                    .HasForeignKey(s => s.ArtistId) 
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
