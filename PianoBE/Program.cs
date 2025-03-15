@@ -255,8 +255,12 @@ if (IsInMemory)
 }
 // Configure the HTTP request pipeline.
 app.UseCookiePolicy();
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment()) // <---- THÊM KHỐI IF NÀY TẠI ĐÂY
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
