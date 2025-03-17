@@ -1,17 +1,27 @@
 /* Dashboard.css */
 #dashboard-container {
+    display:flex;
     padding: 24px;
     margin-top: 32px;
-    padding-left: 40px;
+  }
+
+  .dashboard-layout{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, calc((100% - (16px * 2))/3));
+    gap: 16px;
   }
   
   .stat-card {
     border: 1px solid #e2e8f0;
     background-color: white;
-    text-align: center;
     border-radius: 8px;
     padding: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  h2,p{
+    margin: 0;
   }
   
   .stat-title {
