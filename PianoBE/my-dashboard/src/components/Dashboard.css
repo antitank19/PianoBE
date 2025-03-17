@@ -11,6 +11,7 @@
     display: grid;
     grid-template-columns: repeat(3, calc((100% - (16px * 2))/3));
     gap: 16px;
+    margin-bottom: 1rem;
   }
   
   .stat-card {
