@@ -1,0 +1,57 @@
+/* Dashboard.css */
+#dashboard-container {
+    padding: 24px;
+    margin-top: 32px;
+    padding-left: 40px;
+  }
+  
+  .stat-card {
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stat-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4a5568;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .stat-users {
+    color: #3182ce;
+  }
+  
+  .stat-active-users {
+    color: #38a169;
+  }
+  
+  .stat-songs {
+    color: #e53e3e;
+  }
+  
+  .chart-container {
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .song-list {
+    list-style-type: disc;
+    margin-left: 24px;
+    font-size: 1.1rem;
+  }
+  
+  .song-item {
+    padding: 4px 0;
+  }
+  
