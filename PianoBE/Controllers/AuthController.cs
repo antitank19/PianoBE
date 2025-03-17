@@ -240,7 +240,7 @@ namespace API.Controllers
         }
 
         [HttpGet("my-info")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> getUserByClaims()
         {
             var username = User.GetUsername();
