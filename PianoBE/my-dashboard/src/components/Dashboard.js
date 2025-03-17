@@ -46,6 +46,15 @@ const getMonthlyTransactionsFromCSV = async () => {
   });
 };
 
+const MOCK_PLAY = Array.from({ length: 12 }, (_, i) => ({
+  month: i + 1,
+  numberPlays: 0, 
+}));
+
+MOCK_PLAY[4].numberPlays = 5;
+
+const MOCK_MONEY = await getMonthlyTransactionsFromCSV();
+
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -54,15 +63,14 @@ const Dashboard = () => {
     fetch("http://localhost:7133/api/DashBoard?year=2025&dateStart=2025-01-1&dateEnd=2025-03-17")
       .then((response) => response.json())
       .then((json) => {
-        setData({ json});
+        setData(json);
         setLoading(false);
       })
       .catch(async (error) => {
         console.error("Lỗi khi gọi API, dùng dữ liệu CSV làm mock:", error);
         try {
-          const mockData = await getMonthlyTransactionsFromCSV();
           setData({
-            playsInYear: mockData,
+            playsInYear: MOCK_PLAY,
             userNumber: 200,
             activeUserNumber: 10,
             numberSong: 80,
@@ -90,6 +98,12 @@ const Dashboard = () => {
     value: item.numberPlays,
   }));
 
+  const moneyData = MOCK_MONEY.map((item) => ({
+    name: `Tháng ${item.month}`,
+    value: item.numberPlays,
+  }));
+
+
   return (
     <div id="dashboard-container">
       {/* Grid chứa các số liệu thống kê */}
@@ -115,6 +129,19 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Doanh thu */}
+      <Card className="chart-container mb-6">
+        <h2 className="text-xl font-bold mb-4">Doanh thu theo tháng</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={moneyData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="value" fill="#82ca9d" />
+          </BarChart>
+        </ResponsiveContainer>
+      </Card>
 
       {/* Biểu đồ */}
       <Card className="chart-container mb-6">
