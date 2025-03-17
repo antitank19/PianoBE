@@ -68,13 +68,13 @@ namespace ServiceLayer.Seed
                         context.Instruments.AddRange(DbSeed.Instruments);
                     }
                     #endregion
-                    #region seed Notes
-                    if (!context.Notes.Any())
-                    {
-
-                        context.Notes.AddRange(DbSeed.Notes);
-                    }
-                    #endregion
+                    //#region seed Notes
+                    //if (!context.Notes.Any())
+                    //{
+                    //    context.Notes.AddRange(DbSeed.Notes);
+                    //}
+                    //#endregion
+                        
                     #region seed Users
                     if (!context.Users.Any())
                     {
@@ -118,27 +118,27 @@ namespace ServiceLayer.Seed
                         context.Sheets.AddRange(DbSeed.Sheets);
                     }
                     #endregion
-                    #region seed Measures
-                    if (!context.Measures.Any())
-                    {
+                    //#region seed Measures
+                    //if (!context.Measures.Any())
+                    //{
 
-                        context.Measures.AddRange(DbSeed.Measures);
-                    }
-                    #endregion
-                    #region seed Chords
-                    if (!context.Chords.Any())
-                    {
+                    //    context.Measures.AddRange(DbSeed.Measures);
+                    //}
+                    //#endregion
+                    //#region seed Chords
+                    //if (!context.Chords.Any())
+                    //{
 
-                        context.Chords.AddRange(DbSeed.Chords);
-                    }
-                    #endregion
-                    #region seed ChordNote
-                    if (!context.ChordNotes.Any())
-                    {
+                    //    context.Chords.AddRange(DbSeed.Chords);
+                    //}
+                    //#endregion
+                    //#region seed ChordNote
+                    //if (!context.ChordNotes.Any())
+                    //{
 
-                        context.ChordNotes.AddRange(DbSeed.ChordNotes);
-                    }
-                    #endregion
+                    //    context.ChordNotes.AddRange(DbSeed.ChordNotes);
+                    //}
+                    //#endregion
                     #region seed PlayTrackking
                     if (!context.PlayTracking.Any())
                     {
@@ -204,19 +204,19 @@ namespace ServiceLayer.Seed
                         }
                     }
                     #endregion
-                    #region seed Notes
-                    if (!context.Notes.Any())
-                    {
-                        using (var transaction = context.Database.BeginTransaction())
-                        {
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Notes ON");
-                            context.Notes.AddRange(DbSeed.Notes);
-                            context.SaveChanges();
-                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Notes OFF");
-                            transaction.Commit();
-                        }
-                    }
-                    #endregion
+                    //#region seed Notes
+                    //if (!context.Notes.Any())
+                    //{
+                    //    using (var transaction = context.Database.BeginTransaction())
+                    //    {
+                    //        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Notes ON");
+                    //        context.Notes.AddRange(DbSeed.Notes);
+                    //        context.SaveChanges();
+                    //        //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Notes OFF");
+                    //        transaction.Commit();
+                    //    }
+                    //}
+                    //#endregion
                     #region seed Artists
                     if (!context.Users.Any())
                     {
@@ -287,45 +287,45 @@ namespace ServiceLayer.Seed
                         }
                     }
                     #endregion
-                    #region seed Mesuare
-                    if (!context.Measures.Any())
-                    {
-                        using (var transaction = context.Database.BeginTransaction())
-                        {
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Measures ON");
-                            context.Measures.AddRange(DbSeed.Measures);
-                            context.SaveChanges();
-                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Sheets OFF");
-                            transaction.Commit();
-                        }
-                    }
-                    #endregion
-                    #region seed Chords
-                    if (!context.Chords.Any())
-                    {
-                        using (var transaction = context.Database.BeginTransaction())
-                        {
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chords ON");
-                            context.Chords.AddRange(DbSeed.Chords);
-                            context.SaveChanges();
-                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chords OFF");
-                            transaction.Commit();
-                        }
-                    }
-                    #endregion
-                    #region seed ChordNotes
-                    if (!context.ChordNotes.Any())
-                    {
-                        using (var transaction = context.Database.BeginTransaction())
-                        {
-                            context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ChordNotes ON");
-                            context.ChordNotes.AddRange(DbSeed.ChordNotes);
-                            context.SaveChanges();
-                            //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT SongNotes OFF");
-                            transaction.Commit();
-                        }
-                    }
-                    #endregion
+                    //#region seed Mesuare
+                    //if (!context.Measures.Any())
+                    //{
+                    //    using (var transaction = context.Database.BeginTransaction())
+                    //    {
+                    //        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Measures ON");
+                    //        context.Measures.AddRange(DbSeed.Measures);
+                    //        context.SaveChanges();
+                    //        //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Sheets OFF");
+                    //        transaction.Commit();
+                    //    }
+                    //}
+                    //#endregion
+                    //#region seed Chords
+                    //if (!context.Chords.Any())
+                    //{
+                    //    using (var transaction = context.Database.BeginTransaction())
+                    //    {
+                    //        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chords ON");
+                    //        context.Chords.AddRange(DbSeed.Chords);
+                    //        context.SaveChanges();
+                    //        //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Chords OFF");
+                    //        transaction.Commit();
+                    //    }
+                    //}
+                    //#endregion
+                    //#region seed ChordNotes
+                    //if (!context.ChordNotes.Any())
+                    //{
+                    //    using (var transaction = context.Database.BeginTransaction())
+                    //    {
+                    //        context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT ChordNotes ON");
+                    //        context.ChordNotes.AddRange(DbSeed.ChordNotes);
+                    //        context.SaveChanges();
+                    //        //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT SongNotes OFF");
+                    //        transaction.Commit();
+                    //    }
+                    //}
+                    //#endregion
                     #region seed ChordNotes
                     if (!context.PlayTracking.Any())
                     {

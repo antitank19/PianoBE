@@ -47,13 +47,13 @@ namespace ServiceLayer.Services.Implementation
                     dbContext.UserClaims.Delete();
                     dbContext.UserTokens.Delete();
                     #endregion
-                    dbContext.Notes.Delete();
+                    //dbContext.Notes.Delete();
                     dbContext.Instruments.Delete();
                     dbContext.Songs.Delete();
                     dbContext.Sheets.Delete();
-                    dbContext.Measures.Delete();
-                    dbContext.ChordNotes.Delete();
-                    dbContext.Chords.Delete();
+                    //dbContext.Measures.Delete();
+                    //dbContext.ChordNotes.Delete();
+                    //dbContext.Chords.Delete();
 
                     tryAgain = false;
                 }

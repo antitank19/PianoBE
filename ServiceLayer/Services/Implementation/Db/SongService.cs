@@ -49,8 +49,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 .Include(p => p.Artist)
                 .Include(p=>p.Genres)
                 .Include(s => s.Sheets).ThenInclude(s => s.Instrument)
-                .Include(s => s.Sheets).ThenInclude(s => s.RightMeasures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
-                .Include(s => s.Sheets).ThenInclude(s => s.LeftMeasures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
+                //.Include(s => s.Sheets).ThenInclude(s => s.RightMeasures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
+                //.Include(s => s.Sheets).ThenInclude(s => s.LeftMeasures).ThenInclude(m => m.Chords).ThenInclude(c => c.ChordNotes).ThenInclude(cn => cn.Note)
                 .AsSingleQuery()
                 .SingleOrDefaultAsync(s => s.Id == id);
             T dto = mapper.Map<T>(song);
@@ -67,7 +67,7 @@ namespace ServiceLayer.Services.Implementation.Db
             Song newSong = mapper.Map<Song>(input);
             if (newSong.Sheets.Any())
             {
-                newSong.Sheets.FirstOrDefault().ToSymbol(context.Notes.ToList());
+                //newSong.Sheets.FirstOrDefault().ToSymbol(context.Notes.ToList());
             }
             string imgUrl = await FirebaseStorageUtil.UploadFileAsync(input.ImageFile, "Image/Song", config["Firebase:StorageBucket"]);
 

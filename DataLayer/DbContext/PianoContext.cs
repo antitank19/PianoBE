@@ -14,10 +14,10 @@ namespace DataLayer.DbContext
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Song> Songs { get; set; }
         public DbSet<Sheet> Sheets { get; set; }
-        public DbSet<Note> Notes { get; set; }                  
-        public DbSet<Measure> Measures { get; set; }
-        public DbSet<Chord> Chords { get; set; }
-        public DbSet<ChordNote> ChordNotes { get; set; }
+        //public DbSet<Note> Notes { get; set; }                  
+        //public DbSet<Measure> Measures { get; set; }
+        //public DbSet<Chord> Chords { get; set; }
+        //public DbSet<ChordNote> ChordNotes { get; set; }
         public DbSet<Instrument> Instruments { get; set; }
         public DbSet<PlayTracking> PlayTracking { get; set; }
 
@@ -82,13 +82,13 @@ namespace DataLayer.DbContext
             #endregion
             modelBuilder.Entity<Sheet>(e =>
             {
-                e.HasMany(e => e.RightMeasures)
-                    .WithOne(e => e.RightSheet)
-                    .HasForeignKey(e => e.RightSheetId);
-                    //.IsRequired();
-                e.HasMany(e => e.LeftMeasures)
-                    .WithOne(e => e.LeftSheet)
-                    .HasForeignKey(e => e.LeftSheetId);
+                //e.HasMany(e => e.RightMeasures)
+                //    .WithOne(e => e.RightSheet)
+                //    .HasForeignKey(e => e.RightSheetId);
+                //    //.IsRequired();
+                //e.HasMany(e => e.LeftMeasures)
+                //    .WithOne(e => e.LeftSheet)
+                //    .HasForeignKey(e => e.LeftSheetId);
 
                 e.HasMany(e => e.PlayTrackings)
                     .WithOne(e => e.Sheet)

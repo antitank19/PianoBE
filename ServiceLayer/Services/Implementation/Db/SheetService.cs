@@ -59,8 +59,8 @@ namespace ServiceLayer.Services.Implementation.Db
                 //.Include(s => s.LeftHandSheet).ThenInclude(s => s.Measures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
                 .Include(s => s.Song)
                 .Include(s => s.Instrument)
-                .Include(s => s.RightMeasures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
-                .Include(s => s.LeftMeasures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
+                //.Include(s => s.RightMeasures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
+                //.Include(s => s.LeftMeasures).ThenInclude(s => s.Chords).ThenInclude(s => s.ChordNotes).ThenInclude(sn => sn.Note)
                 .SingleOrDefaultAsync(x => x.Id == sheetId);
             T dto = mapper.Map<T>(sheet);
             return dto;
@@ -69,7 +69,7 @@ namespace ServiceLayer.Services.Implementation.Db
         public async Task<SheetGetDto> CreateSheetAsync(SheetCreateDto input)
         {
             Sheet sheet = mapper.Map<Sheet>(input);
-            sheet.ToSymbol(context.Notes.ToList());
+            //sheet.ToSymbol(context.Notes.ToList());
             sheet.CreatedTime  = DateTime.Now;
 
             if(input.BackgroundMusic != null)
@@ -155,7 +155,7 @@ namespace ServiceLayer.Services.Implementation.Db
                 sheet.BackgroundMusicFile = backgroundUrl;
             }
 
-            sheet.DecodeSymbolToMeasure();
+            //sheet.DecodeSymbolToMeasure();
 
             await context.Sheets.AddAsync(sheet);
             await context.SaveChangesAsync();
@@ -200,7 +200,7 @@ namespace ServiceLayer.Services.Implementation.Db
             if (!String.IsNullOrWhiteSpace(input.RightSymbol))
             {
                 sheet.RightSymbol = input.RightSymbol;
-                sheet.DecodeSymbolToMeasure();
+                //sheet.DecodeSymbolToMeasure();
             }
 
             if (input.MidiFile != null)
