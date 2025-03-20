@@ -89,6 +89,11 @@ namespace ServiceLayer.Services.Implementation.Db
             }
             string midiUrl = await FirebaseStorageUtil.UploadFileAsync(input.Sheet.MidiFile, "Midi", config["Firebase:StorageBucket"]);
             Song newSong = mapper.Map<Song>(input);
+            if (input.Sheet.BackgroundMusic != null)
+            {
+                string backgroundUrl = await FirebaseStorageUtil.UploadFileAsync(input.Sheet.BackgroundMusic, "BackgroundMusic", config["Firebase:StorageBucket"]);
+                newSong.Sheets.FirstOrDefault().BackgroundMusicFile = backgroundUrl;
+            }
             newSong.CreatedTime = DateTime.Now;
             newSong.Sheets.FirstOrDefault().MidiFile = midiUrl;
             await _unitOfWork.SongRepository.InsertAsync(newSong);
