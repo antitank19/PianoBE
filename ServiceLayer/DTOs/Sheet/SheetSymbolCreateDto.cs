@@ -19,6 +19,7 @@ namespace ServiceLayer.DTOs
         public string RightSymbol { get; set; }
         public string? LeftSymbol { get; set; }
         public KeySignatureEnum KeySignature { get; set; }
+        public IFormFile? MidiFile { get; set; }
         public IFormFile? BackgroundMusic { get; set; }
     }
 }

@@ -87,8 +87,10 @@ namespace ServiceLayer.Services.Implementation.Db
             {
                 throw new ErrorException(StatusCodes.Status400BadRequest, ErrorMessages.NOT_FOUND, ErrorMessages.NOT_FOUND.Replace("0", "Genre"));
             }
+            string midiUrl = await FirebaseStorageUtil.UploadFileAsync(input.Sheet.MidiFile, "Midi", config["Firebase:StorageBucket"]);
             Song newSong = mapper.Map<Song>(input);
             newSong.CreatedTime = DateTime.Now;
+            newSong.Sheets.FirstOrDefault().MidiFile = midiUrl;
             await _unitOfWork.SongRepository.InsertAsync(newSong);
             await _unitOfWork.SongRepository.SaveAsync();
             SongGetDto dto = mapper.Map<SongGetDto>(newSong);
