@@ -59,7 +59,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Symbol")]
-        public async Task<IActionResult> CreateSongWithSymbol([FromBody] SongSymbolCreateDto input)
+        public async Task<IActionResult> CreateSongWithSymbol([FromForm] SongSymbolCreateDto input)
         {
             SongGetDto dto = await services.SongService.CreateSong(input);
             return Ok(dto);

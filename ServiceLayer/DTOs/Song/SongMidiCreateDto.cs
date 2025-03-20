@@ -8,7 +8,7 @@ namespace ServiceLayer.DTOs
         public string Composer { get; set; }
         public int GenreId { get; set; }
         public int ArtistId { get; set; }
-        public SheetMidiCreateDto Sheet { get; set; }
+        public SheetMidiCreateDto? Sheet { get; set; }
 
     }
 }

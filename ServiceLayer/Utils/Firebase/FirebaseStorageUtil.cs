@@ -46,9 +46,13 @@ namespace ServiceLayer.Utils
         /// </summary>
         /// <param name="file"></param>
         /// <param name="destinationPath"></param>
-        /// <returns></returns>
+        /// <returns>Return Firebase path, emtpty string if null file</returns>
         public static async Task<string> UploadFileAsync(IFormFile file, string destinationPath, string bucket, string authToken = null)
         {
+            if(file == null)
+            {
+                return "";
+            }
             FirebaseStorage firebaseStorage = new FirebaseStorage(
                bucket,
                new FirebaseStorageOptions
