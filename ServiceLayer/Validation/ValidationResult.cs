@@ -67,57 +67,57 @@ namespace ServiceLayer.Validation
             {
                 AddError("Missing symbols", nameof(input.RightSymbol));
             }
-            else
-            {
-                string[] measureStrings = input.RightSymbol.Split(new char[] { '/' });
-                for (int i = 0; i < measureStrings.Length; i++)
-                {
-                    try
-                    {
-                        string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
-                        if (chordStrings[0].Length == 1)
-                        {
-                            chordStrings = chordStrings.Skip(1).ToArray();
-                        }
-                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1].Split('-')[0])).Sum();
-                        bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
-                        if (!isGoodBeatNum)
-                        {
-                            AddError($"Right hand measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        AddError($"Right hand measure {i + 1} {ex.Message}", nameof(input.RightSymbol));
-                    }
-                }
+            //else
+            //{
+            //    string[] measureStrings = input.RightSymbol.Split(new char[] { '/' });
+            //    for (int i = 0; i < measureStrings.Length; i++)
+            //    {
+            //        try
+            //        {
+            //            string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+            //            if (chordStrings[0].Length == 1)
+            //            {
+            //                chordStrings = chordStrings.Skip(1).ToArray();
+            //            }
+            //            double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1].Split('-')[0])).Sum();
+            //            bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+            //            if (!isGoodBeatNum)
+            //            {
+            //                AddError($"Right hand measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            AddError($"Right hand measure {i + 1} {ex.Message}", nameof(input.RightSymbol));
+            //        }
+            //    }
 
-            }
-            if (!String.IsNullOrWhiteSpace(input.LeftSymbol))
-            {
-                string[] measureStrings = input.LeftSymbol.Split(new char[] { '/' });
-                for (int i = 0; i < measureStrings.Length; i++)
-                {
-                    try
-                    {
-                        string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
-                        if (chordStrings[0].Length == 1)
-                        {
-                            chordStrings = chordStrings.Skip(1).ToArray();
-                        }
-                        double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1].Split('-')[0])).Sum();
-                        bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
-                        if (!isGoodBeatNum)
-                        {
-                            AddError($"Left hand measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        AddError($"Left hand measure {i + 1} {ex.Message}", nameof(input.RightSymbol));
-                    }
-                }
-            }
+            //}
+            //if (!String.IsNullOrWhiteSpace(input.LeftSymbol))
+            //{
+            //    string[] measureStrings = input.LeftSymbol.Split(new char[] { '/' });
+            //    for (int i = 0; i < measureStrings.Length; i++)
+            //    {
+            //        try
+            //        {
+            //            string[] chordStrings = measureStrings[i].Split(new char[] { ' ' });
+            //            if (chordStrings[0].Length == 1)
+            //            {
+            //                chordStrings = chordStrings.Skip(1).ToArray();
+            //            }
+            //            double totalDuration = chordStrings.Select(chordString => double.Parse(chordString.Split('_')[1].Split('-')[0])).Sum();
+            //            bool isGoodBeatNum = ValiddateMeasureBeats(totalDuration, input.TopSignature, input.BottomSignature);
+            //            if (!isGoodBeatNum)
+            //            {
+            //                AddError($"Left hand measure {i + 1} has invalid number of beats", nameof(input.RightSymbol));
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            AddError($"Left hand measure {i + 1} {ex.Message}", nameof(input.RightSymbol));
+            //        }
+            //    }
+            //}
         }
 
         public async Task ValidateAsync(SheetCreateDto input, IServiceWrapper services)

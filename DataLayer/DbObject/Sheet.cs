@@ -41,47 +41,47 @@ namespace DataLayer.DbObject
             KeySignature = keySignature;
             RightSymbol = rightSheetString;
             LeftSymbol = leftSheetString;
-            DecodeSymbolToMeasure();
+            //DecodeSymbolToMeasure();
             //foreach
         }
 
-        public void DecodeSymbolToMeasure()
-        {
-            string[] rightMeasureStrings = RightSymbol.Split('/');
-            //var measures = measureStrings.Select(mString => new Measure(mString));
-            //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
-            RightMeasures = rightMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
-            if (!String.IsNullOrWhiteSpace(LeftSymbol))
-            {
-                string[] leftMeasureStrings = LeftSymbol.Split('/');
-                //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
-                LeftMeasures = leftMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
-            }
-        }
+        //public void DecodeSymbolToMeasure()
+        //{
+        //    string[] rightMeasureStrings = RightSymbol.Split('/');
+        //    //var measures = measureStrings.Select(mString => new Measure(mString));
+        //    //Measures = (ICollection<Measure>?)measureStrings.Select(mString => new Measure(mString));
+        //    RightMeasures = rightMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, true)).ToList();
+        //    if (!String.IsNullOrWhiteSpace(LeftSymbol))
+        //    {
+        //        string[] leftMeasureStrings = LeftSymbol.Split('/');
+        //        //LeftHandSheet = new Sheet(songId, InstrumentId, topSignature, bottomSignature, leftSheetString);
+        //        LeftMeasures = leftMeasureStrings.Select((mString, n) => new Measure(0, n + 1, mString, false)).ToList();
+        //    }
+        //}
 
-        public void ToSymbol(List<Note> noteLists)
-        {
-            StringBuilder rightSB1 = new StringBuilder("");
-            foreach (var measure in RightMeasures)
-            {
-                string measureString = measure.ToSymbol(noteLists);
-                rightSB1.Append(measureString);
-            }
-            rightSB1.Remove(rightSB1.Length - 1, 1);
-            RightSymbol = rightSB1.ToString();
-            if (LeftMeasures.Count != 0)
-            {
-                StringBuilder leftSB = new StringBuilder("");
-                foreach (var measure in LeftMeasures)
-                {
-                    string measureString = measure.ToSymbol(noteLists);
-                    leftSB.Append(measureString);
-                }
-                leftSB.Remove(leftSB.Length - 1, 1);
-                LeftSymbol = leftSB.ToString();
-            }
+        //public void ToSymbol(List<Note> noteLists)
+        //{
+        //    StringBuilder rightSB1 = new StringBuilder("");
+        //    foreach (var measure in RightMeasures)
+        //    {
+        //        string measureString = measure.ToSymbol(noteLists);
+        //        rightSB1.Append(measureString);
+        //    }
+        //    rightSB1.Remove(rightSB1.Length - 1, 1);
+        //    RightSymbol = rightSB1.ToString();
+        //    if (LeftMeasures.Count != 0)
+        //    {
+        //        StringBuilder leftSB = new StringBuilder("");
+        //        foreach (var measure in LeftMeasures)
+        //        {
+        //            string measureString = measure.ToSymbol(noteLists);
+        //            leftSB.Append(measureString);
+        //        }
+        //        leftSB.Remove(leftSB.Length - 1, 1);
+        //        LeftSymbol = leftSB.ToString();
+        //    }
 
-        }
+        //}
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -108,9 +108,9 @@ namespace DataLayer.DbObject
 
 
         public string? RightSymbol { get; set; }
-        public ICollection<Measure> RightMeasures { get; set; }
+        //public ICollection<Measure> RightMeasures { get; set; }
         public string? LeftSymbol { get; set; }
-        public ICollection<Measure>? LeftMeasures { get; set; }
+        //public ICollection<Measure>? LeftMeasures { get; set; }
         public ICollection<PlayTracking> PlayTrackings { get; set; }
     }
 }

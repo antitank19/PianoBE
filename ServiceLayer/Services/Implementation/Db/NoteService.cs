@@ -26,22 +26,29 @@ namespace ServiceLayer.Services.Implementation.Db
 
         public async Task<T> GetNoteById<T>(int id)
         {
-            Note note = await context.Notes.SingleOrDefaultAsync(x => x.Id == id);
-            return mapper.Map<T>(note);
+            //Note note = await context.Notes.SingleOrDefaultAsync(x => x.Id == id);
+            //return mapper.Map<T>(note);
+            throw new NotImplementedException("NoteService: GetNoteById");
         }
 
         public async Task<IEnumerable<NoteGetDto>> GetNoteList<T>()
         {
-            return await context.Notes.Where(p => p.IsActive == true && p.IsDeleted == false)
-                .ProjectTo<NoteGetDto>(mapper.ConfigurationProvider).ToListAsync();
-            /*
-            return context.Notes.ProjectTo<T>(mapper.ConfigurationProvider);
-        */
+        //    return await context.Notes.Where(p => p.IsActive == true && p.IsDeleted == false)
+        //        .ProjectTo<NoteGetDto>(mapper.ConfigurationProvider).ToListAsync();
+        //    /*
+        //    return context.Notes.ProjectTo<T>(mapper.ConfigurationProvider);
+        //*/
+
+            throw new NotImplementedException("NoteService: GetNoteList");
+
         }
 
         public async Task<bool> IsIdExisted<T>(int id)
         {
-            return await context.Notes.AnyAsync(x => x.Id == id);
+            //return await context.Notes.AnyAsync(x => x.Id == id);
+
+            throw new NotImplementedException("NoteService: IsIdExisted");
+
         }
     }
 }
