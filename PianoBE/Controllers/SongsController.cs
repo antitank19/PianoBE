@@ -29,9 +29,13 @@ namespace API.Controllers
         }
         // GET: api/<SongsController>
         [HttpGet]
-        public async Task<IActionResult> GetSongList()
+        public async Task<IActionResult> GetSongList(int pageNum = 1, int pageSize = 100)
         {
-            return Ok(services.SongService.GetSongList<SongGetDto>());
+            if((await services.SongService.CountSongs())< (pageNum - 1) * pageSize)
+            {
+                return BadRequest("Not enough songs");
+            }
+            return Ok(services.SongService.GetSongList<SongGetDto>().Skip((pageNum-1)*pageSize).Take(pageSize));
         }
 
         // GET api/<SongsController>/5
